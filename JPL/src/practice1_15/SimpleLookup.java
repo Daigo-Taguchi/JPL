@@ -1,12 +1,14 @@
 package practice1_15;
 
 public class SimpleLookup implements Lookup {
-	private String[] names;
-	private Object[] values;
+	private static final int INDEX_NUMBER = 10;
+	private String[] names = new String[INDEX_NUMBER]; //このへんも教科書に載ってない
+	private Object[] values = new Object[INDEX_NUMBER];
 	
 	public Object find(String name) {
 		for(int i = 0; i < names.length; i++) {
 			if(names[i].equals(name)) {
+				values[i] = names[i];//教科書にはこの記述載ってないけど省略されてるだけ？
 				return values[i];
 			}
 		}
