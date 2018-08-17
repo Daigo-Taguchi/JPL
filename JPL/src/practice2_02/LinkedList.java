@@ -1,4 +1,4 @@
-package practice2_2;
+package practice2_02;
 
 public class LinkedList {
 	public Object object;
