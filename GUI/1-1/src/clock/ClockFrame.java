@@ -37,7 +37,7 @@ public class ClockFrame extends Frame implements ActionListener{
 			public void run() {
 				repaint();
 			}
-		},0, 100);
+		},0, 300);
 	}
 	
 	public void paint(Graphics g) {
