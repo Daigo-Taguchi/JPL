@@ -11,13 +11,12 @@ public class LinkedList {
 		Vehicle bike = new Vehicle();
 		LinkedList list1 = new LinkedList();
 		LinkedList list2 = new LinkedList();
-		LinkedList list3 = new LinkedList();
 		
 		list1.object = car;
 		list1.nextAccess = list2;
 		
 		list2.object = bike;
-		list2.nextAccess = list3;
+		list2.nextAccess = null;
 	}
 
 }

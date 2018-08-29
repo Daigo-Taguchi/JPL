@@ -9,6 +9,7 @@ public class Vehicle {
 	public int vehicleID;
 	
 	public Vehicle() {
+		vehicleID = nextID;
 		nextID++;
 	}
 	
@@ -17,12 +18,14 @@ public class Vehicle {
 		this.ownerName = ownerName;
 	}
 	
-	public static int ReturnMaxID() {
-		return nextID;
+	public static int returnUsedMaxID() {
+		return nextID - 1;
 	}
 	
 	public String toString() {
+		//String desc = "nowSpeed = " + this.nowSpeed + "%n" + "direction = " + this.direction + "%n" + "ownewName = " + this.ownerName + "%n" + "識別番号 = " + Vehicle.nextID + "%n" + "ID番号 = " + this.vehicleID + "%n" + "=========================" + "%n";
 		String desc = "nowSpeed = " + this.nowSpeed + "%n" + "direction = " + this.direction + "%n" + "ownewName = " + this.ownerName + "%n" + "識別番号 = " + Vehicle.nextID + "%n" + "ID番号 = " + this.vehicleID + "%n" + "=========================" + "%n";
+
 		return desc;
 		
 	}
