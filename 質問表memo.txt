@@ -49,6 +49,12 @@ SetValueメソッドの返り値でoldValueを返しているのはどんな意図があるのか。voidでは
 ・オブジェクトの本当の型とは何か。
 ・maskメソッドには引数origが必要だが、この説明では引数に何を使用することを想定しているのか。
 
+3.2 P72 練習問題3.2,3.3が分からない
+
+3.3 P75(L32)
+Supershow sup にはExtendShowのインスタンスが代入されているので、sup.showでExtendshowのshow()が呼び出される。
+しかし、なぜsup.strとするとExtendShowのstrが呼び出されずに、SuperShowのstrが呼び出されるのか。
+
 
 
 
