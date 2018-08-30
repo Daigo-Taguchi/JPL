@@ -1,6 +1,9 @@
-package practice2_13;
+package practice2_17;
 
 public class Vehicle {
+	public static final double TURN_LEFT = 270.0;
+	public static final double TURN_RIGTH = 90.0;
+	
 	private double nowSpeed;
 	private double direction;
 	private String ownerName;
@@ -23,8 +26,23 @@ public class Vehicle {
 	}
 	
 	public String toString() {
-		String desc = "nowSpeed = " + this.nowSpeed + "\n" + "direction = " + this.direction + "\n" + "ownewName = " + this.ownerName + "\n" + "ID番号 = " + this.vehicleID + "\n" + "次のID番号 = " + Vehicle.nextID + "\n" + "ID番号の最大値 = " + Vehicle.returnUsedMaxID() + "\n" +"=========================" ;
+		String desc = "nowSpeed = " + this.nowSpeed + "\n" + "direction = " + this.direction + "\n" + "ownewName = " + this.ownerName + "\n" + "ID番号 = " + this.vehicleID + "\n" + "次のID番号 = " + Vehicle.nextID + "\n" + "ID番号の最大値 = " + Vehicle.returnUsedMaxID() + "\n";
 		return desc;
+	}
+	public void changeSpeed(double speed) {
+		this.nowSpeed = speed;
+	}
+	
+	public void stop() {
+		this.nowSpeed = 0.0;
+	}
+	
+	public void turn(double turnAngle) {
+		System.out.print(turnAngle + "度曲がります");
+	}
+	
+	public void turn() {
+		
 	}
 	
 	public double getNowSpeed() {return this.nowSpeed;}
