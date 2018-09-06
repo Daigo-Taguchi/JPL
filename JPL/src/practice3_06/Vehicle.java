@@ -1,6 +1,6 @@
 package practice3_06;
 
-public class Vehicle {
+public class Vehicle{
 	public static final double TURN_LEFT = 270.0;
 	public static final double TURN_RIGTH = 90.0;
 	
@@ -11,7 +11,12 @@ public class Vehicle {
 	private static int nextID = 0;
 	private int vehicleID;
 	
+	private Object gastank;
+	private Object battery;
+	
 	public Vehicle() {
+		this.gastank = new GasTank();
+		this.battery = new Battery();
 		this.vehicleID = nextID;
 		nextID++;
 	}
@@ -19,6 +24,10 @@ public class Vehicle {
 	public Vehicle(String ownerName) {
 		this();
 		this.ownerName = ownerName;
+	}
+	
+	public void start() {
+		
 	}
 	
 	public static int returnUsedMaxID() {
