@@ -1,7 +1,7 @@
-package practice3_06;
+package practice4_1;
 
 public class Battery extends EnergySource{
-	private int batteryEnergy = 30;
+	public int batteryEnergy;
 	
 	public boolean empty() {
 		return batteryEnergy == 0;

@@ -1,4 +1,4 @@
-package practice3_06;
+package practice4_1;
 
 public class Vehicle{
 	public static final double TURN_LEFT = 270.0;
@@ -7,10 +7,12 @@ public class Vehicle{
 	private double nowSpeed;
 	private double direction;
 	private String ownerName;
-	private boolean canStart;
 
 	private static int nextID = 0;
 	private int vehicleID;
+	
+	private Object gastank;
+	private Object battery;
 	
 	public Vehicle() {
 		this.vehicleID = nextID;
@@ -22,21 +24,8 @@ public class Vehicle{
 		this.ownerName = ownerName;
 	}
 	
-	public Vehicle(GasTank gasTank) {
-		this.canStart = gasTank.empty();
-	}
-	
-	public Vehicle(Battery battery) {
-		this.canStart = battery.empty();
-	}
-	
 	public void start() {
-		if(this.canStart == false) {
-			System.out.println("発進");
-		}
-		else {
-			System.out.println("燃料が空です");
-		}
+		
 	}
 	
 	public static int returnUsedMaxID() {

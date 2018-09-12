@@ -1,7 +1,7 @@
-package practice3_06;
+package practice4_1;
 
 public class GasTank extends EnergySource{
-	private int gasEnergy = 30;
+	public int gasEnergy;
 	
 	public boolean empty() {
 		return gasEnergy == 0 ;
