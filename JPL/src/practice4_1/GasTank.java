@@ -1,7 +1,7 @@
 package practice4_1;
 
-public class GasTank extends EnergySource{
-	public int gasEnergy;
+public class GasTank implements EnergySource{
+	public int gasEnergy = 20;
 	
 	public boolean empty() {
 		return gasEnergy == 0 ;

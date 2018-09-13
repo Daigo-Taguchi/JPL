@@ -11,9 +11,6 @@ public class Vehicle{
 	private static int nextID = 0;
 	private int vehicleID;
 	
-	private Object gastank;
-	private Object battery;
-	
 	public Vehicle() {
 		this.vehicleID = nextID;
 		nextID++;
@@ -22,6 +19,14 @@ public class Vehicle{
 	public Vehicle(String ownerName) {
 		this();
 		this.ownerName = ownerName;
+	}
+	
+	public Vehicle(GasTank gastank) {
+		gastank.empty();
+	}
+	
+	public Vehicle(Battery battery) {
+		battery.empty();
 	}
 	
 	public void start() {
@@ -33,7 +38,7 @@ public class Vehicle{
 	}
 	
 	public String toString() {
-		String desc = "nowSpeed = " + this.nowSpeed + "\n" + "direction = " + this.direction + "\n" + "ownewName = " + this.ownerName + "\n" + "ID番号 = " + this.vehicleID + "\n" + "次のID番号 = " + Vehicle.nextID + "\n" + "ID番号の最大値 = " + Vehicle.returnUsedMaxID() + "\n";
+		String desc = "nowSpeed = " + this.nowSpeed + "\n" + "direction = " + this.direction + "\n" + "ownewName = " + this.ownerName + "\n" + "ID番号 = " + this.vehicleID +/* "\n" + "次のID番号 = " + Vehicle.nextID + "\n" + "ID番号の最大値 = " + Vehicle.returnUsedMaxID() + */"\n";
 		return desc;
 	}
 	public void changeSpeed(double speed) {
