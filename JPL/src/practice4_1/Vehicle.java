@@ -1,4 +1,4 @@
-package practice3_06;
+package practice4_1;
 
 public class Vehicle{
 	public static final double TURN_LEFT = 270.0;
@@ -7,7 +7,6 @@ public class Vehicle{
 	private double nowSpeed;
 	private double direction;
 	private String ownerName;
-	private boolean canStart;
 
 	private static int nextID = 0;
 	private int vehicleID;
@@ -22,21 +21,16 @@ public class Vehicle{
 		this.ownerName = ownerName;
 	}
 	
-	public Vehicle(GasTank gasTank) {
-		this.canStart = gasTank.empty();
+	public Vehicle(GasTank gastank) {
+		gastank.empty();
 	}
 	
 	public Vehicle(Battery battery) {
-		this.canStart = battery.empty();
+		battery.empty();
 	}
 	
 	public void start() {
-		if(this.canStart == false) {
-			System.out.println("発進");
-		}
-		else {
-			System.out.println("燃料が空です");
-		}
+		
 	}
 	
 	public static int returnUsedMaxID() {
@@ -44,7 +38,7 @@ public class Vehicle{
 	}
 	
 	public String toString() {
-		String desc = "nowSpeed = " + this.nowSpeed + "\n" + "direction = " + this.direction + "\n" + "ownewName = " + this.ownerName + "\n" + "ID番号 = " + this.vehicleID + "\n" + "次のID番号 = " + Vehicle.nextID + "\n" + "ID番号の最大値 = " + Vehicle.returnUsedMaxID() + "\n";
+		String desc = "nowSpeed = " + this.nowSpeed + "\n" + "direction = " + this.direction + "\n" + "ownewName = " + this.ownerName + "\n" + "ID番号 = " + this.vehicleID +/* "\n" + "次のID番号 = " + Vehicle.nextID + "\n" + "ID番号の最大値 = " + Vehicle.returnUsedMaxID() + */"\n";
 		return desc;
 	}
 	public void changeSpeed(double speed) {
