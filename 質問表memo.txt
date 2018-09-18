@@ -103,9 +103,28 @@ ObjectƒNƒ‰ƒX‚Ìcloneƒƒ\ƒbƒh‚ÍƒtƒB[ƒ‹ƒh‚Ì’l‚ð‚·‚×‚ÄƒRƒs[‚·‚é‚ªA”z—ñ‚ÌƒRƒs[‚Í
 4.4 P111 (L22-25)
 attrs()‚Ì–ß‚è’l‚Æ“¯‚¶‚à‚Ì‚ðiterator()‚Å•Ô‚·‚È‚ç‚È‚ºIterableƒCƒ“ƒ^[ƒtƒF[ƒX‚ðŽÀ‘•‚µ‚½‚Ì‚©
 
+==========================================================================================================================================
+5.1 P116(L2-3)
+enclosingƒNƒ‰ƒX‚ªprivate‚¾‚Æ‚»‚Ì’†‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX‚Íprivate‚É‚È‚é‚Ì‚©A‚»‚ê‚Æ‚àƒGƒ‰[‚É‚È‚é‚Ì‚©B
+
+5.2.2 P121(L6-)
+“à•”ƒNƒ‰ƒX‚Ì‰~ƒNƒ[ƒWƒ“ƒOƒNƒ‰ƒX‚ªOuter‚ÌƒTƒuƒNƒ‰ƒX‚Å‚È‚¢ê‡‚Ésuper‚ð’Ê‚µ‚ÄInner‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ðŒÄ‚Ño‚·Û‚ÉA
+OuterƒIƒuƒWƒFƒNƒg‚Ö‚ÌŽQÆ‚ð’ñ‹Ÿ‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢‚Æ‚ ‚é‚ªA—á‚Ìref.super()‚Æ•\‹L‚µ‚½ê‡AOuterƒNƒ‰ƒX‚ÌŠî’êƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ª‘¶Ý‚µ‚½‚ç
+ŒÄ‚Î‚ê‚Ä‚µ‚Ü‚í‚È‚¢‚Ì‚©B‚±‚ê‚ÅInnerƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ªŒÄ‚Î‚ê‚é‚Ì‚©B
+
+5.2.2 P121(L29-)
+à–¾‚µ‚½‚æ‚¤‚É``‚©‚çŽn‚Ü‚é•”•ª‚ª•ª‚©‚ç‚È‚¢B
+
+5.2.3 P122(L1)
+“à•”ƒNƒ‰ƒX‚ÍƒGƒ“ƒNƒ[ƒWƒ“ƒOƒNƒ‰ƒX‚Ìƒƒ“ƒo[‚É’¼ÚƒAƒNƒZƒX‚Å‚«‚é‚ªAŒÀ’è“I‚Èthis‚ðŽg‚Á‚Ä•’i‚©‚çƒAƒNƒZƒX‚·‚é‚Ì‚ª—Ç‚¢‚Ì‚©B
 
 
+5.3 P123(L20-)
+—Bˆê‚Ì§ŒÀ‚Íƒ[ƒJƒ‹•Ï”Aƒƒ\ƒbƒhƒpƒ‰ƒ[ƒ^‚Ífinal‚ÆéŒ¾‚³‚ê‚Ä‚¢‚éê‡‚Ì‚ÝƒAƒNƒZƒX‚Å‚«‚éB‚Æ‚ ‚é‚ªA2s
+ã‚É‚ ‚é‚æ‚¤‚ÉAƒNƒ‰ƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éƒXƒR[ƒv“à‚Ì•Ï”‚·‚×‚Ä‚ÉƒAƒNƒZƒX‚Å‚«‚é‚í‚¯‚¶‚á‚È‚¢‚Ì‚©H
 
-
+5.3 P124(L37-38)
+ƒ[ƒJƒ‹“à•”ƒNƒ‰ƒX‚Å‚Íˆê’Uƒ[ƒJƒ‹•Ï”‚âƒpƒ‰ƒ[ƒ^‚ª‰B‚Ø‚¢‚³‚ê‚Ä‚µ‚Ü‚¤‚Æ‚»‚ê‚ç‚ðŽQÆ‚·‚é‚±‚Æ‚ª‚Å‚«‚È‚­‚È‚é‚Æ‚ ‚é‚ªA
+‹ï‘Ì“I‚É‰½‚ÉƒAƒNƒZƒX‚Å‚«‚È‚­‚È‚é‚©•ª‚©‚ç‚È‚¢Bƒƒ\ƒbƒh‚ÌƒuƒƒbƒN“à‚Ìƒ[ƒJƒ‹•Ï”‚È‚Ç‚ÉƒAƒNƒZƒX‚Å‚«‚È‚­‚È‚é‚Æ‚¢‚¤‚±‚Æ‚©H
 
 
