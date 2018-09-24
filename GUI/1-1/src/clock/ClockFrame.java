@@ -28,14 +28,14 @@ public class ClockFrame extends Frame implements ActionListener{
 	private static Color fontColor = Color.RED;
 	private static int fontSize = CLOCK_FONT_INITSIZE;
 	private static Color backgroundColor = Color.BLACK;
-	private int fontWidth;
+	//private int fontWidth;
 	
 	ClockFrame() {
 		setSize(WINDOW_SIZE_X , WINDOW_SIZE_Y); //Windowのサイズ(x,y)
 		setTitle("TaguchiClock");
 		setBackground(backgroundColor);
 		setLayout(new FlowLayout());//objectのレイアウトの指定。左下から右下に流し込むようにレイアウトする。
-		setResizable(true);//Windowのリサイズ設定
+		setResizable(false);//Windowのリサイズ設定
 		addWindowListener(new MyWindowAdapter());
 		
 		/*メニューバーの実装*/
@@ -112,18 +112,18 @@ public class ClockFrame extends Frame implements ActionListener{
 			public void run() {
 				repaint();
 			}
-		},0, REPAINT_SPAN);
+		},10, REPAINT_SPAN);
 	}
 	
 	/**
 	 * Frame内の描画を行うメソッド
 	 * */
 	public void paint(Graphics g) {
-//		Dimension size = getSize();
-//		Image back = createImage(size.width , size.height);
-//		
-//		Graphics buffer = back.getGraphics();
-//		
+		Dimension size = getSize();
+		Image back = createImage(size.width , size.height);//ダブルバッファリングに使用する画面イメージを描画処理用のイメージ領域に作成
+		
+		Graphics buffer = back.getGraphics();
+		
 		DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm:ss");
 		var date = LocalTime.now().format(f);
 		String dateString = date.toString();
@@ -132,14 +132,10 @@ public class ClockFrame extends Frame implements ActionListener{
 //		FontMetrics fontmetrics = g.getFontMetrics();
 //		fontWidth = fontmetrics.stringWidth(dateString);
 		
-		
-		//System.out.println(textFont);
-		g.setFont(font);
-		g.setColor(fontColor);
-//		buffer.setFont(font);
-//		buffer.setColor(fontColor);
-		g.drawString(dateString, CLOCK_POSITION_X , CLOCK_POSITION_Y);
-//		g.drawImage(back, CLOCK_POSITION_X , CLOCK_POSITION_Y , this);
+		buffer.setFont(font);
+		buffer.setColor(fontColor);
+		buffer.drawString(dateString, CLOCK_POSITION_X , CLOCK_POSITION_Y);
+		g.drawImage(back, 0 ,0, this);//作成した画面イメージを反映させる
 	}
 	
 	public void setFont(String font) {
