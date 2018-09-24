@@ -20,6 +20,10 @@ public class ClockFrame extends Frame implements ActionListener{
 	
 	private Button button1;
 	private Menu menuFile;
+	private MenuItem fontMenu;
+	private MenuItem fontSizeMenu;
+	private MenuItem fontColorMenu;
+	private MenuItem backgroundMenu;
 	private static String textFont;
 	private static Color fontColor = Color.RED;
 	private static int fontSize = CLOCK_FONT_INITSIZE;
@@ -31,6 +35,8 @@ public class ClockFrame extends Frame implements ActionListener{
 		setTitle("TaguchiClock");
 		setBackground(backgroundColor);
 		setLayout(new FlowLayout());//objectのレイアウトの指定。左下から右下に流し込むようにレイアウトする。
+		setResizable(true);//Windowのリサイズ設定
+		addWindowListener(new MyWindowAdapter());
 		
 		/*メニューバーの実装*/
 		//設定メニューの表示
@@ -40,8 +46,21 @@ public class ClockFrame extends Frame implements ActionListener{
 		menuFile.addActionListener(this);
 		menuBar.add(menuFile);
 		
-		MenuItem fontMenu = new MenuItem("フォント");
+		this.fontMenu = new MenuItem("フォント");
 		menuFile.add(fontMenu);
+		fontMenu.addActionListener(this);
+		
+		this.fontSizeMenu = new MenuItem("フォントサイズ");
+		menuFile.add(fontSizeMenu);
+		fontSizeMenu.addActionListener(this);
+		
+		this.fontColorMenu = new MenuItem("フォントカラー");
+		menuFile.add(fontColorMenu);
+		fontColorMenu.addActionListener(this);
+		
+		this.backgroundMenu = new MenuItem("背景色");
+		menuFile.add(backgroundMenu);
+		backgroundMenu.addActionListener(this);
 			
 //		/*TextFieldの実装*/
 //		TextField t1 = new TextField("Textを入力してください", 30);
@@ -53,18 +72,32 @@ public class ClockFrame extends Frame implements ActionListener{
 //		add(button1);
 //		
 //		
-		setResizable(true);//Windowのリサイズ設定
-		addWindowListener(new MyWindowAdapter());
 	}
 	
+	//Window内でボタンクリック時の処理を書く
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == button1) {
 			System.exit(0);	
 		}
 		
-		if(e.getSource() == menuFile) {
-			MenuDialog menuDialog = new MenuDialog(this);
-			menuDialog.setVisible(true);
+		if(e.getSource() == fontMenu) {
+			FontDialog fontDialog = new FontDialog(this);
+			fontDialog.setVisible(true);
+		}
+		
+		if(e.getSource() == fontSizeMenu) {
+			FontSizeDialog fontSizeDialog = new FontSizeDialog(this);
+			fontSizeDialog.setVisible(true);
+		}
+		
+		if(e.getSource() == fontColorMenu) {
+			FontColorDialog fontColorDialog = new FontColorDialog(this);
+			fontColorDialog.setVisible(true);
+		}
+		
+		if(e.getSource() == backgroundMenu) {
+			BackgroundDialog backgroundDialog = new BackgroundDialog(this);
+			backgroundDialog.setVisible(true);
 		}
 	}
 	
@@ -86,25 +119,32 @@ public class ClockFrame extends Frame implements ActionListener{
 	 * Frame内の描画を行うメソッド
 	 * */
 	public void paint(Graphics g) {
+//		Dimension size = getSize();
+//		Image back = createImage(size.width , size.height);
+//		
+//		Graphics buffer = back.getGraphics();
+//		
 		DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm:ss");
 		var date = LocalTime.now().format(f);
 		String dateString = date.toString();
 		Font font = new Font(textFont, Font.BOLD, fontSize);
-		FontMetrics fontmetrics = g.getFontMetrics();
-		fontWidth = fontmetrics.stringWidth(dateString);
+		
+//		FontMetrics fontmetrics = g.getFontMetrics();
+//		fontWidth = fontmetrics.stringWidth(dateString);
 		
 		
 		//System.out.println(textFont);
 		g.setFont(font);
 		g.setColor(fontColor);
-		setBackground(backgroundColor);
-		//g.drawString(dateString, CLOCK_POSITION_X , CLOCK_POSITION_Y);
+//		buffer.setFont(font);
+//		buffer.setColor(fontColor);
 		g.drawString(dateString, CLOCK_POSITION_X , CLOCK_POSITION_Y);
+//		g.drawImage(back, CLOCK_POSITION_X , CLOCK_POSITION_Y , this);
 	}
 	
 	public void setFont(String font) {
 		textFont = font;
-		System.out.println(this.textFont);
+		//System.out.println(this.textFont);
 	}
 	
 	public void setFontSize(String size) {

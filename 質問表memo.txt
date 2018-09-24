@@ -1,107 +1,107 @@
-Java���⃁��
+Java質問メモ
 
-2��
+2章
 2.1.2 P37
-�upublic�N���X�ɂ̓N���X�Ɠ������O�̃t�@�C���̒��ɏ�����Ȃ���΂Ȃ�Ȃ��v
-�����t�@�C���Ƃ͂ǂ��̃t�@�C���̂��Ƃ������Ă���̂��H
+「publicクラスにはクラスと同じ名前のファイルの中に書かれなければならない」
+同じファイルとはどこのファイルのことを言っているのか？
 
-2.1.2 P37 ���K���2.2
-LinkedList�N���X�̒��Ŏ���LinkedList�v�f�ւ̎Q�Ƃ����Ƃ����̂́ALinkedList�^�̕ϐ����N���X���Ŏ�������΂����̂��H
-List�͎g��Ȃ��H
+2.1.2 P37 練習問題2.2
+LinkedListクラスの中で次のLinkedList要素への参照を持つというのは、LinkedList型の変数をクラス内で持たせればいいのか？
+Listは使わない？
 
 2.4 P42 
-���K���2.5��2.6�̃R�[�h�m�F���Ăق���
+練習問題2.5と2.6のコード確認してほしい
 
 2.6 P51 (L18-19)
-�I�u�W�F�N�g��toString�̏ꍇ�͂Ȃ�����Ȃ̂��B���̂�����̊J�݂��~�����B
-���K���2.10�̉𓚂����Ăق����B
+オブジェクトのtoStringの場合はなぜ特殊なのか。このあたりの開設が欲しい。
+練習問題2.10の解答も見てほしい。
 
 2.6.3 P52 (L28-30)
-"�R���p�C���[���V�[�P���X�p�����[�^��������Ǝc��̈������ׂĂ��V�[�P���X�p�����[�^�Ŏw�肳�ꂽ�^�̔z��ɂ܂Ƃ߂Ă��܂��܂��B"
-��������Ȃ��B
+"コンパイラーがシーケンスパラメータを見つけると残りの引数すべてをシーケンスパラメータで指定された型の配列にまとめてしまいます。"
+が分からない。
 
 2.6.5 P56 (L20-21)
-������final�𖾎����邱�ƂŃp�����[�^�Ɠ������O�̃t�B�[���h�ɑ�����邱�Ƃ��Ӑ}����̈Ӗ����킩��Ȃ�
+引数にfinalを明示することでパラメータと同じ名前のフィールドに代入することを意図するの意味がわからない
 
-2.6.6 P58 ���K���2.13 (L30)
-java�ł�getter��setter�̖��O�͕ϐ��Ɠ������ŏ����������ŋ�؂肪�啶���ł����̂�
+2.6.6 P58 練習問題2.13 (L30)
+javaではgetterとsetterの名前は変数と同じく最初が小文字で区切りが大文字でいいのか
 
-2.8 P61 ���K���2.17 (L34)
-TRURN_LEFT��������TRUN_RIGHT�������Ŏw�肷�郁�\�b�h�̃I�[�o�[���[�h�̏��������킩��Ȃ��B
+2.8 P61 練習問題2.17 (L34)
+TRURN_LEFTもしくはTRUN_RIGHTを引数で指定するメソッドのオーバーロードの書き方がわからない。
 
 
 ==========================================================================================================================================
-��4�� 8/31���╪
+第4回 8/31質問分
 
 practice2.14
-Practice2.13��Vehicle��import����LinkedlList�N���X���쐬���Ă���B
-Vehicle�N���X�P�̂ł͑_���ʂ�ɓ��삵�Ă���悤�Ɍ�����B
-�������ALinkedList�N���X�𓮍삳����ƁAnextID��1�Y����B�Ȃ����B
+Practice2.13のVehicleをimportしてLinkedlListクラスを作成している。
+Vehicleクラス単体では狙い通りに動作しているように見える。
+しかし、LinkedListクラスを動作させると、nextIDが1ズレる。なぜか。
 
 practice2.17
-turn()�͂ǂ�����ăI�[�o�[���[�h�ŋ�ʂ���̂�������x�����Ăق����B
+turn()はどうやってオーバーロードで区別するのかもう一度教えてほしい。
 
 
 3.1 P66 (L25-30)
-SetValue���\�b�h�̕Ԃ�l��oldValue��Ԃ��Ă���̂͂ǂ�ȈӐ}������̂��Bvoid�ł͂��߂Ȃ̂��B
+SetValueメソッドの返り値でoldValueを返しているのはどんな意図があるのか。voidではだめなのか。
 
 3.2 P72(L9)
-�E�I�u�W�F�N�g�̖{���̌^�Ƃ͉����B
-�Emask���\�b�h�ɂ͈���orig���K�v�����A���̐����ł͈����ɉ����g�p���邱�Ƃ�z�肵�Ă���̂��B
+・オブジェクトの本当の型とは何か。
+・maskメソッドには引数origが必要だが、この説明では引数に何を使用することを想定しているのか。
 
-3.2 P72 ���K���3.2,3.3��������Ȃ�
+3.2 P72 練習問題3.2,3.3が分からない
 
 3.3 P75(L32)
-Supershow sup �ɂ�ExtendShow�̃C���X�^���X���������Ă���̂ŁAsup.show��Extendshow��show()���Ăяo�����B
-�������A�Ȃ�sup.str�Ƃ����ExtendShow��str���Ăяo���ꂸ�ɁASuperShow��str���Ăяo�����̂��B
+Supershow sup にはExtendShowのインスタンスが代入されているので、sup.showでExtendshowのshow()が呼び出される。
+しかし、なぜsup.strとするとExtendShowのstrが呼び出されずに、SuperShowのstrが呼び出されるのか。
 
 =========================================================================================================================================
-��5�� 9/6���╪
+第5回 9/6質問分
 3.7 P84 (L22-23)
-���̗�Ō����ƁA�����benchMark���\�b�h���������Ȃ����\�b�h�����A����BenchMark�N���X���p�������N���X�����݂��āA���̒���benchMark���\�b�h�̓��e���`���Ă���Ƃ��Ă��A
-super�N���X�ł���BenchMark�N���X�ɂ͉e�����Ȃ��Ƃ������_������BBenchMark�N���X�̐Ӗ��Ƃ��ẮA
-repeat���\�b�h�̒��ŉ����̃��\�b�h(benchMark���\�b�h)���J��Ԃ��Ăяo���āA���̏����ɂ����鎞�Ԃ��v�����邾���Ȃ̂ŁAbenchMark���\�b�h�̓��e�͂ǂ��ł������Ƃ������߂ł悢���B
+この例で言うと、今回はbenchMarkメソッドが何もしないメソッドだが、他にBenchMarkクラスを継承したクラスが存在して、その中にbenchMarkメソッドの内容を定義してあるとしても、
+superクラスであるBenchMarkクラスには影響しないという利点がある。BenchMarkクラスの責務としては、
+repeatメソッドの中で何かのメソッド(benchMarkメソッド)を繰り返し呼び出して、その処理にかかる時間を計測するだけなので、benchMarkメソッドの内容はどうでもいいという解釈でよいか。
 
 3.7 P86 practice3.5(L2)
-�EMethodBenchmark�N���X�̓R�}���h���C���������g���Ă�̂ŃR�}���h���C������R���p�C�����Ď��s���悤�Ƃ�����R���p�C���ł��Ȃ��B
-�E�u0����p�����[�^�Ƃ��ēn���ꂽ�l�܂Ń��[�v����v�̈Ӗ���������Ȃ�
+・MethodBenchmarkクラスはコマンドライン引数を使ってるのでコマンドラインからコンパイルして実行しようとしたらコンパイルできない。
+・「0からパラメータとして渡された値までループする」の意味が分からない
 
 3.7 P86 practice3.6(L4)
-Vehicle��ύX���ăR���X�g���N�^��EnergySource�̃I�u�W�F�N�g�̎Q�Ƃ����悤�ɂ���Ƃ͂ǂ��������Ƃ�
+Vehicleを変更してコンストラクタでEnergySourceのオブジェクトの参照を持つようにするとはどういうことか
 
 3.8 P87 practice3.7(L34)
-ColorAttr�N���X�̒���ScreenColor�^����`����ĂȂ�����i�߂��Ȃ������B
+ColorAttrクラスの中のScreenColor型が定義されてないから進められなかった。
 
 
 3.9 P91 (L21-23)
-�g�������N���X�ɂ��super.clone�̌Ăяo�����g�������^�̐������I�u�W�F�N�g�ł͂Ȃ��AIntegerStack�I�u�W�F�N�g��Ԃ����ƂɂȂ�܂��Bsuper.clone����̖߂�l��IneterStack�Q�ƂɃL���X�g����Ă܂��B
-�̕����̉�����~�����B
+拡張したクラスによるsuper.cloneの呼び出しが拡張した型の正しいオブジェクトではなく、IntegerStackオブジェクトを返すことになります。super.cloneからの戻り値はIneterStack参照にキャストされてます。
+の部分の解説が欲しい。
 
 3.9 P91(L27-28)
-Object�N���X��clone���\�b�h�̓t�B�[���h�̒l�����ׂăR�s�[���邪�A�z��̃R�s�[�͍s��Ȃ��Ƃ������Ƃ��H
+Objectクラスのcloneメソッドはフィールドの値をすべてコピーするが、配列のコピーは行わないということか？
 
 3.9 P92(L4)
-�������ƕ�����ŋ��L�����ׂ��łȂ��I�u�W�F�N�g���z��łȂ��ꍇ�̈Ӗ���������Ȃ�
+複製元と複製先で共有されるべきでないオブジェクトが配列でない場合の意味が分からない
 
 3.9 P92(L14-16)
-�T�u�N���X������ĕs���ȏ�Ԃ̃I�u�W�F�N�g��clone�ɂ�茈���Đ������Ȃ��悤�ɗ�O�𓊂���悤�ɂ���A�Ƃ������Ƃ�������Ȃ��B
+サブクラスが誤って不正な状態のオブジェクトをcloneにより決して生成しないように例外を投げるようにする、ということが分からない。
 
 =========================================================================================================================================
 4.3 P108(L5-6)
-�C���^�[�t�F�[�X���p�����ă��\�b�h���I�[�o�[���C�h������Ă��Ƃ́A�܂������������O�A�����V�O�j�`���̃��\�b�h����`����Ă�����Ă��Ƃ��B
-(�{���ɈӖ��Ȃ��Ȃ��H�Ȃ�łł���́H�H)
+インターフェースを継承してメソッドをオーバーライドするってことは、まったく同じ名前、同じシグニチャのメソッドが定義されているってことか。
+(本当に意味なくない？なんでできるの？？)
 
 4.4 P109(L9-16)
-�����̐����̃C���[�W�����Ȃ��̂ŉ�����ق����B
+ここの説明のイメージがつかないので解説がほしい。
 
 4.4 P109(L34-35)
-�p�����[�^�Ɩ߂�l�̖h��I�R�s�[�Ƃ͉���
+パラメータと戻り値の防御的コピーとは何か
 
 4.4 P109 (L36-)
-���̕����̉�����ق����B
+この部分の解説がほしい。
 
 4.4 P111 (L22-25)
-attrs()�̖߂�l�Ɠ������̂�iterator()�ŕԂ��Ȃ�Ȃ�Iterable�C���^�[�t�F�[�X�����������̂�
+attrs()の戻り値と同じものをiterator()で返すならなぜIterableインターフェースを実装したのか
 
 
 
