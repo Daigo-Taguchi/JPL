@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ClockFrame extends Frame implements ActionListener{
+public class ClockFrame extends Frame{
 	private static final int WINDOW_SIZE_X = 550;
 	private static final int WINDOW_SIZE_Y = 300;
 	private static final int REPAINT_SPAN = 300;
@@ -43,63 +43,38 @@ public class ClockFrame extends Frame implements ActionListener{
 		//設定メニューの表示
 		MenuBar menuBar = new MenuBar();
 		setMenuBar(menuBar);
-		this.menuFile = new Menu("設定");
-		menuFile.addActionListener(this);
+		this.menuFile = new Menu("Menu");
 		menuBar.add(menuFile);
 
-		this.fontMenu = new MenuItem("フォント");
+		//FontSetting
+		this.fontMenu = new MenuItem("FontSetting");
 		menuFile.add(fontMenu);
-		fontMenu.addActionListener(this);
+		fontMenu.addActionListener(new FontMenuContoroler());
 
-		this.fontSizeMenu = new MenuItem("フォントサイズ");
+		//FontSizeSetting
+		this.fontSizeMenu = new MenuItem("FontSizeSetting");
 		menuFile.add(fontSizeMenu);
-		fontSizeMenu.addActionListener(this);
+		fontSizeMenu.addActionListener(new FontSizeContoroler());
 
-		this.fontColorMenu = new MenuItem("フォントカラー");
+		//FontColorSetting
+		this.fontColorMenu = new MenuItem("FontColorSetting");
 		menuFile.add(fontColorMenu);
-		fontColorMenu.addActionListener(this);
+		fontColorMenu.addActionListener(new FontColorContoroler());
 
-		this.backgroundMenu = new MenuItem("背景色");
+		//BackgroundSetting
+		this.backgroundMenu = new MenuItem("BackgroundColorSetting");
 		menuFile.add(backgroundMenu);
-		backgroundMenu.addActionListener(this);
+		backgroundMenu.addActionListener(new BackgroundColorContoroler());
 
 		//		/*TextFieldの実装*/
 		//		TextField t1 = new TextField("Textを入力してください", 30);
 		//		add(t1);
-		//		
-		//		/*ボタンの実装*/
-		//		this.button1 = new Button("閉じる");
-		//		button1.addActionListener(this);
-		//		add(button1);
-		//		
-		//		
-	}
+		//
 
-	//Window内でボタンクリック時の処理を書く
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == button1) {
-			System.exit(0);	
-		}
-
-		if(e.getSource() == fontMenu) {
-			FontDialog fontDialog = new FontDialog(this);
-			fontDialog.setVisible(true);
-		}
-
-		if(e.getSource() == fontSizeMenu) {
-			FontSizeDialog fontSizeDialog = new FontSizeDialog(this);
-			fontSizeDialog.setVisible(true);
-		}
-
-		if(e.getSource() == fontColorMenu) {
-			FontColorDialog fontColorDialog = new FontColorDialog(this);
-			fontColorDialog.setVisible(true);
-		}
-
-		if(e.getSource() == backgroundMenu) {
-			BackgroundDialog backgroundDialog = new BackgroundDialog(this);
-			backgroundDialog.setVisible(true);
-		}
+		/*ボタンの実装*/
+		this.button1 = new Button("閉じる");
+		button1.addActionListener(new ButtonContoroler());
+		add(button1);			
 	}
 
 	/**
@@ -131,7 +106,7 @@ public class ClockFrame extends Frame implements ActionListener{
 		Font font = new Font(textFont, Font.BOLD, fontSize);
 		setBackground(backgroundColor);
 
-//		FontMetrics fontMetrics = g.getFontMetrics(font);
+		//		FontMetrics fontMetrics = g.getFontMetrics(font);
 		//fontWidth = fontMetrics.stringWidth(dateString);
 		//setSize(fontWidth,300);
 
@@ -142,6 +117,7 @@ public class ClockFrame extends Frame implements ActionListener{
 		g.drawImage(back, 0 ,0, this);//作成した画面イメージを反映させる
 	}
 
+
 	public static void drawStringCenter(Graphics g, Graphics buffer, String text, int x, int y) {
 		FontMetrics fm = g.getFontMetrics();
 		Rectangle rectText = fm.getStringBounds(text, g).getBounds();
@@ -150,24 +126,45 @@ public class ClockFrame extends Frame implements ActionListener{
 		buffer.drawString(text, x, y);
 	}
 
+	/**
+	 * Fontの種類をセットするメソッド
+	 * @param font
+	 */
 	public void setFont(String font) {
 		textFont = font;
 		//System.out.println(this.textFont);
 	}
 
+	/**
+	 * FontSizeをセットするメソッド
+	 * @param size
+	 */
 	public void setFontSize(String size) {
 		fontSize = Integer.parseInt(size);
 	}
 
+	/**
+	 * FontColorをセットするメソッド
+	 * @param color
+	 */
 	public void setColor(String color) {
 		fontColor = stringToColor(color);
 	}
 
+	/**
+	 * BackgroundColorをセットするメソッド
+	 * @param String color
+	 */
 	public void setBackgroundColor(String color) {
 		backgroundColor = stringToColor(color);
 		System.out.println(backgroundColor);
 	}
 
+	/**
+	 * String型の色を表す値をColor型に変換するメソッド
+	 * @param String型 color
+	 * @return Color型変数
+	 */
 	private Color stringToColor(String color) {
 		if(color == "RED") {
 			return Color.RED;
@@ -193,6 +190,56 @@ public class ClockFrame extends Frame implements ActionListener{
 			return Color.ORANGE;
 		}
 		return Color.RED;
+	}
+
+	/**button1が押された時の処理を行うクラス**/
+	class ButtonContoroler implements ActionListener{	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == button1) {
+				System.exit(0);	
+			}
+		} 
+	}
+	/**Menuの"FontSetting"が押された時の処理を行うクラス**/
+	class FontMenuContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == fontMenu) {
+				FontDialog fontDialog = new FontDialog(ClockFrame.this);
+				fontDialog.setVisible(true);	
+			}
+		}
+	}
+	/**Menuの"FontColorSetting"が押された時の処理を行うクラス**/
+	class FontSizeContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == fontSizeMenu) {
+				FontSizeDialog fontSizeDialog = new FontSizeDialog(ClockFrame.this);
+				fontSizeDialog.setVisible(true);
+			}
+		}
+	}
+	/**Menuの"FontSizeSetting"が押された時の処理を行うクラス**/
+	class FontColorContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == fontColorMenu) {
+				FontColorDialog fontColorDialog = new FontColorDialog(ClockFrame.this);
+				fontColorDialog.setVisible(true);
+			}
+		}
+	}
+	/**Menuの"BackgroundColorSetting"が押された時の処理を行うクラス**/
+	class BackgroundColorContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == backgroundMenu) {
+				BackgroundDialog backgroundDialog = new BackgroundDialog(ClockFrame.this);
+				backgroundDialog.setVisible(true);
+			}
+		}
 	}
 }
 
