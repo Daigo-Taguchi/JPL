@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class BackgroundDialog extends  Dialog implements ActionListener{
+public class BackgroundDialog extends  Dialog{
 	private static final int WINDOW_SIZE_X = 300;
 	private static final int WINDOW_SIZE_Y = 200;
 	private List backgroundColorList;
@@ -26,27 +26,30 @@ public class BackgroundDialog extends  Dialog implements ActionListener{
 		backgroundColorList.add("WHITE");
 		backgroundColorList.add("ORANGE");
 		add(backgroundColorList);
-		backgroundColorList.addActionListener(this);
+		backgroundColorList.addActionListener(new BackgroundDialogContoroler());
 
 		/*決定ボタンの実装*/
 		decideButton = new Button("OK");
 		add(decideButton);
-		decideButton.addActionListener(this);
+		decideButton.addActionListener(new BackgroundDialogContoroler());
 	}
+	
+	class BackgroundDialogContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			ClockFrame clockFrame = new ClockFrame();
 
-	public void actionPerformed(ActionEvent e) {
-		ClockFrame clockFrame = new ClockFrame();
+			if(e.getSource() == decideButton) {
+				dispose();
+			}
 
-		if(e.getSource() == decideButton) {
-			dispose();
-		}
-
-		//背景色が設定された時の処理
-		if(backgroundColorList.getSelectedItem() == null) {
-			dispose();
-		}
-		else {
-			clockFrame.setBackgroundColor(backgroundColorList.getSelectedItem());
+			//背景色が設定された時の処理
+			if(backgroundColorList.getSelectedItem() == null) {
+				dispose();
+			}
+			else {
+				clockFrame.setBackgroundColor(backgroundColorList.getSelectedItem());
+			}
 		}
 	}
 

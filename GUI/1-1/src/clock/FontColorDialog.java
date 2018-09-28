@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class FontColorDialog extends  Dialog implements ActionListener{
+public class FontColorDialog extends  Dialog{
 	private static final int WINDOW_SIZE_X = 300;
 	private static final int WINDOW_SIZE_Y = 200;
 	private List fontColorList;
@@ -26,27 +26,30 @@ public class FontColorDialog extends  Dialog implements ActionListener{
 		fontColorList.add("BLUE");
 		fontColorList.add("PINK");
 		add(fontColorList);
-		fontColorList.addActionListener(this);
+		fontColorList.addActionListener(new FontColorDialogContoroler());
 
 		/*決定ボタンの実装*/
 		decideButton = new Button("OK");
 		add(decideButton);
-		decideButton.addActionListener(this);
+		decideButton.addActionListener(new FontColorDialogContoroler());
 	}
+	
+	class FontColorDialogContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			ClockFrame clockFrame = new ClockFrame();
 
-	public void actionPerformed(ActionEvent e) {
-		ClockFrame clockFrame = new ClockFrame();
+			if(e.getSource() == decideButton) {
+				dispose();
+			}
 
-		if(e.getSource() == decideButton) {
-			dispose();
-		}
-
-		//フォントカラーが設定された時の処理
-		if(fontColorList.getSelectedItem() == null) {
-			dispose();
-		}
-		else {
-			clockFrame.setColor(fontColorList.getSelectedItem());			
+			//フォントカラーが設定された時の処理
+			if(fontColorList.getSelectedItem() == null) {
+				dispose();
+			}
+			else {
+				clockFrame.setColor(fontColorList.getSelectedItem());			
+			}
 		}
 	}
 

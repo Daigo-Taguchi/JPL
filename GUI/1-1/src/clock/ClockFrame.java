@@ -43,26 +43,26 @@ public class ClockFrame extends Frame{
 		//設定メニューの表示
 		MenuBar menuBar = new MenuBar();
 		setMenuBar(menuBar);
-		this.menuFile = new Menu("Menu");
+		this.menuFile = new Menu("Setting");
 		menuBar.add(menuFile);
 
 		//FontSetting
-		this.fontMenu = new MenuItem("FontSetting");
+		this.fontMenu = new MenuItem("Font");
 		menuFile.add(fontMenu);
 		fontMenu.addActionListener(new FontMenuContoroler());
 
 		//FontSizeSetting
-		this.fontSizeMenu = new MenuItem("FontSizeSetting");
+		this.fontSizeMenu = new MenuItem("FontSize");
 		menuFile.add(fontSizeMenu);
 		fontSizeMenu.addActionListener(new FontSizeContoroler());
 
 		//FontColorSetting
-		this.fontColorMenu = new MenuItem("FontColorSetting");
+		this.fontColorMenu = new MenuItem("FontColor");
 		menuFile.add(fontColorMenu);
 		fontColorMenu.addActionListener(new FontColorContoroler());
 
 		//BackgroundSetting
-		this.backgroundMenu = new MenuItem("BackgroundColorSetting");
+		this.backgroundMenu = new MenuItem("BackgroundColor");
 		menuFile.add(backgroundMenu);
 		backgroundMenu.addActionListener(new BackgroundColorContoroler());
 

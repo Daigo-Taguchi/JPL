@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class FontSizeDialog extends  Dialog implements ActionListener{
+public class FontSizeDialog extends  Dialog{
 	private static final int WINDOW_SIZE_X = 300;
 	private static final int WINDOW_SIZE_Y = 200;
 	private List fontSizeList;
@@ -30,27 +30,30 @@ public class FontSizeDialog extends  Dialog implements ActionListener{
 		fontSizeList.add("50");
 		fontSizeList.add("100");
 		add(fontSizeList);
-		fontSizeList.addActionListener(this);
+		fontSizeList.addActionListener(new FontSizeDialogContoroler());
 		
 		/*決定ボタンの実装*/
 		decideButton = new Button("OK");
 		add(decideButton);
-		decideButton.addActionListener(this);
+		decideButton.addActionListener(new FontSizeDialogContoroler());
 	}
-
-	public void actionPerformed(ActionEvent e) {
-		ClockFrame clockFrame = new ClockFrame();
-		
-		if(e.getSource() == decideButton) {
-			dispose();
-		}
-		
-		//フォントサイズが選択されたときの処理
-		if(fontSizeList.getSelectedItem() == null) {
-			dispose();
-		}
-		else {
-			clockFrame.setFontSize(fontSizeList.getSelectedItem());			
+	
+	class FontSizeDialogContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			ClockFrame clockFrame = new ClockFrame();
+			
+			if(e.getSource() == decideButton) {
+				dispose();
+			}
+			
+			//フォントサイズが選択されたときの処理
+			if(fontSizeList.getSelectedItem() == null) {
+				dispose();
+			}
+			else {
+				clockFrame.setFontSize(fontSizeList.getSelectedItem());			
+			}
 		}
 	}
 

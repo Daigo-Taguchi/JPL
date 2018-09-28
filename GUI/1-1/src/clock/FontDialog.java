@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class FontDialog extends Dialog implements ActionListener{
+public class FontDialog extends Dialog{
 	private static final int WINDOW_SIZE_X = 300;
 	private static final int WINDOW_SIZE_Y = 200;
 	private Button decideButton;
@@ -27,28 +27,31 @@ public class FontDialog extends Dialog implements ActionListener{
 		fontList.add("SansSerief");
 		fontList.add("Monospaced");
 		add(fontList);
-		fontList.addActionListener(this);
+		fontList.addActionListener(new FontDialogContoroler());
 
 		/*決定ボタンの実装*/
 		decideButton = new Button("OK");
 		add(decideButton);
-		decideButton.addActionListener(this);
+		decideButton.addActionListener(new FontDialogContoroler());
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		ClockFrame clockFrame = new ClockFrame();
+	class FontDialogContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			ClockFrame clockFrame = new ClockFrame();
 
-		//OKボタンが押された時の処理
-		if(e.getSource() == decideButton) {
-			dispose();
-		}
+			//OKボタンが押された時の処理
+			if(e.getSource() == decideButton) {
+				dispose();
+			}
 
-		//フォントが選択された時の処理
-		if(fontList.getSelectedItem() == null) {
-			dispose();
-		}
-		else {
-			clockFrame.setFont(fontList.getSelectedItem());			
+			//フォントが選択された時の処理
+			if(fontList.getSelectedItem() == null) {
+				dispose();
+			}
+			else {
+				clockFrame.setFont(fontList.getSelectedItem());			
+			}
 		}
 	}
 
