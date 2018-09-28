@@ -7,8 +7,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class FontDialog extends Dialog implements ActionListener{
-	private static final int WINDOW_SIZE_X = 600;
-	private static final int WINDOW_SIZE_Y = 300;
+	private static final int WINDOW_SIZE_X = 300;
+	private static final int WINDOW_SIZE_Y = 200;
 	private Button decideButton;
 	private List fontList;
 
