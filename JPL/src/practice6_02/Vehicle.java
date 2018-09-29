@@ -1,15 +1,30 @@
-package practice4_1;
+package practice6_02;
 
 public class Vehicle{
-	public static final double TURN_LEFT = 270.0;
-	public static final double TURN_RIGTH = 90.0;
-	
 	private double nowSpeed;
 	private double direction;
 	private String ownerName;
 
 	private static int nextID = 0;
 	private int vehicleID;
+	
+	enum TurnAngle{
+		TURN_RIGHT(90.0),
+		TURN_LEFT(270.0);
+		
+		private double angle;
+		
+		//enumコンストラクター
+		private TurnAngle(double angle) {this.angle = angle;}
+		
+		/**
+		 * 曲がる角度を返すメソッド
+		 * @return angle：曲がる角度
+		 */
+		public double getAngle() {
+			return this.angle;
+		}
+	}
 	
 	public Vehicle() {
 		this.vehicleID = nextID;
@@ -19,18 +34,6 @@ public class Vehicle{
 	public Vehicle(String ownerName) {
 		this();
 		this.ownerName = ownerName;
-	}
-	
-	public Vehicle(GasTank gastank) {
-		gastank.empty();
-	}
-	
-	public Vehicle(Battery battery) {
-		battery.empty();
-	}
-	
-	public void start() {
-		
 	}
 	
 	public static int returnUsedMaxID() {
@@ -49,12 +52,8 @@ public class Vehicle{
 		this.nowSpeed = 0.0;
 	}
 	
-	public void turn(double turnAngle) {
-		System.out.print(turnAngle + "度曲がります");
-	}
-	
-	public void turn() {
-		
+	public void turn(TurnAngle turnAngle) {
+		System.out.print(turnAngle.getAngle() + "度曲がります" + "\n");
 	}
 	
 	public double getNowSpeed() {return this.nowSpeed;}
@@ -77,11 +76,13 @@ public class Vehicle{
 		Vehicle car = new Vehicle("Taguchi");
 		car.setNowSpeed(60.0);
 		car.setDirection(10.0);
+		car.turn(TurnAngle.TURN_RIGHT);
 		System.out.println("carの参照先インスタンスの内容は"+ "\n" + car);
 		
 		Vehicle bike = new Vehicle("Taguchi2");
 		bike.setNowSpeed(30.0);
 		bike.setDirection(20.0);
+		bike.turn(TurnAngle.TURN_LEFT);
 		System.out.println("bikeの参照先インスタンスの内容は"+"\n" + bike);
 	}
 }

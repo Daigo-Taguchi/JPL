@@ -1,4 +1,4 @@
-package practice4_1;
+package practice4_01;
 
 public class GasTank implements EnergySource{
 	public int gasEnergy = 20;
