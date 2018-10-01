@@ -1,6 +1,6 @@
-package practice4_3;
+package practice4_03;
 
-import practice4_1.Vehicle;
+import practice4_01.Vehicle;
 
 public class LinkedList {
 	
