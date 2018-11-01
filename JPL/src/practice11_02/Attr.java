@@ -2,7 +2,16 @@ package practice11_02;
 
 /*Key：name
  * Value：value
- * で値を管理するクラス。Mapとかハッシュのようなもの。*/
+ * で値を管理するクラス。Mapとかハッシュのようなもの。
+ * 
+ * クラスをジェネリック型宣言することで、valueの型を固定することができる。
+ * ジェネリクスじゃないと、valueの型はObjectで宣言されていたので、どんな型でも代入することができた。
+ * 古いデータと新しいデータで型が違うものが入れられた
+ * ex)
+ * old: "Apple" = 1(int)
+ * new: "Apple" = "red"
+ * がジェネリクスを使う前なら可能だったが、ジェネリクスを使用するとnewの場合でもintしか代入することができない。
+ * */
 
 public class Attr<T> {
 	private final String name;
@@ -48,5 +57,4 @@ public class Attr<T> {
 	public String toString() {
 		return name + "='" + this.value + "'";
 	}
-
 }
