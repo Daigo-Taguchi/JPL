@@ -12,6 +12,7 @@ public class TextWriter extends JPanel{
 	
 	private int clockFontSize = 20;
 	private Color fontColor = Color.RED;
+	private String font = "Monospaced";
 	private int clockPositionX = 10;
 	private int clockPositionY = 100;
 	private static final int REPAINT_SPAN = 300;
@@ -24,7 +25,7 @@ public class TextWriter extends JPanel{
 		super.paintComponent(g);
 		System.out.println("CheckPoint");
 		TimeSetting cs = new TimeSetting();
-		Font font = new Font("Serif", Font.BOLD, this.clockFontSize);
+		Font font = new Font(this.font, Font.BOLD, this.clockFontSize);
 		g.setFont(font);
 		g.setColor(this.fontColor);
 		g.drawString(cs.getTimeSetting(), this.clockPositionX, this.clockPositionY);
@@ -58,6 +59,14 @@ public class TextWriter extends JPanel{
 	 */
 	public void setClockFontColor(Color fontColor) {
 		this.fontColor = fontColor;
+	}
+	
+	/**
+	 * 時計のフォントの種類を変更するSetter
+	 * @param font
+	 */
+	public void setFont(String font) {
+		this.font = font;
 	}
 	
 }

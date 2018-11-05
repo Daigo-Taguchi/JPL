@@ -13,10 +13,15 @@ import java.awt.event.ActionListener;
 
 public class SettingWindow extends JFrame{
 	
-	private int WindowWidth = 500;
+	private int WindowWidth = 600;
 	private int WindowHeight = 200;
 	private Container contentPane;
 	TextWriter tw;
+	
+	private JMenuItem font1;
+	private JMenuItem font2;
+	private JMenuItem font3;
+	private JMenuItem font4;
 	
 	private JMenuItem size1;
 	private JMenuItem size2;
@@ -48,6 +53,20 @@ public class SettingWindow extends JFrame{
 		menubar.add(fontMenu);
 		menubar.add(backgroundMenu);
 		
+		JMenu font = new JMenu("font");
+		
+		this.font1 = new JMenuItem("Monospaced");
+		this.font2 = new JMenuItem("Dialog");
+		this.font3 = new JMenuItem("Serif");
+		
+		this.font1.addActionListener(new FontContoroler());
+		this.font2.addActionListener(new FontContoroler());
+		this.font3.addActionListener(new FontContoroler());
+		
+		font.add(font1);
+		font.add(font2);
+		font.add(font3);
+		
 		JMenu fontSize = new JMenu("fontSize");
 		
 		this.size1 = new JMenuItem("30");
@@ -55,10 +74,10 @@ public class SettingWindow extends JFrame{
 		this.size3 = new JMenuItem("70");
 		this.size4 = new JMenuItem("100");
 		
-		size1.addActionListener(new FontSizeContoroler());
-		size2.addActionListener(new FontSizeContoroler());
-		size3.addActionListener(new FontSizeContoroler());
-		size4.addActionListener(new FontSizeContoroler());
+		this.size1.addActionListener(new FontSizeContoroler());
+		this.size2.addActionListener(new FontSizeContoroler());
+		this.size3.addActionListener(new FontSizeContoroler());
+		this.size4.addActionListener(new FontSizeContoroler());
 		
 		fontSize.add(size1);
 		fontSize.add(size2);
@@ -82,6 +101,7 @@ public class SettingWindow extends JFrame{
 		fontColor.add(color3);
 		fontColor.add(color4);
 		
+		fontMenu.add(font);
 		fontMenu.add(fontSize);
 		fontMenu.add(fontColor);
 		
@@ -104,7 +124,6 @@ public class SettingWindow extends JFrame{
 	
 	/**
 	 * フォントサイズメニューをクリック時のイベント処理を行うクラス
-	 * 
 	 *
 	 */
 	class FontSizeContoroler implements ActionListener{
@@ -126,6 +145,11 @@ public class SettingWindow extends JFrame{
 		}
 	}
 	
+	/**
+	 * FontColorメニュークリック時のイベント処理を行うクラス
+	 * @author daigu
+	 *
+	 */
 	class FontColorContoroler implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -145,4 +169,23 @@ public class SettingWindow extends JFrame{
 		}
 	}
 	
+	/**
+	 * Fontメニュークリック時のイベント処理を行うクラス
+	 *
+	 */
+	class FontContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			if(e.getSource() == font1) {
+				tw.setFont("Monospaced");
+			}
+			else if(e.getSource() == font2) {
+				tw.setFont("Dialog");
+			}
+			else if(e.getSource() == font3) {
+				tw.setFont("Serif");
+			}
+		}
+	}
 }
