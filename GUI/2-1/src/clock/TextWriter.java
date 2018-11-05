@@ -3,26 +3,45 @@ package clock;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.swing.JPanel;
 
 public class TextWriter extends JPanel{
 	
 	private int clockFontSize = 20;
-	private int clockPositionX = 200;
+	private Color fontColor = Color.RED;
+	private int clockPositionX = 10;
 	private int clockPositionY = 100;
+	private static final int REPAINT_SPAN = 300;
 	
-	TextWriter(){
-		
-	}
-	
+	/**
+	 * 描画を行うメソッド
+	 * Swingの場合はダブルバッファリングを自動で行う
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		System.out.println("CheckPoint");
-		ClockSetting cs = new ClockSetting();
+		TimeSetting cs = new TimeSetting();
 		Font font = new Font("Serif", Font.BOLD, this.clockFontSize);
 		g.setFont(font);
-		g.setColor(Color.RED);
+		g.setColor(this.fontColor);
 		g.drawString(cs.getTimeSetting(), this.clockPositionX, this.clockPositionY);
+	}
+	
+	/**
+	 *再描画のタイマー処理を行うメソッド
+	 *REPAINT_SPANで設定した時間間隔で再描画が行われる
+	 *repaint()メソッドが呼ばれることで下のpaintメソッドが再度呼ばれる
+	 * */
+	public void doRepaint() {
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {//再描画の時間を設定する。第二引数で実行間隔の調整
+			public void run() {
+				repaint();
+			}
+		},0, REPAINT_SPAN);
 	}
 	
 	/**
@@ -31,6 +50,14 @@ public class TextWriter extends JPanel{
 	 */
 	public void setClockFontSize(int fontSize) {
 		this.clockFontSize = fontSize;
+	}
+	
+	/**
+	 * 時計のフォントカラーを変更するSetter
+	 * @param fontColor
+	 */
+	public void setClockFontColor(Color fontColor) {
+		this.fontColor = fontColor;
 	}
 	
 }

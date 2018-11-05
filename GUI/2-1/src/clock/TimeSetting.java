@@ -3,7 +3,7 @@ package clock;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class ClockSetting {
+public class TimeSetting {
 	
 	public String getTimeSetting() {
 		DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm:ss");

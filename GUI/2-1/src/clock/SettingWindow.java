@@ -8,21 +8,36 @@ import javax.swing.JMenuItem;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SettingWindow extends JFrame{
 	
-	private int WindowWidth = 300;
+	private int WindowWidth = 500;
 	private int WindowHeight = 200;
 	private Container contentPane;
+	TextWriter tw;
+	
+	private JMenuItem size1;
+	private JMenuItem size2;
+	private JMenuItem size3;
+	private JMenuItem size4;
+	
+	private JMenuItem color1;
+	private JMenuItem color2;
+	private JMenuItem color3;
+	private JMenuItem color4;
 
-	SettingWindow(){
+	SettingWindow(TextWriter tw){
+		/*window初期設定*/
 		super("Clock");
+		this.tw = tw;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//×ボタンで閉じる処理
 		this.setSize(this.WindowWidth, this.WindowHeight);//windowサイズの設定
 		this.contentPane = getContentPane();
-		this.contentPane.setBackground(Color.BLACK);//背景色の設定
+		//this.contentPane.setBackground(Color.BLACK);//背景色の設定
 		this.setLocationRelativeTo(null);//windowを画面中央に配置
-		this.contentPane.add(new TextWriter(),BorderLayout.CENTER);
+		this.contentPane.add(tw,BorderLayout.CENTER);
 		
 		/*MenuBar*/
 		JMenuBar menubar = new JMenuBar();
@@ -35,10 +50,15 @@ public class SettingWindow extends JFrame{
 		
 		JMenu fontSize = new JMenu("fontSize");
 		
-		JMenuItem size1 = new JMenuItem("10");
-		JMenuItem size2 = new JMenuItem("15");
-		JMenuItem size3 = new JMenuItem("20");
-		JMenuItem size4 = new JMenuItem("40");
+		this.size1 = new JMenuItem("30");
+		this.size2 = new JMenuItem("50");
+		this.size3 = new JMenuItem("70");
+		this.size4 = new JMenuItem("100");
+		
+		size1.addActionListener(new FontSizeContoroler());
+		size2.addActionListener(new FontSizeContoroler());
+		size3.addActionListener(new FontSizeContoroler());
+		size4.addActionListener(new FontSizeContoroler());
 		
 		fontSize.add(size1);
 		fontSize.add(size2);
@@ -47,10 +67,15 @@ public class SettingWindow extends JFrame{
 		
 		JMenu fontColor = new JMenu("FontColor");
 		
-		JMenuItem color1 = new JMenuItem("RED");
-		JMenuItem color2 = new JMenuItem("BLUE");
-		JMenuItem color3 = new JMenuItem("PINK");
-		JMenuItem color4 = new JMenuItem("GREEN");
+		this.color1 = new JMenuItem("RED");
+		this.color2 = new JMenuItem("BLUE");
+		this.color3 = new JMenuItem("PINK");
+		this.color4 = new JMenuItem("GREEN");
+		
+		color1.addActionListener(new FontColorContoroler());
+		color2.addActionListener(new FontColorContoroler());
+		color3.addActionListener(new FontColorContoroler());
+		color4.addActionListener(new FontColorContoroler());
 		
 		fontColor.add(color1);
 		fontColor.add(color2);
@@ -75,6 +100,49 @@ public class SettingWindow extends JFrame{
 		this.setJMenuBar(menubar);
 		
 		this.setVisible(true);//windowを表示
+	}
+	
+	/**
+	 * フォントサイズメニューをクリック時のイベント処理を行うクラス
+	 * 
+	 *
+	 */
+	class FontSizeContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			if(e.getSource() == size1) {
+				tw.setClockFontSize(30);
+			}
+			else if(e.getSource() == size2) {
+				tw.setClockFontSize(50);
+			}
+			else if(e.getSource() == size3) {
+				tw.setClockFontSize(70);
+			}
+			else if(e.getSource() == size4) {
+				tw.setClockFontSize(100);
+			}
+		}
+	}
+	
+	class FontColorContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			if(e.getSource() == color1) {
+				tw.setClockFontColor(Color.RED);
+			}
+			else if(e.getSource() == color2) {
+				tw.setClockFontColor(Color.BLUE);
+			}
+			else if(e.getSource() == color3) {
+				tw.setClockFontColor(Color.PINK);
+			}
+			else if(e.getSource() == color4) {
+				tw.setClockFontColor(Color.GREEN);
+			}
+		}
 	}
 	
 }
