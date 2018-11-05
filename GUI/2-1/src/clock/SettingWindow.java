@@ -15,13 +15,13 @@ public class SettingWindow extends JFrame{
 	
 	private int WindowWidth = 600;
 	private int WindowHeight = 200;
+	private Color backgroundColor = Color.BLACK;
 	private Container contentPane;
 	TextWriter tw;
 	
 	private JMenuItem font1;
 	private JMenuItem font2;
 	private JMenuItem font3;
-	private JMenuItem font4;
 	
 	private JMenuItem size1;
 	private JMenuItem size2;
@@ -32,6 +32,10 @@ public class SettingWindow extends JFrame{
 	private JMenuItem color2;
 	private JMenuItem color3;
 	private JMenuItem color4;
+	
+	private JMenuItem bcolor1;
+	private JMenuItem bcolor2;
+	private JMenuItem bcolor3;
 
 	SettingWindow(TextWriter tw){
 		/*window初期設定*/
@@ -40,7 +44,7 @@ public class SettingWindow extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//×ボタンで閉じる処理
 		this.setSize(this.WindowWidth, this.WindowHeight);//windowサイズの設定
 		this.contentPane = getContentPane();
-		//this.contentPane.setBackground(Color.BLACK);//背景色の設定
+		//this.contentPane.setBackground(backgroundColor);//背景色の設定
 		this.setLocationRelativeTo(null);//windowを画面中央に配置
 		this.contentPane.add(tw,BorderLayout.CENTER);
 		
@@ -91,10 +95,10 @@ public class SettingWindow extends JFrame{
 		this.color3 = new JMenuItem("PINK");
 		this.color4 = new JMenuItem("GREEN");
 		
-		color1.addActionListener(new FontColorContoroler());
-		color2.addActionListener(new FontColorContoroler());
-		color3.addActionListener(new FontColorContoroler());
-		color4.addActionListener(new FontColorContoroler());
+		this.color1.addActionListener(new FontColorContoroler());
+		this.color2.addActionListener(new FontColorContoroler());
+		this.color3.addActionListener(new FontColorContoroler());
+		this.color4.addActionListener(new FontColorContoroler());
 		
 		fontColor.add(color1);
 		fontColor.add(color2);
@@ -107,9 +111,13 @@ public class SettingWindow extends JFrame{
 		
 		JMenu backgroundColor = new JMenu("backgroundColor");		
 		
-		JMenuItem bcolor1 = new JMenuItem("BLACK");
-		JMenuItem bcolor2 = new JMenuItem("GRAY");
-		JMenuItem bcolor3 = new JMenuItem("WHITE");
+		this.bcolor1 = new JMenuItem("BLACK");
+		this.bcolor2 = new JMenuItem("GRAY");
+		this.bcolor3 = new JMenuItem("WHITE");
+		
+		this.bcolor1.addActionListener(new BackgroundColorContoroler());
+		this.bcolor2.addActionListener(new BackgroundColorContoroler());
+		this.bcolor3.addActionListener(new BackgroundColorContoroler());
 		
 		backgroundColor.add(bcolor1);
 		backgroundColor.add(bcolor2);
@@ -120,6 +128,10 @@ public class SettingWindow extends JFrame{
 		this.setJMenuBar(menubar);
 		
 		this.setVisible(true);//windowを表示
+	}
+	
+	public void setBackground() {
+		this.contentPane.setBackground(this.backgroundColor);
 	}
 	
 	/**
@@ -147,7 +159,6 @@ public class SettingWindow extends JFrame{
 	
 	/**
 	 * FontColorメニュークリック時のイベント処理を行うクラス
-	 * @author daigu
 	 *
 	 */
 	class FontColorContoroler implements ActionListener{
@@ -185,6 +196,27 @@ public class SettingWindow extends JFrame{
 			}
 			else if(e.getSource() == font3) {
 				tw.setFont("Serif");
+			}
+		}
+	}
+	
+	/**
+	 * backgroundメニュークリック時の処理を行うクラス
+	 *
+	 */
+	class BackgroundColorContoroler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			if(e.getSource() == bcolor1) {
+				tw.setBackgroundColor(Color.BLACK);
+				
+			}
+			else if(e.getSource() == bcolor2) {
+				tw.setBackgroundColor(Color.GRAY);
+			}
+			else if(e.getSource() == bcolor3) {
+				tw.setBackgroundColor(Color.WHITE);
 			}
 		}
 	}

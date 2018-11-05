@@ -12,10 +12,15 @@ public class TextWriter extends JPanel{
 	
 	private int clockFontSize = 20;
 	private Color fontColor = Color.RED;
+	private Color backgroundColor = Color.BLACK;
 	private String font = "Monospaced";
 	private int clockPositionX = 10;
 	private int clockPositionY = 100;
 	private static final int REPAINT_SPAN = 300;
+	
+	TextWriter(){
+		setOpaque(true);//自分の背景色を透過させることで、Frameの背景色を表面に出す
+	}
 	
 	/**
 	 * 描画を行うメソッド
@@ -23,12 +28,13 @@ public class TextWriter extends JPanel{
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		System.out.println("CheckPoint");
 		TimeSetting cs = new TimeSetting();
 		Font font = new Font(this.font, Font.BOLD, this.clockFontSize);
 		g.setFont(font);
 		g.setColor(this.fontColor);
 		g.drawString(cs.getTimeSetting(), this.clockPositionX, this.clockPositionY);
+		this.setBackground(this.backgroundColor);
+		System.out.println("Check");
 	}
 	
 	/**
@@ -67,6 +73,10 @@ public class TextWriter extends JPanel{
 	 */
 	public void setFont(String font) {
 		this.font = font;
+	}
+	
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
 	}
 	
 }
