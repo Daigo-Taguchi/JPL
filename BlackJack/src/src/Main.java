@@ -6,6 +6,7 @@ public class Main {
 		// TODO 自動生成されたメソッド・スタブ
 		Game blackJack = new Game(1);
 		blackJack.initGame();
+		blackJack.startGame();
 	}
 
 }

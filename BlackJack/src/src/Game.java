@@ -1,11 +1,15 @@
 package src;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class Game {
 	private int playerNum; // プレイヤーの人数
 	private final int INIT_CARD_NUM = 2; // 最初の手札の枚数
 	private Deck deck;
+	private Player player;
+	private Player dealer;
 	
 	Game(int playerNum){
 		this.playerNum = playerNum;
@@ -22,16 +26,16 @@ public class Game {
 		// プレイヤーとディーラーをインスタンス化する
 		// TODO:プレイヤーの数を可変にしたい
 		// Dealer dealer = new Dealer(INIT_CARD_NUM, deck);
-		Player dealer = new Player(INIT_CARD_NUM , this.deck);
-		Player player = new Player(INIT_CARD_NUM , this.deck);
+		this.dealer = new Player(INIT_CARD_NUM , this.deck);
+		this.player = new Player(INIT_CARD_NUM , this.deck);
 		
 		// 1つのデッキからプレイヤー数 + ディーラーに対してカードを配る(最初は2枚ずつ)
 		// TODO:2枚同時にドローできて、手札に加えられるようにしたい
 		for(int i = 0; i < 2; i ++) {
-			dealer.setHand(this.deck.drawCard());
-			player.setHand(this.deck.drawCard());
+			this.dealer.setHand(this.deck.drawCard());
+			this.player.setHand(this.deck.drawCard());
 		}
-		player.printHand();
+		this.player.printHand();
 	}
 	
 	/***
@@ -48,4 +52,30 @@ public class Game {
 		}
 		return sum;
 	} 
+	
+	public void startGame() {
+		
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(isr);
+		while(true) {
+			System.out.println("カードを引きますか？【YES:1 / NO:0】");
+			try {
+				String buf = br.readLine();
+				int result = Integer.parseInt(buf);
+				if(result == 1) {
+					this.player.setHand(this.deck.drawCard());
+					this.player.printHand();
+				}
+				else if(result == 0) {
+					break;
+				}
+				else {
+					System.out.println("①Please write y or n");
+				}
+			}catch(Exception e) {
+				System.out.println("②Please write y or n");
+			}
+		}
+		
+	}
 }
