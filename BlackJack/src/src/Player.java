@@ -33,6 +33,10 @@ public class Player {
 		this.handSum = handSum;
 	}
 	
+	public int getHandSum() {
+		return this.handSum;
+	}
+	
 	/***
 	 * プレイヤーの手札の合計値を計算する
 	 * @param player

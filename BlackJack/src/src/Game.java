@@ -42,22 +42,26 @@ public class Game {
 	}
 	
 	public void startGame() {
+		startPlayer();
+		startDealer();
+		judgeGame();
+	} 
 		
+	private void startPlayer() {
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
 		
+		System.out.println("--- Playerプレイ開始---");
 		while(true) {
-			int handPoint = player.calcHandPoint();
-			System.out.println("現在の手札の合計値：" + handPoint);
+			int handPoint = this.player.calcHandPoint();
+			System.out.println("【Player】 現在の手札の合計値：" + handPoint);
 			
 			if(handPoint > 21) {
-				System.out.println("BURST");
-				System.out.println(" ** YOU LOSE **");
+				System.out.println("【Player】 BURST");
 				break;
 			}
 			if(handPoint == 21) {
-				System.out.println("Black Jack");
-				System.out.println("** YOU WIN!! **");
+				System.out.println("【Player】 Black Jack");
 				break;
 			}
 			
@@ -70,8 +74,8 @@ public class Game {
 					this.player.printHand();
 				}
 				else if(result == 0) {
-					player.calcHandPoint();
-					System.out.println("現在の手札の合計値：" + handPoint);
+					this.player.calcHandPoint();
+					System.out.println("【Player】 現在の手札の合計値：" + handPoint);
 					break;
 				}
 				else {
@@ -81,22 +85,49 @@ public class Game {
 				System.out.println("②Please write 1 or 0");
 			}
 		}
+		System.out.println("--- Playerプレイ終了---");
 	}
 	
-//	/***
-//	 * プレイヤーの手札の合計値を計算する
-//	 * @param player
-//	 * @return
-//	 */
-//	private int calcCardNum(Player player) {
-//		List<Card> hand = player.getHand();
-//		int sum = 0;
-//		
-//		for(int i = 0; i < hand.size(); i ++) {
-//			sum += hand.get(i).getNum();
-//		}
-//		player.setHundSum(sum);
-//		System.out.println("手札の合計値：" + sum);
-//		return sum;
-//	} 
+	private void startDealer() {
+		System.out.println("--- Dealerプレイ開始---");
+		dealer.printHand();
+		while(true) {
+			int handPoint = this.dealer.calcHandPoint();
+			System.out.println("【Dealer】 現在の手札の合計値：" + handPoint);
+			
+			if(handPoint > 21) {
+				System.out.println("【Dealer】 BURST");
+				break;
+			}
+			if(handPoint == 21) {
+				System.out.println("【Dealer】 Black Jack");
+				break;
+			}
+			if(handPoint >= 17) {
+				break;
+			}
+			
+			this.dealer.setHand(this.deck.drawCard());
+			this.dealer.printHand();
+		}
+		System.out.println("--- Dealerプレイ終了---");
+	}
+	
+	private void judgeGame() {
+		int playerPoint = this.player.getHandSum();
+		int dealerPoint = this.dealer.getHandSum();
+		
+		if(playerPoint > 21 && dealerPoint > 21) {
+			System.out.println("** YOU LOSE **");
+		}
+		else if(playerPoint == dealerPoint) {
+			System.out.println("** DRAW **");
+		}
+		else if(playerPoint < dealerPoint) {
+			System.out.println("** YOU LOSE **");
+		}
+		else if(playerPoint > dealerPoint) {
+			System.out.println("** YOU WIN!! **");
+		}
+	}
 }
