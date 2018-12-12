@@ -15,6 +15,9 @@ public class Game {
 		this.playerNum = playerNum;
 	}
 	
+	/***
+	 * Gameの初期化として、山札の生成とプレイヤーに手札を配る
+	 */
 	public void initGame() {
 		// Cardクラスをインスタンス化して山札の作成→シャッフルして配る
 		Deck deck = new Deck();
@@ -38,26 +41,26 @@ public class Game {
 		this.player.printHand();
 	}
 	
-	/***
-	 * プレイヤーの手札の合計値を計算する
-	 * @param player
-	 * @return
-	 */
-	public int calcCardNum(Player player) {
-		List<Card> hand = player.getHand();
-		int sum = 0;
-		
-		for(int i = 0; i < hand.size(); i ++) {
-			sum += hand.get(i).getNum();
-		}
-		return sum;
-	} 
-	
 	public void startGame() {
 		
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
+		
 		while(true) {
+			int handPoint = player.calcHandPoint();
+			System.out.println("現在の手札の合計値：" + handPoint);
+			
+			if(handPoint > 21) {
+				System.out.println("BURST");
+				System.out.println(" ** YOU LOSE **");
+				break;
+			}
+			if(handPoint == 21) {
+				System.out.println("Black Jack");
+				System.out.println("** YOU WIN!! **");
+				break;
+			}
+			
 			System.out.println("カードを引きますか？【YES:1 / NO:0】");
 			try {
 				String buf = br.readLine();
@@ -67,15 +70,33 @@ public class Game {
 					this.player.printHand();
 				}
 				else if(result == 0) {
+					player.calcHandPoint();
+					System.out.println("現在の手札の合計値：" + handPoint);
 					break;
 				}
 				else {
-					System.out.println("①Please write y or n");
+					System.out.println("①Please write 1 or 0");
 				}
 			}catch(Exception e) {
-				System.out.println("②Please write y or n");
+				System.out.println("②Please write 1 or 0");
 			}
 		}
-		
 	}
+	
+//	/***
+//	 * プレイヤーの手札の合計値を計算する
+//	 * @param player
+//	 * @return
+//	 */
+//	private int calcCardNum(Player player) {
+//		List<Card> hand = player.getHand();
+//		int sum = 0;
+//		
+//		for(int i = 0; i < hand.size(); i ++) {
+//			sum += hand.get(i).getNum();
+//		}
+//		player.setHundSum(sum);
+//		System.out.println("手札の合計値：" + sum);
+//		return sum;
+//	} 
 }
