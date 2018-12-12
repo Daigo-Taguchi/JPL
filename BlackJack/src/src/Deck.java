@@ -8,7 +8,7 @@ public class Deck {
 	private List<Card> cardList = new ArrayList<Card>(); 
 	
 	Deck(){
-		for(int i = 0; i < 13; i++) {
+		for(int i = 1; i <= 13; i++) {
 			Card clubCard = new Card(Suit.club , i);
 			Card diamondCard = new Card(Suit.diamond , i);
 			Card heartCard = new Card(Suit.heart , i);
@@ -25,7 +25,7 @@ public class Deck {
 	 * 生成したデッキ(cardList)をシャッフルする関数
 	 */
 	public void shuffle() {
-		Collections.shuffle(cardList);
+		Collections.shuffle(this.cardList);
 	}
 	
 	/***
@@ -33,7 +33,9 @@ public class Deck {
 	 * @return Card型インスタンス
 	 */
 	public Card drawCard() {
-		return cardList.get(0);
+		Card returnCard = this.cardList.get(0);
+		this.cardList.remove(0);
+		return returnCard;
 	}
 	
 	/***
@@ -42,5 +44,12 @@ public class Deck {
 	 */
 	public void addCard(Card card) {
 		this.cardList.add(card);
+	}
+	
+	public void printDeck() {
+		System.out.println("START PRINT DECK");
+		for(int i = 0; i < this.cardList.size(); i  ++) {
+			this.cardList.get(i).printCardNum();
+		}
 	}
 }

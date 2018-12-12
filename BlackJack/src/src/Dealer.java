@@ -3,6 +3,7 @@ package src;
 import java.util.ArrayList;
 import java.util.List;
 
+// このクラスはPlayerクラスをインスタンス化するときに名前をdealerにすれば代用できる気がする
 public class Dealer {
 	private List<Card> hand = new ArrayList<Card>();
 	

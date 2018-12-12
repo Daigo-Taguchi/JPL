@@ -8,4 +8,11 @@ public class Card {
 		this.number = number;
 		this.suit = suit;
 	}
+	public int getNum() {
+		return this.number;
+	}
+	
+	public void printCardNum() {
+		System.out.println(this.number);
+	}
 }
