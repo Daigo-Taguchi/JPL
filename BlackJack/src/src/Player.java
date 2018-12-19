@@ -3,60 +3,42 @@ package src;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
-	private List<Card> hand = new ArrayList<Card>();
-	private int handSum;
+public class Player{
+	/***
+	 * 手札のインスタンスのリスト
+	 * スプリットを使用した場合には複数の手札を持つので、手札を複数管理する
+	 */
+	private List<Hand> handList = new ArrayList<Hand>();
 	
-	Player(int cardNum, Deck deck){
-		for(int i = 0; i < cardNum; i++) {
-			deck.drawCard();
-		}
+	Player(Deck deck){
+		this.handList.add(new Hand(deck));
 	}
 	
 	/***
-	 * 手札に引数で指定したカードを一枚加える
+	 * 手札のリストを返す
+	 * @return
+	 */
+	public List<Hand> getHandList(){
+		return this.handList;
+	}
+	
+	/***
+	 * 引数で指定したリスト番号の手札に引数で指定したカードを1枚加える
+	 * @param handNum
 	 * @param card
 	 */
-	public void setHand(Card card) {
-		hand.add(card);
+	public void setHand(int handNum, Card card) {
+		this.handList.get(handNum).setHand(card);
 	}
 	
 	/***
-	 * 手札を表すリストを返す
-	 * @return
+	 * 手札のリストを表示する
 	 */
-	public List<Card> getHand() {
-		return this.hand;
-	}
-	
-	public void setHundSum(int handSum) {
-		this.handSum = handSum;
-	}
-	
-	public int getHandSum() {
-		return this.handSum;
-	}
-	
-	/***
-	 * プレイヤーの手札の合計値を計算する
-	 * @param player
-	 * @return
-	 */
-	public int calcHandPoint() {
-		int sum = 0;
-		
-		for(int i = 0; i < this.hand.size(); i ++) {
-			sum += this.hand.get(i).getNum();
-		}
-		this.handSum = sum;
-		// System.out.println("手札の合計値：" + sum);
-		return sum;
-	}
-	
-	public void printHand() {
-		System.out.println("==PlayerCardNumber==");
-		for(int i = 0; i < this.hand.size(); i ++) {
-			this.hand.get(i).printCardNum();
+	public void printHandList() {
+		for(int i =0; i < this.handList.size(); i++) {
+			System.out.println("== Hand[" + i + "] ==");
+			this.handList.get(i).printHand();
 		}
 	}
+	
 }

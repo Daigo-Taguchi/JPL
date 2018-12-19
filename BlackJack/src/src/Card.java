@@ -13,6 +13,8 @@ public class Card {
 	}
 	
 	public void printCardNum() {
-		System.out.println(this.number);
+		System.out.print(this.suit + " , ");
+		System.out.print(this.number);
+		System.out.println();
 	}
 }
