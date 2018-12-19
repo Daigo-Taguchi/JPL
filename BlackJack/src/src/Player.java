@@ -14,6 +14,10 @@ public class Player{
 		this.handList.add(new Hand(deck));
 	}
 	
+	public void setHandList(Deck deck) {
+		this.handList.add(new Hand(deck));
+	}
+	
 	/***
 	 * 手札のリストを返す
 	 * @return

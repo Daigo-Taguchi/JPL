@@ -64,7 +64,7 @@ public class Hand {
 	}
 	
 	public void printDealerHand() {
-		this.hand.get(1).printCardNum();
+		this.hand.get(0).printCardNum();
 		System.out.println("??");
 	}
 }
