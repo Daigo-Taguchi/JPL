@@ -50,6 +50,7 @@ public class Game {
 			this.dealer.setHand(0 , this.deck.drawCard());
 			this.player.setHand(0 , this.deck.drawCard());
 		}
+		this.dealer.printDealerHandList();
 		this.player.printHandList();
 	}
 	
@@ -141,7 +142,7 @@ public class Game {
 		int dealerScore = dealerHandList.get(0).calcHandScore();
 		int playerScore = playerHandList.get(0).calcHandScore();
 		
-		if(playerScore > BLACKJACK_NUM && dealerScore > BLACKJACK_NUM) {
+		if(playerScore > BLACKJACK_NUM) {
 			System.out.println("** YOU LOSE **");
 		}
 		else if(playerScore == dealerScore) {

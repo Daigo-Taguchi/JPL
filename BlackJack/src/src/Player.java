@@ -38,7 +38,13 @@ public class Player{
 		for(int i =0; i < this.handList.size(); i++) {
 			System.out.println("== Hand[" + i + "] ==");
 			this.handList.get(i).printHand();
+			System.out.println();
 		}
 	}
 	
+	public void printDealerHandList() {
+		System.out.println("Dealer's Hand");
+		this.handList.get(0).printDealerHand();
+		System.out.println();
+	}
 }
