@@ -1,4 +1,4 @@
-package src;
+package model;
 
 public class Card {
 	private int number; // トランプの数字

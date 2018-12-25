@@ -4,6 +4,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import model.BJHand;
+import model.Card;
+import model.Deck;
+import model.GameResult;
+import model.Hand;
+import model.Player;
+
 public class Game {
 	/***
 	 * プレイヤーの人数
@@ -23,7 +30,7 @@ public class Game {
 	private Player player;
 	private Player dealer;
 
-	Game(int playerNum){
+	public Game(int playerNum){
 		this.playerNum = playerNum;
 	}
 
@@ -43,8 +50,8 @@ public class Game {
 		// 1つのデッキからプレイヤー数 + ディーラーに対してカードを配る(最初は2枚ずつ)
 		// TODO:2枚同時にドローできて、手札に加えられるようにしたい
 		for(int i = 0; i < 2; i ++) {
-			this.dealer.setHand(0 , this.deck.drawCard());
-			this.player.setHand(0 , this.deck.drawCard());
+			this.dealer.setHand(this.deck.drawCard());
+			this.player.setHand(this.deck.drawCard());
 		}
 		this.dealer.printDealerHandList();
 		this.player.printHandList();
@@ -67,63 +74,55 @@ public class Game {
 		BufferedReader br = new BufferedReader(isr);
 
 		System.out.println("--- Playerプレイ開始---");
-		List<Hand> handList = player.getHandList();
-		for(int i = 0; i < handList.size(); i ++) {
-			Hand nowHand = handList.get(i);
+		List<BJHand> hands = player.getHands();
+		for(int i = 0; i < hands.size(); i ++) {
+			BJHand nowHand = hands.get(i);
+			nowHand.setActive(true);
 			while(true) {
-				// List<Hand> handList = player.getHandList();
-				// Hand nowHand = handList.get(0);
-				int handScore = nowHand.calcHandScore();
-				System.out.println("【Player】 現在の手札の合計値：" + handScore);
+				System.out.println("【Player】 現在の手札の合計値：" + nowHand.calcHandScore());
 
-				if(handScore > BLACKJACK_NUM) {
+				if(nowHand.judgeState() == GameResult.BURST) {
 					System.out.println("【Player】 BURST");
 					break;
 				}
-				if(handScore == BLACKJACK_NUM) {
+				if(nowHand.judgeState() == GameResult.BLACK_JACK) {
 					System.out.println("【Player】 Black Jack");
 					break;
 				}
-				if(nowHand.getHand().get(0).getNum() == nowHand.getHand().get(1).getNum()) {
+				if(nowHand.judgeState() == GameResult.SPLIT) {
 					System.out.println("splitをしますか？【YES:1 / NO:0】");
 					try {
 						String buf = br.readLine();
 						int result = Integer.parseInt(buf);
 						if(result == 1) {
-							this.player.setHandList(this.deck);
-							Card card =  nowHand.getHand().get(1);
-							nowHand.getHand().remove(1);
-							nowHand.getHand().add(this.deck.drawCard());
-							this.player.getHandList().get(i + 1).setHand(card);
-							this.player.getHandList().get(i + 1).setHand(this.deck.drawCard());
+							this.player.doSplit(this.deck);
 							this.player.printHandList();
 						}
 					}catch(Exception e) {
 						System.out.println("Please write 1 or 0");
 					}
-				}else {
-
-					System.out.println("カードを引きますか？【YES:1 / NO:0】");
-					try {
-						String buf = br.readLine();
-						int result = Integer.parseInt(buf);
-						if(result == 1) {
-							nowHand.setHand(this.deck.drawCard());
-							this.player.printHandList();
-						}
-						else if(result == 0) {
-							nowHand.calcHandScore();
-							System.out.println("【Player】 現在の手札の合計値：" + handScore);
-							break;
-						}
-						else {
-							System.out.println("①Please write 1 or 0");
-						}
-					}catch(Exception e) {
-						System.out.println("②Please write 1 or 0");
+				}
+				System.out.println("カードを引きますか？【YES:1 / NO:0】");
+				try {
+					String buf = br.readLine();
+					int result = Integer.parseInt(buf);
+					if(result == 1) {
+						nowHand.setHand(this.deck.drawCard());
+						this.player.printHandList();
 					}
+					else if(result == 0) {
+						// nowHand.calcHandScore();
+						System.out.println("【Player】 現在の手札の合計値：" + nowHand.calcHandScore());
+						break;
+					}
+					else {
+						System.out.println("①Please write 1 or 0");
+					}
+				}catch(Exception e) {
+					System.out.println("②Please write 1 or 0");
 				}
 			}
+			nowHand.setActive(false);
 		}
 		System.out.println("--- Playerプレイ終了---");
 	}
@@ -132,8 +131,8 @@ public class Game {
 		System.out.println("--- Dealerプレイ開始---");
 		dealer.printHandList();
 		while(true) {
-			List<Hand> handList = this.dealer.getHandList();
-			Hand nowHand = handList.get(0);
+			List<BJHand> handList = this.dealer.getHands();
+			BJHand nowHand = handList.get(0);
 			int handScore = nowHand.calcHandScore();
 			System.out.println("【Dealer】 現在の手札の合計値：" + handScore);
 
@@ -156,8 +155,8 @@ public class Game {
 	}
 
 	private void judgeGame() {
-		List<Hand> dealerHandList = this.dealer.getHandList();
-		List<Hand> playerHandList = this.player.getHandList();
+		List<BJHand> dealerHandList = this.dealer.getHands();
+		List<BJHand> playerHandList = this.player.getHands();
 		int dealerScore = dealerHandList.get(0).calcHandScore();
 		int playerScore = playerHandList.get(0).calcHandScore();
 

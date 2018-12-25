@@ -1,4 +1,4 @@
-package src;
+package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import java.util.List;
 public class Deck {
 	private List<Card> cardList = new ArrayList<Card>(); 
 	
-	Deck(){
+	public Deck(){
 		for(int i = 1; i <= 13; i++) {
 			Card clubCard = new Card(Suit.club , i);
 			Card diamondCard = new Card(Suit.diamond , i);
