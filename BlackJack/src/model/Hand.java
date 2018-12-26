@@ -15,7 +15,7 @@ public class Hand {
 	 * 手札に引数で指定したカードを一枚加える
 	 * @param card
 	 */
-	public void setHand(Card card) {
+	public void setCard(Card card) {
 		this.cards.add(card);
 	}
 

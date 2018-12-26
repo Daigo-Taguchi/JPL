@@ -15,6 +15,7 @@ public class BJHand extends Hand{
 	 */
 	private boolean active = false;
 	private final int BLACKJACK_NUM = 21;
+	private final int DEALER_MIN = 17;
 	
 	/***
 	 * プレイヤーの手札の合計値を計算して返す
@@ -62,18 +63,36 @@ public class BJHand extends Hand{
 	 * 手札の状態を判定して、その状態を表すenumを返す
 	 * @return
 	 */
-	public GameResult judgeState() {
+	public GameState judgeState() {
 		if(calcHandScore() > BLACKJACK_NUM) {
-			return GameResult.BURST;
+			return GameState.BURST;
 		}
 		else if(calcHandScore() == BLACKJACK_NUM && cards.size() == 2) {
-			return GameResult.BLACK_JACK;
+			return GameState.BLACK_JACK;
 		}
 		else if(cards.get(0).getNum() == cards.get(1).getNum() && cards.size() == 2) { 
-			return GameResult.SPLIT;
+			return GameState.SPLIT;
 		}
 		else {
-			return GameResult.STOP;
+			return GameState.STOP;
+		}
+	}
+	
+	public GameState judgeDealerState() {
+		if(calcHandScore() > BLACKJACK_NUM) {
+			return GameState.BURST;
+		}
+		else if(calcHandScore() == BLACKJACK_NUM && cards.size() == 2) {
+			return GameState.BLACK_JACK;
+		}
+		else if(cards.get(0).getNum() == cards.get(1).getNum() && cards.size() == 2) { 
+			return GameState.SPLIT;
+		}
+		else if(calcHandScore() >= DEALER_MIN){
+			return GameState.DELAER_FIN;
+		}
+		else {
+			return GameState.STOP;
 		}
 	}
 }

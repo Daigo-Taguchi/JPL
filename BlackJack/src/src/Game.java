@@ -7,7 +7,7 @@ import java.util.List;
 import model.BJHand;
 import model.Card;
 import model.Deck;
-import model.GameResult;
+import model.GameState;
 import model.Hand;
 import model.Player;
 
@@ -81,22 +81,20 @@ public class Game {
 			while(true) {
 				System.out.println("【Player】 Hand[" + i + "] の合計値：" + nowHand.calcHandScore());
 
-				if(nowHand.judgeState() == GameResult.BURST) {
+				if(nowHand.judgeState() == GameState.BURST) {
 					System.out.println("【Player】 BURST");
 					break;
 				}
-				if(nowHand.judgeState() == GameResult.BLACK_JACK) {
+				if(nowHand.judgeState() == GameState.BLACK_JACK) {
 					System.out.println("【Player】 Black Jack");
 					break;
 				}
-				if(nowHand.judgeState() == GameResult.SPLIT) {
+				if(nowHand.judgeState() == GameState.SPLIT) {
 					System.out.println("splitをしますか？【YES:1 / NO:0】");
 					try {
 						String buf = br.readLine();
 						int result = Integer.parseInt(buf);
 						if(result == 1) {
-//							System.out.println("【Player】 現在の手札");
-//							this.player.returnActiveHand().printHand();
 							this.player.doSplit(this.deck);
 							this.player.printHandList();
 						}
@@ -104,17 +102,15 @@ public class Game {
 						System.out.println("Please write 1 or 0");
 					}
 				}
-				// System.out.println("現在プレーしている手札：Hand[" + i + "]" );
 				System.out.println("Hand[" + i + "] のカードを引きますか？【YES:1 / NO:0】");
 				try {
 					String buf = br.readLine();
 					int result = Integer.parseInt(buf);
 					if(result == 1) {
-						nowHand.setHand(this.deck.drawCard());
+						nowHand.setCard(this.deck.drawCard());
 						this.player.printHandList();
 					}
 					else if(result == 0) {
-						// nowHand.calcHandScore();
 						System.out.println("【Player】 Hand[" + i + "] の合計値：" + nowHand.calcHandScore());
 						break;
 					}
@@ -139,19 +135,18 @@ public class Game {
 			int handScore = nowHand.calcHandScore();
 			System.out.println("【Dealer】 現在の手札の合計値：" + handScore);
 
-			if(handScore > BLACKJACK_NUM) {
+			if(nowHand.judgeDealerState() == GameState.BURST) {
 				System.out.println("【Dealer】 BURST");
 				break;
 			}
-			if(handScore == BLACKJACK_NUM) {
+			if(nowHand.judgeDealerState() == GameState.BLACK_JACK) {
 				System.out.println("【Dealer】 Black Jack");
 				break;
 			}
-			if(handScore >= DEALER_MIN) {
+			if(nowHand.judgeDealerState() == GameState.DELAER_FIN) {
 				break;
 			}
-
-			nowHand.setHand(this.deck.drawCard());
+			nowHand.setCard(this.deck.drawCard());
 			nowHand.printHand();
 		}
 		System.out.println("--- Dealerプレイ終了---");
@@ -161,22 +156,26 @@ public class Game {
 		List<BJHand> dealerHandList = this.dealer.getHands();
 		List<BJHand> playerHandList = this.player.getHands();
 		int dealerScore = dealerHandList.get(0).calcHandScore();
-		int playerScore = playerHandList.get(0).calcHandScore();
+		// int playerScore = playerHandList.get(0).calcHandScore();
 
-		if(playerScore > BLACKJACK_NUM) {
-			System.out.println("** YOU LOSE **");
-		}
-		else if(dealerScore > BLACKJACK_NUM) {
-			System.out.println("** YOU WIN **");
-		}
-		else if(playerScore == dealerScore) {
-			System.out.println("** DRAW **");
-		}
-		else if(playerScore < dealerScore) {
-			System.out.println("** YOU LOSE **");
-		}
-		else if(playerScore > dealerScore) {
-			System.out.println("** YOU WIN!! **");
+		for(int i = 0; i < playerHandList.size(); i++) {
+			int playerScore = playerHandList.get(i).calcHandScore();
+
+			if(playerScore > BLACKJACK_NUM) {
+				System.out.println("Hand[" + i + "] ** YOU LOSE **");
+			}
+			else if(dealerScore > BLACKJACK_NUM) {
+				System.out.println("Hand[" + i + "] ** YOU WIN **");
+			}
+			else if(playerScore == dealerScore) {
+				System.out.println("Hand[" + i + "] ** DRAW **");
+			}
+			else if(playerScore < dealerScore) {
+				System.out.println("Hand[" + i + "] ** YOU LOSE **");
+			}
+			else if(playerScore > dealerScore) {
+				System.out.println("Hand[" + i + "] ** YOU WIN!! **");
+			}
 		}
 	}
 }

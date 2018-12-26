@@ -34,7 +34,7 @@ public class Player{
 	public void setHand(Card card) {
 		for(int i = 0; i < this.hands.size(); i++) {
 			if(hands.get(i).getActive() == true) {
-				this.hands.get(i).setHand(card);
+				this.hands.get(i).setCard(card);
 			}
 			// this.hands.get(i).setHand(card);
 		}
@@ -49,25 +49,9 @@ public class Player{
 		// 削除した2枚目の枠に、新しく山札から引いたカードを加える
 		this.hands.get(this.hands.size() -2).getCards().add(deck.drawCard());
 		// 保持しておいたカードを増やした手札の1枚目に加える
-		this.hands.get(this.hands.size() -1).setHand(card);
+		this.hands.get(this.hands.size() -1).setCard(card);
 		// 増やした手札の2枚目は山札から加える
-		this.hands.get(this.hands.size() -1).setHand(deck.drawCard());
-	}
-	
-	/***
-	 * プレー可能状態の手札を返す
-	 * 存在しない場合はnullを返す
-	 * TODO:ここはnull以外を返す方がいいけどどうしたらいいのか考える
-	 * @return
-	 */
-	public BJHand returnActiveHand() {
-		for(int i =0; i <  this.hands.size(); i ++) {
-			BJHand hand = this.hands.get(i);
-			if(hand.getActive() == true) {
-				return hand;
-			}
-		}
-		return null;
+		this.hands.get(this.hands.size() -1).setCard(deck.drawCard());
 	}
 	
 	/***
