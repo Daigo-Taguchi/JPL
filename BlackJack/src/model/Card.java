@@ -12,7 +12,7 @@ public class Card {
 		return this.number;
 	}
 	
-	public void printCardNum() {
+	public void printCard() {
 		System.out.print(this.suit + " , ");
 		System.out.print(this.number);
 		System.out.println();

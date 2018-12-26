@@ -29,12 +29,12 @@ public class Hand {
 
 	public void printHand() {
 		for(int i = 0; i < this.cards.size(); i ++) {
-			this.cards.get(i).printCardNum();
+			this.cards.get(i).printCard();
 		}
 	}
 
 	public void printDealerHand() {
-		this.cards.get(0).printCardNum();
+		this.cards.get(0).printCard();
 		System.out.println("??");
 	}
 }

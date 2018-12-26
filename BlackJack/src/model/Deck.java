@@ -49,7 +49,7 @@ public class Deck {
 	public void printDeck() {
 		System.out.println("START PRINT DECK");
 		for(int i = 0; i < this.cardList.size(); i  ++) {
-			this.cardList.get(i).printCardNum();
+			this.cardList.get(i).printCard();
 		}
 	}
 }

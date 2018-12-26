@@ -79,7 +79,7 @@ public class Game {
 			BJHand nowHand = hands.get(i);
 			nowHand.setActive(true);
 			while(true) {
-				System.out.println("【Player】 現在の手札の合計値：" + nowHand.calcHandScore());
+				System.out.println("【Player】 Hand[" + i + "] の合計値：" + nowHand.calcHandScore());
 
 				if(nowHand.judgeState() == GameResult.BURST) {
 					System.out.println("【Player】 BURST");
@@ -95,6 +95,8 @@ public class Game {
 						String buf = br.readLine();
 						int result = Integer.parseInt(buf);
 						if(result == 1) {
+//							System.out.println("【Player】 現在の手札");
+//							this.player.returnActiveHand().printHand();
 							this.player.doSplit(this.deck);
 							this.player.printHandList();
 						}
@@ -102,7 +104,8 @@ public class Game {
 						System.out.println("Please write 1 or 0");
 					}
 				}
-				System.out.println("カードを引きますか？【YES:1 / NO:0】");
+				// System.out.println("現在プレーしている手札：Hand[" + i + "]" );
+				System.out.println("Hand[" + i + "] のカードを引きますか？【YES:1 / NO:0】");
 				try {
 					String buf = br.readLine();
 					int result = Integer.parseInt(buf);
@@ -112,7 +115,7 @@ public class Game {
 					}
 					else if(result == 0) {
 						// nowHand.calcHandScore();
-						System.out.println("【Player】 現在の手札の合計値：" + nowHand.calcHandScore());
+						System.out.println("【Player】 Hand[" + i + "] の合計値：" + nowHand.calcHandScore());
 						break;
 					}
 					else {
