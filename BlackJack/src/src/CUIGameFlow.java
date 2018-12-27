@@ -11,7 +11,7 @@ import model.GameState;
 import model.Hand;
 import model.Player;
 
-public class Game {
+public class CUIGameFlow {
 	/***
 	 * プレイヤーの人数
 	 */
@@ -30,7 +30,7 @@ public class Game {
 	private Player player;
 	private Player dealer;
 
-	public Game(int playerNum){
+	public CUIGameFlow(int playerNum){
 		this.playerNum = playerNum;
 	}
 
