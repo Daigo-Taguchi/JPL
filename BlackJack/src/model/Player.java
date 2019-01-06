@@ -24,6 +24,7 @@ public class Player{
 	 * @return
 	 */
 	public List<BJHand> getHands(){
+		// System.out.println(this.hands.size());
 		return this.hands;
 	}
 	

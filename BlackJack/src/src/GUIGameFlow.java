@@ -1,5 +1,7 @@
 package src;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +12,7 @@ import model.GameState;
 import model.Player;
 import view.Observer;
 
-public class GUIGameFlow {
+public class GUIGameFlow implements ActionListener{
 	private Deck deck;
 	private Player player;
 	private Player dealer;
@@ -33,35 +35,6 @@ public class GUIGameFlow {
 		}
 		System.out.println("test");
 		notifyObservers();
-	}
-	
-	/***
-	 * ゲームをスタートするメソッド
-	 */
-//	public void startGame() {
-//		startPlayer();
-//		startDealer();
-//		judgeGame();
-//	}
-//	
-	private void startPlayer() {
-		List<BJHand> hands = player.getHands();
-		for(int i = 0; i < hands.size(); i ++) {
-			BJHand nowHand = hands.get(i);
-			nowHand.setActive(true);
-			while(true) {
-				if(nowHand.judgeState() == GameState.BURST) {
-					break;
-				}
-				if(nowHand.judgeState() == GameState.BLACK_JACK) {
-					System.out.println("【Player】 Black Jack");
-					break;
-				}
-				if(nowHand.judgeState() == GameState.SPLIT) {
-					
-				}
-			}
-		}
 	}
 
 	/***
@@ -96,8 +69,33 @@ public class GUIGameFlow {
 		Iterator<Observer> iterator = observers.iterator();
 		while(iterator.hasNext()) {
 			Observer observer = iterator.next();
-			System.out.println("test2");
+			// System.out.println("test2");
 			observer.update(this);
+			observer.showResult(this);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand() == "HIT") {
+			for(int i = 0; i < this.player.getHands().size(); i ++) {
+				if(this.player.getHands().get(i).getActive() == true) {
+					this.player.getHands().get(i).setCard(this.deck.drawCard());
+					
+					if(this.player.getHands().get(i).judgeState() == GameState.BURST) {
+						System.out.println("通った");
+					}
+				}
+			}
+			notifyObservers();
+		}
+		else if(e.getActionCommand() == "STAND") {
+			System.out.println("STANDが押された");
+			for(int i = 0; i < this.player.getHands().size(); i ++) {
+				if(this.player.getHands().get(i).getActive() == true) {
+					this.player.getHands().get(i).setActive(false);
+				}
+			}
 		}
 	}
 }

@@ -5,5 +5,5 @@ public enum GameState {
 	BLACK_JACK,
 	SPLIT,
 	STOP,
-	DELAER_FIN
+	DELAER_FIN;
 }

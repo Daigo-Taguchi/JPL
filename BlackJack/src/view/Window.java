@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import src.GUIGameFlow;
 
@@ -20,10 +22,15 @@ public class Window extends JFrame{
 		setResizable(true);
 		
 		CardImage ci = new CardImage();		
-		add(ci); // FrameにJpanelを追加する
+		add(ci, BorderLayout.CENTER); // FrameにJpanelを追加する
 		
 		GUIGameFlow gf = new GUIGameFlow();
+		
+		BJbutton button = new BJbutton(gf);
+		add(button,BorderLayout.SOUTH);
+		
 		gf.addObserver(ci);// Observerを登録する
+		gf.addObserver(button);
 		gf.initGame(); // Gameを初期化する
 	}
 }

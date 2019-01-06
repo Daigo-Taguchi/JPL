@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import model.BJHand;
 import model.Card;
+import model.GameState;
 import src.GUIGameFlow;
 
 public class CardImage extends JPanel implements Observer{
@@ -21,22 +22,36 @@ public class CardImage extends JPanel implements Observer{
 	private final int CARD_HEIGHT_SPAN = 185;
 	private final int PLAYER_SCORE_AREA_X = 0;
 	private final int PLAYER_SCORE_AREA_Y = 60;
+	private final int FONT_SIZE = 50;
 	private List<Card> cards;
 	private List<BJHand> hands;
 
+	/***
+	 * modelの状態が変わったときにObserverから通知され起動発火するメソッド
+	 * paintの再描画処理を行う
+	 */
 	@Override
 	public void update(GUIGameFlow flow) {
 		this.hands =  flow.getPlayerHands();
 		repaint();
 	}
-
+	
+	/***
+	 * modelの状態が変わったときにObserverから通知され、発火するメソッド
+	 * ここではやることがないため中身を書いていない
+	 */
+	@Override
+	public void showResult(GUIGameFlow flow) {
+		// TODO 自動生成されたメソッド・スタブ
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		int cardPositionX = 0;
 		int cardPositionY = 100;
 
 		super.paintComponent(g);
-		g.setFont(new Font("SansSerif", Font.BOLD, 50));
+		g.setFont(new Font("SansSerif", Font.BOLD, FONT_SIZE));
 		
 		// カードの表示
 		if(this.hands != null) {
