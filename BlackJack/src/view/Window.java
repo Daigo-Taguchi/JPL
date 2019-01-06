@@ -7,7 +7,7 @@ import src.GUIGameFlow;
 
 public class Window extends JFrame{
 	private final int WINDOW_WIDTH = 1000;
-	private final int WINDOW_HEIGHT = 500;
+	private final int WINDOW_HEIGHT = 1000;
 	
 	public Window(String title) {
 		// windowのタイトル設定

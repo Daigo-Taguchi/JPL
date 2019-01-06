@@ -20,11 +20,14 @@ public class CardImage extends JPanel implements Observer{
 	private final int CARD_WIDTH_SPAN = 125;
 	private final int CARD_HEIGHT = 180;
 	private final int CARD_HEIGHT_SPAN = 185;
+	private final int DEALER_SCORE_AREA_X = 0;
+	private final int DEALER_SCORE_AREA_Y = 60;
 	private final int PLAYER_SCORE_AREA_X = 0;
-	private final int PLAYER_SCORE_AREA_Y = 60;
+	private final int PLAYER_SCORE_AREA_Y = 350;
 	private final int FONT_SIZE = 50;
 	private List<Card> cards;
-	private List<BJHand> hands;
+	private List<BJHand> playerHands;
+	private List<BJHand> dealerHand;
 
 	/***
 	 * modelの状態が変わったときにObserverから通知され起動発火するメソッド
@@ -32,10 +35,11 @@ public class CardImage extends JPanel implements Observer{
 	 */
 	@Override
 	public void update(GUIGameFlow flow) {
-		this.hands =  flow.getPlayerHands();
+		this.playerHands =  flow.getPlayerHands();
+		this.dealerHand = flow.getDealerHands();
 		repaint();
 	}
-	
+
 	/***
 	 * modelの状態が変わったときにObserverから通知され、発火するメソッド
 	 * ここではやることがないため中身を書いていない
@@ -44,31 +48,52 @@ public class CardImage extends JPanel implements Observer{
 	public void showResult(GUIGameFlow flow) {
 		// TODO 自動生成されたメソッド・スタブ
 	}
-	
+
+	@Override
+	public void unableButton() {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
-		int cardPositionX = 0;
-		int cardPositionY = 100;
+		int dealerCardPositionX = 0;
+		int dealerCardPositionY = 100;
 
 		super.paintComponent(g);
 		g.setFont(new Font("SansSerif", Font.BOLD, FONT_SIZE));
-		
-		// カードの表示
-		if(this.hands != null) {
-			for(int i = 0; i < this.hands.size(); i ++) {
-				for(int j = 0; j < this.hands.get(i).getCards().size(); j ++) {
-					Image image = getCardImage(this.hands.get(i).getCards().get(j));
-					g.drawImage(image, cardPositionX, cardPositionY, CARD_WIDTH, CARD_HEIGHT, this);
-					cardPositionX += CARD_WIDTH_SPAN;
+
+		// ディーラーのカードの表示(1枚だけ表示)
+		if(this.dealerHand != null) {
+			Image image = getCardImage(this.dealerHand.get(0).getCards().get(0));
+			g.drawImage(image,dealerCardPositionX, dealerCardPositionY, CARD_WIDTH, CARD_HEIGHT, this);
+			dealerCardPositionX += CARD_WIDTH_SPAN;
+		}
+
+		// ディーラーのスコア表示
+		// int dealerScore = this.dealerHand.get(0).calcHandScore();
+		// String sd = String.valueOf(dealerScore);
+		g.drawString("DealerScore: ??" , DEALER_SCORE_AREA_X , DEALER_SCORE_AREA_Y);
+
+		// プレイヤーのカード表示
+		int playerCardPositionX = 0;
+		int playerCardPositionY = 400;
+
+		if(this.playerHands != null) {
+			for(int i = 0; i < this.playerHands.size(); i ++) {
+				for(int j = 0; j < this.playerHands.get(i).getCards().size(); j ++) {
+					Image image = getCardImage(this.playerHands.get(i).getCards().get(j));
+					g.drawImage(image, playerCardPositionX, playerCardPositionY, CARD_WIDTH, CARD_HEIGHT, this);
+					playerCardPositionX += CARD_WIDTH_SPAN;
 				}
-				cardPositionY += CARD_HEIGHT_SPAN;
+				playerCardPositionY += CARD_HEIGHT_SPAN;
+
+				// スコアの表示
+				int playerScore = this.playerHands.get(0).calcHandScore();
+				String sp = String.valueOf(playerScore);
+				g.drawString("PlayerScore:" + sp , PLAYER_SCORE_AREA_X , PLAYER_SCORE_AREA_Y);
 			}
 		}
-		
-		// スコアの表示
-		int score = this.hands.get(0).calcHandScore();
-		String s = String.valueOf(score);
-		g.drawString("PlayerScore:" + s , PLAYER_SCORE_AREA_X , PLAYER_SCORE_AREA_Y);
 	}
 
 	/***

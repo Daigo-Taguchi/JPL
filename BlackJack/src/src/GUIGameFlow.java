@@ -44,6 +44,14 @@ public class GUIGameFlow implements ActionListener{
 	public List<BJHand> getPlayerHands() {
 		return this.player.getHands();
 	}
+	
+	/***
+	 * dealerの手札のリストを返す
+	 * @return
+	 */
+	public List<BJHand> getDealerHands() {
+		return this.dealer.getHands();
+	}
 
 	/***
 	 * Observerを管理するリストに引数で受け取ったObserverを追加するメソッド
@@ -69,7 +77,6 @@ public class GUIGameFlow implements ActionListener{
 		Iterator<Observer> iterator = observers.iterator();
 		while(iterator.hasNext()) {
 			Observer observer = iterator.next();
-			// System.out.println("test2");
 			observer.update(this);
 			observer.showResult(this);
 		}
