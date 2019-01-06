@@ -37,7 +37,6 @@ public class Player{
 			if(hands.get(i).getActive() == true) {
 				this.hands.get(i).setCard(card);
 			}
-			// this.hands.get(i).setHand(card);
 		}
 	}
 	

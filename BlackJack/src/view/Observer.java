@@ -1,6 +1,5 @@
 package view;
 
-import model.GameState;
 import src.GUIGameFlow;
 
 public interface Observer {

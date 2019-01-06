@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 
 import model.BJHand;
 import model.Card;
-import model.GameState;
 import src.GUIGameFlow;
 
 public class CardImage extends JPanel implements Observer{
@@ -25,7 +24,6 @@ public class CardImage extends JPanel implements Observer{
 	private final int PLAYER_SCORE_AREA_X = 0;
 	private final int PLAYER_SCORE_AREA_Y = 350;
 	private final int FONT_SIZE = 50;
-	private List<Card> cards;
 	private List<BJHand> playerHands;
 	private List<BJHand> dealerHand;
 
