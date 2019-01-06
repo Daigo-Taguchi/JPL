@@ -12,6 +12,10 @@ public class Card {
 		return this.number;
 	}
 	
+	public Suit getSuit() {
+		return this.suit;
+	}
+	
 	public void printCard() {
 		System.out.print(this.suit + " , ");
 		System.out.print(this.number);

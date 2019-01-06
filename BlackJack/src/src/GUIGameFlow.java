@@ -1,0 +1,103 @@
+package src;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import model.BJHand;
+import model.Deck;
+import model.GameState;
+import model.Player;
+import view.Observer;
+
+public class GUIGameFlow {
+	private Deck deck;
+	private Player player;
+	private Player dealer;
+	private final int INIT_CARD_NUM = 2;
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
+
+	public void initGame() {
+		// Cardクラスをインスタンス化して山札の作成、シャッフルして配る
+		this.deck = new Deck();
+		this.deck.shuffle();
+
+		// プレイヤーとディーラーをインスタンス化する
+		this.dealer = new Player(this.deck);
+		this.player = new Player(this.deck);
+
+		// 1つのデッキからプレイヤーとディーラーに対してカードを配る(最初は2枚ずつ)
+		for(int i = 0; i < INIT_CARD_NUM; i++) {
+			this.dealer.setHand(this.deck.drawCard());
+			this.player.setHand(this.deck.drawCard());
+		}
+		System.out.println("test");
+		notifyObservers();
+	}
+	
+	/***
+	 * ゲームをスタートするメソッド
+	 */
+//	public void startGame() {
+//		startPlayer();
+//		startDealer();
+//		judgeGame();
+//	}
+//	
+	private void startPlayer() {
+		List<BJHand> hands = player.getHands();
+		for(int i = 0; i < hands.size(); i ++) {
+			BJHand nowHand = hands.get(i);
+			nowHand.setActive(true);
+			while(true) {
+				if(nowHand.judgeState() == GameState.BURST) {
+					break;
+				}
+				if(nowHand.judgeState() == GameState.BLACK_JACK) {
+					System.out.println("【Player】 Black Jack");
+					break;
+				}
+				if(nowHand.judgeState() == GameState.SPLIT) {
+					
+				}
+			}
+		}
+	}
+
+	/***
+	 * Playerの手札のリストを返す
+	 * @return
+	 */
+	public List<BJHand> getPlayerHands() {
+		return this.player.getHands();
+	}
+
+	/***
+	 * Observerを管理するリストに引数で受け取ったObserverを追加するメソッド
+	 * @param observer
+	 */
+	public void addObserver(Observer observer) {
+		this.observers.add(observer);
+	}
+
+	/***
+	 * Observerを管理するリストから引数で受け取ったObserverを削除するメソッド
+	 * @param observer
+	 */
+	public void deleteObserver(Observer observer) {
+		this.observers.remove(observer);
+	}
+
+	/***
+	 * viewにmodelが変更されたことを通知するメソッド
+	 * Observerのupdateメソッドを内部で呼び出すことで処理を開始する
+	 */
+	public void notifyObservers() {
+		Iterator<Observer> iterator = observers.iterator();
+		while(iterator.hasNext()) {
+			Observer observer = iterator.next();
+			System.out.println("test2");
+			observer.update(this);
+		}
+	}
+}
