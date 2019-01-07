@@ -68,20 +68,7 @@ public class GUIGameFlow implements ActionListener{
 	public void deleteObserver(Observer observer) {
 		this.observers.remove(observer);
 	}
-
-	/***
-	 * viewにmodelが変更されたことを通知するメソッド
-	 * Observerのupdateメソッドを内部で呼び出すことで処理を開始する
-	 */
-	public void notifyObservers() {
-		Iterator<Observer> iterator = observers.iterator();
-		while(iterator.hasNext()) {
-			Observer observer = iterator.next();
-			observer.update(this);
-			observer.showResult(this);
-		}
-	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand() == "HIT") {
@@ -97,12 +84,65 @@ public class GUIGameFlow implements ActionListener{
 			notifyObservers();
 		}
 		else if(e.getActionCommand() == "STAND") {
+			boolean isTurn = true;
 			System.out.println("STANDが押された");
 			for(int i = 0; i < this.player.getHands().size(); i ++) {
+				notifyUnlockButton();
 				if(this.player.getHands().get(i).getActive() == true) {
 					this.player.getHands().get(i).setActive(false);
 				}
+				notifyLockButton();
 			}
+			
+			for(int i =0; i < this.player.getHands().size(); i ++) {
+				isTurn  = this.player.getHands().get(i).getActive();
+			}
+			if(isTurn == false) {
+				// dealerの処理を開始するメソッド
+			}
+			
+		}
+	}
+	
+	private void startDealer() {
+		List<BJHand> handList = this.dealer.getHands();
+		BJHand nowHand = handList.get(0);
+		int handScore = nowHand.calcHandScore();
+		
+		if(nowHand.judgeDealerState() == GameState.BURST) {
+			
+		}
+	}
+
+	/***
+	 * Observerに通知を行うメソッド
+	 * viewにカードの状態を更新することを通知するメソッド
+	 * カードの描画処理とゲームの状態を出力を行う
+	 */
+	private void notifyObservers() {
+		for(int i =0; i < this.observers.size(); i ++) {
+			this.observers.get(i).update(this);
+			this.observers.get(i).showResult(this);
+		}
+	}
+	
+	/***
+	 * Observerに通知を行うメソッド
+	 * viewにbuttonをグレーダウンさせることを伝えるメソッド
+	 */
+	private void notifyLockButton() {
+		for(int i =0; i < this.observers.size(); i ++) {
+			this.observers.get(i).unableButton();
+		}
+	}
+	
+	/***
+	 * Observerに通知を行うメソッド
+	 * viewにbuttonをグレーダウンさせることを伝えるメソッド
+	 */
+	private void notifyUnlockButton() {
+		for(int i =0; i < this.observers.size(); i ++) {
+			this.observers.get(i).ableButton();
 		}
 	}
 }

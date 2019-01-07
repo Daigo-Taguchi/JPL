@@ -86,6 +86,13 @@ public class BJbutton extends JPanel implements Observer{
 		this.hitButton.setEnabled(false);
 		this.standButton.setEnabled(false);
 	}
+	
+
+	@Override
+	public void ableButton() {
+		this.hitButton.setEnabled(true);
+		this.standButton.setEnabled(true);
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {

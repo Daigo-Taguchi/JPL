@@ -17,4 +17,8 @@ public interface Observer {
 	 * ボタンをグレーダウンするメソッド
 	 */
 	public void unableButton();
+	/***
+	 * ボタンを有効かするメソッド
+	 */
+	public void ableButton();
 }

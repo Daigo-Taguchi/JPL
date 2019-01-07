@@ -5,5 +5,6 @@ public enum GameState {
 	BLACK_JACK,
 	SPLIT,
 	STOP,
+	DEALER_STANDBY,
 	DELAER_FIN;
 }

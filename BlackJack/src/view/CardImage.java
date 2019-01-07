@@ -46,11 +46,24 @@ public class CardImage extends JPanel implements Observer{
 	public void showResult(GUIGameFlow flow) {
 		// TODO 自動生成されたメソッド・スタブ
 	}
-
+	
+	/***
+	 * modelの状態が変わったときにObserverから通知され、発火するメソッド
+	 * ここではやることがないため中身を書いていない
+	 */
 	@Override
 	public void unableButton() {
 		// TODO 自動生成されたメソッド・スタブ
-
+	}
+	
+	/***
+	 * modelの状態が変わったときにObserverから通知され、発火するメソッド
+	 * ここではやることがないため中身を書いていない
+	 */
+	@Override
+	public void ableButton() {
+		// TODO 自動生成されたメソッド・スタブ
+		
 	}
 
 	@Override
