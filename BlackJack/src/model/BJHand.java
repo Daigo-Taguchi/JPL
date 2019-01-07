@@ -16,6 +16,7 @@ public class BJHand extends Hand{
 	private boolean active = false;
 	private final int BLACKJACK_NUM = 21;
 	private final int DEALER_MIN = 17;
+	private GameResult result;
 	
 	/***
 	 * プレイヤーの手札の合計値を計算して返す
@@ -55,8 +56,28 @@ public class BJHand extends Hand{
 		this.active = active;
 	}
 	
+	/***
+	 * プレー可能かどうかの状態を取得する
+	 * @param active
+	 */
 	public boolean getActive() {
 		return this.active;
+	}
+	
+	/***
+	 * 手札の勝敗を管理する状態を変更する
+	 * @param result
+	 */
+	public void setGameResult(GameResult result) {
+		this.result = result;
+	}
+	
+	/***
+	 * 手札の勝敗を管理する状態を取得する
+	 * @return
+	 */
+	public GameResult getGameResult() {
+		return this.result;
 	}
 	
 	/***

@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import model.BJHand;
 import model.Card;
+import model.GameResult;
 import src.GUIGameFlow;
 
 public class CardImage extends JPanel implements Observer{
@@ -23,6 +24,7 @@ public class CardImage extends JPanel implements Observer{
 	private final int DEALER_SCORE_AREA_Y = 60;
 	private final int PLAYER_SCORE_AREA_X = 0;
 	private final int PLAYER_SCORE_AREA_Y = 350;
+	private final int PLAYER_RESULT_AREA_X = 0;
 	private final int FONT_SIZE = 50;
 	private List<BJHand> playerHands;
 	private List<BJHand> dealerHand;
@@ -46,7 +48,6 @@ public class CardImage extends JPanel implements Observer{
 	 */
 	@Override
 	public void showResult(GUIGameFlow flow) {
-		// TODO 自動生成されたメソッド・スタブ
 	}
 	
 	/***
@@ -117,6 +118,7 @@ public class CardImage extends JPanel implements Observer{
 		// プレイヤーのカード表示
 		int playerCardPositionX = 0;
 		int playerCardPositionY = 400;
+		int playerResutPositionY = playerCardPositionY + 250;
 
 		if(this.playerHands != null) {
 			for(int i = 0; i < this.playerHands.size(); i ++) {
@@ -125,7 +127,24 @@ public class CardImage extends JPanel implements Observer{
 					g.drawImage(image, playerCardPositionX, playerCardPositionY, CARD_WIDTH, CARD_HEIGHT, this);
 					playerCardPositionX += CARD_WIDTH_SPAN;
 				}
-				playerCardPositionY += CARD_HEIGHT_SPAN;
+				
+				// 勝敗の表示
+				if(this.playerHands.get(i).getGameResult() == GameResult.LOSE) {
+					g.drawString("YOU LOSE", PLAYER_RESULT_AREA_X, playerResutPositionY);
+					playerCardPositionY += CARD_HEIGHT_SPAN;
+				}
+				else if(this.playerHands.get(i).getGameResult() == GameResult.WIN) {
+					g.drawString("YOU WIN", PLAYER_RESULT_AREA_X, playerResutPositionY);
+					playerCardPositionY += CARD_HEIGHT_SPAN;
+				}
+				else if(this.playerHands.get(i).getGameResult() == GameResult.DRAW) {
+					g.drawString("DRAW", PLAYER_RESULT_AREA_X,playerResutPositionY);
+					playerCardPositionY += CARD_HEIGHT_SPAN;
+				}
+				else {
+					g.drawString("---", PLAYER_RESULT_AREA_X,playerResutPositionY);
+					playerCardPositionY += CARD_HEIGHT_SPAN;
+				}
 
 				// スコアの表示
 				int playerScore = this.playerHands.get(0).calcHandScore();

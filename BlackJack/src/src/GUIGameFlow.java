@@ -8,6 +8,7 @@ import java.util.List;
 
 import model.BJHand;
 import model.Deck;
+import model.GameResult;
 import model.GameState;
 import model.Player;
 import view.Observer;
@@ -80,13 +81,19 @@ public class GUIGameFlow implements ActionListener{
 			for(int i = 0; i < this.player.getHands().size(); i ++) {
 				if(this.player.getHands().get(i).getActive() == true) {
 					this.player.getHands().get(i).setCard(this.deck.drawCard());
+					notifyObservers();
 
 					if(this.player.getHands().get(i).judgeState() == GameState.BURST) {
 						System.out.println("通った");
+						notifyObservers();
+						this.player.getHands().get(i).setActive(false);
+					}
+					if((this.player.getHands().get(i).judgeState() == GameState.BURST) && i == this.player.getHands().size() -1) {
+						startDealer();
 					}
 				}
 			}
-			notifyObservers();
+			// notifyObservers();
 		}
 		else if(e.getActionCommand() == "STAND") {
 			boolean isTurn = true;
@@ -118,14 +125,17 @@ public class GUIGameFlow implements ActionListener{
 		BJHand nowHand = handList.get(0);
 		while(true) {
 			if(nowHand.judgeDealerState() == GameState.BURST) {
+				judgeGame();
 				notifyObservers();
 				break;
 			}
 			if(nowHand.judgeDealerState() == GameState.BLACK_JACK) {
+				judgeGame();
 				notifyObservers();
 				break;
 			}
 			if(nowHand.judgeDealerState() == GameState.DELAER_FIN) {
+				judgeGame();
 				notifyObservers();
 				break;
 			}
@@ -135,32 +145,35 @@ public class GUIGameFlow implements ActionListener{
 		this.dealer.setIsPlay(false);
 	}
 	
-//	private void judgeGame() {
-//		List<BJHand> dealerHandList = this.dealer.getHands();
-//		List<BJHand> playerHandList = this.player.getHands();
-//		int dealerScore = dealerHandList.get(0).calcHandScore();
-//		
-//		for(int i = 0; i < playerHandList.size(); i++) {
-//			int playerScore = playerHandList.get(i).calcHandScore();
-//
-//			if(playerScore > BLACKJACK_NUM) {
-//				System.out.println("Hand[" + i + "] ** YOU LOSE **");
-//			}
-//			else if(dealerScore > BLACKJACK_NUM) {
-//				System.out.println("Hand[" + i + "] ** YOU WIN **");
-//			}
-//			else if(playerScore == dealerScore) {
-//				System.out.println("Hand[" + i + "] ** DRAW **");
-//			}
-//			else if(playerScore < dealerScore) {
-//				System.out.println("Hand[" + i + "] ** YOU LOSE **");
-//			}
-//			else if(playerScore > dealerScore) {
-//				System.out.println("Hand[" + i + "] ** YOU WIN!! **");
-//			}
-//		}
-//	}
-	
+	/***
+	 * プレイヤーの手札ごとに勝敗を決定する
+	 * 手札の勝敗を管理する状態を書き換える
+	 */
+	private void judgeGame() {
+		List<BJHand> dealerHandList = this.dealer.getHands();
+		List<BJHand> playerHandList = this.player.getHands();
+		int dealerScore = dealerHandList.get(0).calcHandScore();
+		
+		for(int i = 0; i < playerHandList.size(); i++) {
+			int playerScore = playerHandList.get(i).calcHandScore();
+
+			if(playerScore > BLACKJACK_NUM) {
+				playerHandList.get(i).setGameResult(GameResult.LOSE);
+			}
+			else if(dealerScore > BLACKJACK_NUM) {
+				playerHandList.get(i).setGameResult(GameResult.WIN);
+			}
+			else if(playerScore == dealerScore) {
+				playerHandList.get(i).setGameResult(GameResult.DRAW);
+			}
+			else if(playerScore < dealerScore) {
+				playerHandList.get(i).setGameResult(GameResult.LOSE);
+			}
+			else if(playerScore > dealerScore) {
+				playerHandList.get(i).setGameResult(GameResult.WIN);;
+			}
+		}
+	}
 
 	/***
 	 * Observerに通知を行うメソッド
