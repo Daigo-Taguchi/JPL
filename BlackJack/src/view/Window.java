@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.JFrame;
 import src.GUIGameFlow;
@@ -20,7 +21,6 @@ public class Window extends JFrame{
 		setLocationRelativeTo(null);
 		// フレームのサイズを変更可能かを設定する
 		setResizable(true);
-		
 		CardImage ci = new CardImage();		
 		add(ci, BorderLayout.CENTER); // FrameにJpanelを追加する
 		
