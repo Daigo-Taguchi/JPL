@@ -18,6 +18,7 @@ public class GUIGameFlow implements ActionListener{
 	private Player dealer;
 	private final int INIT_CARD_NUM = 2;
 	private ArrayList<Observer> observers = new ArrayList<Observer>();
+	private final int BLACKJACK_NUM = 21;
 
 	public void initGame() {
 		// Cardクラスをインスタンス化して山札の作成、シャッフルして配る
@@ -44,13 +45,17 @@ public class GUIGameFlow implements ActionListener{
 	public List<BJHand> getPlayerHands() {
 		return this.player.getHands();
 	}
-	
+
 	/***
 	 * dealerの手札のリストを返す
 	 * @return
 	 */
 	public List<BJHand> getDealerHands() {
 		return this.dealer.getHands();
+	}
+
+	public boolean getDealerIsPlay() {
+		return this.dealer.getIsPlay();
 	}
 
 	/***
@@ -68,14 +73,14 @@ public class GUIGameFlow implements ActionListener{
 	public void deleteObserver(Observer observer) {
 		this.observers.remove(observer);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand() == "HIT") {
 			for(int i = 0; i < this.player.getHands().size(); i ++) {
 				if(this.player.getHands().get(i).getActive() == true) {
 					this.player.getHands().get(i).setCard(this.deck.drawCard());
-					
+
 					if(this.player.getHands().get(i).judgeState() == GameState.BURST) {
 						System.out.println("通った");
 					}
@@ -93,26 +98,69 @@ public class GUIGameFlow implements ActionListener{
 				}
 				notifyLockButton();
 			}
-			
+
 			for(int i =0; i < this.player.getHands().size(); i ++) {
 				isTurn  = this.player.getHands().get(i).getActive();
 			}
 			if(isTurn == false) {
 				// dealerの処理を開始するメソッド
+				startDealer();
 			}
-			
 		}
 	}
-	
+
+	/***
+	 * Dealerのプレイを開始する
+	 */
 	private void startDealer() {
+		this.dealer.setIsPlay(true);
 		List<BJHand> handList = this.dealer.getHands();
 		BJHand nowHand = handList.get(0);
-		int handScore = nowHand.calcHandScore();
-		
-		if(nowHand.judgeDealerState() == GameState.BURST) {
-			
+		while(true) {
+			if(nowHand.judgeDealerState() == GameState.BURST) {
+				notifyObservers();
+				break;
+			}
+			if(nowHand.judgeDealerState() == GameState.BLACK_JACK) {
+				notifyObservers();
+				break;
+			}
+			if(nowHand.judgeDealerState() == GameState.DELAER_FIN) {
+				notifyObservers();
+				break;
+			}
+			nowHand.setCard(this.deck.drawCard());
+			notifyObservers();
 		}
+		this.dealer.setIsPlay(false);
 	}
+	
+//	private void judgeGame() {
+//		List<BJHand> dealerHandList = this.dealer.getHands();
+//		List<BJHand> playerHandList = this.player.getHands();
+//		int dealerScore = dealerHandList.get(0).calcHandScore();
+//		
+//		for(int i = 0; i < playerHandList.size(); i++) {
+//			int playerScore = playerHandList.get(i).calcHandScore();
+//
+//			if(playerScore > BLACKJACK_NUM) {
+//				System.out.println("Hand[" + i + "] ** YOU LOSE **");
+//			}
+//			else if(dealerScore > BLACKJACK_NUM) {
+//				System.out.println("Hand[" + i + "] ** YOU WIN **");
+//			}
+//			else if(playerScore == dealerScore) {
+//				System.out.println("Hand[" + i + "] ** DRAW **");
+//			}
+//			else if(playerScore < dealerScore) {
+//				System.out.println("Hand[" + i + "] ** YOU LOSE **");
+//			}
+//			else if(playerScore > dealerScore) {
+//				System.out.println("Hand[" + i + "] ** YOU WIN!! **");
+//			}
+//		}
+//	}
+	
 
 	/***
 	 * Observerに通知を行うメソッド
@@ -125,7 +173,7 @@ public class GUIGameFlow implements ActionListener{
 			this.observers.get(i).showResult(this);
 		}
 	}
-	
+
 	/***
 	 * Observerに通知を行うメソッド
 	 * viewにbuttonをグレーダウンさせることを伝えるメソッド
@@ -135,7 +183,7 @@ public class GUIGameFlow implements ActionListener{
 			this.observers.get(i).unableButton();
 		}
 	}
-	
+
 	/***
 	 * Observerに通知を行うメソッド
 	 * viewにbuttonをグレーダウンさせることを伝えるメソッド

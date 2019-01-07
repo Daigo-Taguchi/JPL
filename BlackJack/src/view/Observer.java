@@ -18,7 +18,7 @@ public interface Observer {
 	 */
 	public void unableButton();
 	/***
-	 * ボタンを有効かするメソッド
+	 * ボタンを有効化するメソッド
 	 */
 	public void ableButton();
 }

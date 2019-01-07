@@ -26,6 +26,7 @@ public class CardImage extends JPanel implements Observer{
 	private final int FONT_SIZE = 50;
 	private List<BJHand> playerHands;
 	private List<BJHand> dealerHand;
+	private boolean dealerIsPlay = false;
 
 	/***
 	 * modelの状態が変わったときにObserverから通知され起動発火するメソッド
@@ -35,6 +36,7 @@ public class CardImage extends JPanel implements Observer{
 	public void update(GUIGameFlow flow) {
 		this.playerHands =  flow.getPlayerHands();
 		this.dealerHand = flow.getDealerHands();
+		this.dealerIsPlay = flow.getDealerIsPlay();
 		repaint();
 	}
 
@@ -68,23 +70,49 @@ public class CardImage extends JPanel implements Observer{
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		int dealerCardPositionX = 0;
-		int dealerCardPositionY = 100;
+//		int dealerCardPositionX = 0;
+//		int dealerCardPositionY = 100;
 
 		super.paintComponent(g);
 		g.setFont(new Font("SansSerif", Font.BOLD, FONT_SIZE));
 
-		// ディーラーのカードの表示(1枚だけ表示)
-		if(this.dealerHand != null) {
-			Image image = getCardImage(this.dealerHand.get(0).getCards().get(0));
-			g.drawImage(image,dealerCardPositionX, dealerCardPositionY, CARD_WIDTH, CARD_HEIGHT, this);
-			dealerCardPositionX += CARD_WIDTH_SPAN;
+		// ディーラーのカードの表示
+		// 最初に2枚配られた時の描画処理
+		if(this.dealerIsPlay == false) {
+			int dealerCardPositionX = 0;
+			int dealerCardPositionY = 100;
+			
+			if(this.dealerHand != null) {
+				Image image = getCardImage(this.dealerHand.get(0).getCards().get(0));
+				g.drawImage(image,dealerCardPositionX, dealerCardPositionY, CARD_WIDTH, CARD_HEIGHT, this);
+				dealerCardPositionX += CARD_WIDTH_SPAN;
+			}
+		}
+		// dealerがプレイしたときのカードの描画処理
+		else {
+			int dealerCardPositionX = 0;
+			int dealerCardPositionY = 100;
+			
+			for(int i = 0; i < this.dealerHand.get(0).getCards().size(); i ++) {
+				if(this.dealerHand != null) {
+					Image image = getCardImage(this.dealerHand.get(0).getCards().get(i));
+					g.drawImage(image,dealerCardPositionX, dealerCardPositionY, CARD_WIDTH, CARD_HEIGHT, this);
+					dealerCardPositionX += CARD_WIDTH_SPAN;
+				}
+			}
 		}
 
 		// ディーラーのスコア表示
-		// int dealerScore = this.dealerHand.get(0).calcHandScore();
-		// String sd = String.valueOf(dealerScore);
-		g.drawString("DealerScore: ??" , DEALER_SCORE_AREA_X , DEALER_SCORE_AREA_Y);
+		// 最初に2枚配られたときのスコア表示
+		if(this.dealerIsPlay == false) {
+			g.drawString("DealerScore: ??" , DEALER_SCORE_AREA_X , DEALER_SCORE_AREA_Y);			
+		}
+		// dealerがプレイした後のスコア表示
+		else {
+			int dealerScore = this.dealerHand.get(0).calcHandScore();
+			String ds = String.valueOf(dealerScore);
+			g.drawString("DealerScore:" + ds , DEALER_SCORE_AREA_X , DEALER_SCORE_AREA_Y);
+		}
 
 		// プレイヤーのカード表示
 		int playerCardPositionX = 0;
@@ -101,8 +129,8 @@ public class CardImage extends JPanel implements Observer{
 
 				// スコアの表示
 				int playerScore = this.playerHands.get(0).calcHandScore();
-				String sp = String.valueOf(playerScore);
-				g.drawString("PlayerScore:" + sp , PLAYER_SCORE_AREA_X , PLAYER_SCORE_AREA_Y);
+				String ps = String.valueOf(playerScore);
+				g.drawString("PlayerScore:" + ps , PLAYER_SCORE_AREA_X , PLAYER_SCORE_AREA_Y);
 			}
 		}
 	}

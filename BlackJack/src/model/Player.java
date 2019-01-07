@@ -9,6 +9,7 @@ public class Player{
 	 * スプリットを使用した場合には複数の手札を持つので、手札を複数管理する
 	 */
 	private List<BJHand> hands = new ArrayList<BJHand>();
+	private boolean isPlay = false;
 	
 	public Player(Deck deck){
 		this.hands.add(new BJHand(deck));
@@ -52,6 +53,22 @@ public class Player{
 		this.hands.get(this.hands.size() -1).setCard(card);
 		// 増やした手札の2枚目は山札から加える
 		this.hands.get(this.hands.size() -1).setCard(deck.drawCard());
+	}
+	
+	/***
+	 * このインスタンスがプレイ中かどうかの状態を返すメソッド
+	 * @return
+	 */
+	public boolean getIsPlay() {
+		return this.isPlay;
+	}
+	
+	/***
+	 * このインスタンスがプレイ中かの状態をセットするメソッド
+	 * @param isPlay
+	 */
+	public void setIsPlay(boolean isPlay) {
+		this.isPlay = isPlay;
 	}
 	
 	/***
