@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JFrame;
+
 import src.GUIGameFlow;
 
 public class Window extends JFrame{
@@ -23,6 +24,7 @@ public class Window extends JFrame{
 		setResizable(true);
 		CardImage ci = new CardImage();		
 		add(ci, BorderLayout.CENTER); // FrameにJpanelを追加する
+		setBackground(Color.cyan);
 		
 		GUIGameFlow gf = new GUIGameFlow();
 		

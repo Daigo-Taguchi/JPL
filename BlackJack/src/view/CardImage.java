@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -30,6 +31,11 @@ public class CardImage extends JPanel implements Observer{
 	private List<BJHand> dealerHand;
 	private boolean dealerIsPlay = false;
 
+
+	CardImage(){
+		setBackground(new Color(0xFF00A000));
+	}
+
 	/***
 	 * modelの状態が変わったときにObserverから通知され起動発火するメソッド
 	 * paintの再描画処理を行う
@@ -49,7 +55,7 @@ public class CardImage extends JPanel implements Observer{
 	@Override
 	public void showResult(GUIGameFlow flow) {
 	}
-	
+
 	/***
 	 * modelの状態が変わったときにObserverから通知され、発火するメソッド
 	 * ここではやることがないため中身を書いていない
@@ -58,7 +64,7 @@ public class CardImage extends JPanel implements Observer{
 	public void unableButton() {
 		// TODO 自動生成されたメソッド・スタブ
 	}
-	
+
 	/***
 	 * modelの状態が変わったときにObserverから通知され、発火するメソッド
 	 * ここではやることがないため中身を書いていない
@@ -66,7 +72,7 @@ public class CardImage extends JPanel implements Observer{
 	@Override
 	public void ableButton() {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
@@ -82,7 +88,7 @@ public class CardImage extends JPanel implements Observer{
 		if(this.dealerIsPlay == false) {
 			int dealerCardPositionX = 0;
 			int dealerCardPositionY = 100;
-			
+
 			if(this.dealerHand != null) {
 				Image image = getCardImage(this.dealerHand.get(0).getCards().get(0));
 				g.drawImage(image,dealerCardPositionX, dealerCardPositionY, CARD_WIDTH, CARD_HEIGHT, this);
@@ -93,7 +99,7 @@ public class CardImage extends JPanel implements Observer{
 		else {
 			int dealerCardPositionX = 0;
 			int dealerCardPositionY = 100;
-			
+
 			for(int i = 0; i < this.dealerHand.get(0).getCards().size(); i ++) {
 				if(this.dealerHand != null) {
 					Image image = getCardImage(this.dealerHand.get(0).getCards().get(i));
@@ -106,7 +112,7 @@ public class CardImage extends JPanel implements Observer{
 		// ディーラーのスコア表示
 		// 最初に2枚配られたときのスコア表示
 		if(this.dealerIsPlay == false) {
-			g.drawString("DealerScore: ??" , DEALER_SCORE_AREA_X , DEALER_SCORE_AREA_Y);			
+			g.drawString("DealerScore: ??" , DEALER_SCORE_AREA_X , DEALER_SCORE_AREA_Y);
 		}
 		// dealerがプレイした後のスコア表示
 		else {
@@ -127,7 +133,7 @@ public class CardImage extends JPanel implements Observer{
 					g.drawImage(image, playerCardPositionX, playerCardPositionY, CARD_WIDTH, CARD_HEIGHT, this);
 					playerCardPositionX += CARD_WIDTH_SPAN;
 				}
-				
+
 				// 勝敗の表示
 				if(this.playerHands.get(i).getGameResult() == GameResult.LOSE) {
 					g.drawString("YOU LOSE", PLAYER_RESULT_AREA_X, playerResutPositionY);
