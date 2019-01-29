@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2012, 2013, 2016 RICOH Co., Ltd. All rights reserved.
  */
-package jpl.ch14.ex10;
+package ThreadPoolTest;
 
 import static org.junit.Assert.*;
 

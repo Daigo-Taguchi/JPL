@@ -1,7 +1,10 @@
 /*
  * Copyright (C) 2012, 2013, 2016 RICOH Co., Ltd. All rights reserved.
  */
-package jpl.ch14.ex10;
+package ThreadPoolTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simple Thread Pool class.
@@ -18,6 +21,7 @@ package jpl.ch14.ex10;
  *  Don't use java.util.concurrent package.
  */
 public class ThreadPool {
+	private List queue = new ArrayList();
 
     /**
      * Constructs ThreadPool.
@@ -29,7 +33,9 @@ public class ThreadPool {
      *         is less than 1
      */
     public ThreadPool(int queueSize, int numberOfThreads) {
-    	throw new AssertionError("Not Implemented Yet");
+    	if(queueSize < 1 || numberOfThreads < 1) {
+    		throw new AssertionError("Not Implemented Yet");     		
+    	}
     }
 
     /**
