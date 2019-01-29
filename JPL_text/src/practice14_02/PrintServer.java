@@ -3,16 +3,17 @@ package practice14_02;
 public class PrintServer implements Runnable{
 	private final PrintQueue requests = new PrintQueue();
 	private Thread workerThread;
-	
+
 	public PrintServer() {
-		new Thread(this).start();
+		this.workerThread = new Thread(this);
+		this.workerThread.start();
 	}
 
 	@Override
 	public void run() {
 		if(Thread.currentThread() == workerThread) {
 			for(;;) {
-				realPrint(requests.remove());
+				// realPrint(requests.remove());
 			}
 		}
 		else {
