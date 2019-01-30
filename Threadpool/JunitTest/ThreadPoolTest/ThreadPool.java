@@ -131,14 +131,15 @@ public class ThreadPool {
 	private static class DispatchThread extends Thread {
 		private List<Runnable> queue;
 		private Runnable runnable;
+		private boolean stop = false;
 
 		public DispatchThread(List<Runnable> queue) {
 			this.queue = queue;
 		}
 
 		public void run() {
-			while(true) {
-				synchronized (queue) {
+			while(this.stop == false) {
+				synchronized (this.queue) {
 					// queueの先頭のタスクを処理する
 					// 処理したらqueueから削除する
 					if(this.queue.size() > 0) {
@@ -167,7 +168,8 @@ public class ThreadPool {
 		}
 
 		public void stopThread() {
-			// threadをストップさせる処理を書く
+			// threadをストップさせる処理を書く(分からない)
+			this.stop = true;
 		}
 	}
 }
