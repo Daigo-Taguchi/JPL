@@ -44,7 +44,7 @@ public class ThreadPool {
 	 *         is less than 1
 	 */
 	public ThreadPool(int queueSize, int numberOfThreads) {
-		if((queueSize < 1) || (numberOfThreads < 1)) {
+		if(queueSize < 1 || numberOfThreads < 1) {
 			throw new IllegalArgumentException("queueSize and number of thread is inappropriate");
 		}
 		this.queueSize = queueSize;
@@ -57,25 +57,22 @@ public class ThreadPool {
 	 * @throws IllegalStateException if threads has been already started.
 	 */
 	public void start() {
-		synchronized(this) {
-			if(this.isActive) {
-				throw new IllegalStateException("threads has been already started");
-			}
-
-			// threadの最大数までthreadを作成
-			for(int i = 0; i < this.numberOfThreads; i ++) {
-				this.threadList.add(new DispatchThread(queue));
-			}
-
-			// threadListの中身を順番にstartしていく。
-			// startするときにロックを取ることで、同時に複数threadがstartされないように制御
-			for(int i = 0; i < this.numberOfThreads; i ++) {
-				synchronized(this.threadList) {
-					this.threadList.get(i).start();
-				}
-			}
-			this.isActive = true;
+		if(this.isActive) {
+			throw new IllegalStateException("threads has been already started");
 		}
+
+		// threadの最大数までthreadを作成
+		for(int i = 0; i < this.numberOfThreads; i ++) {
+			synchronized(this.threadList) {
+				this.threadList.add(new DispatchThread(queue));					
+			}
+		}
+
+		// threadListの中身を順番にstartしていく。
+		for(int i = 0; i < this.numberOfThreads; i ++) {
+			this.threadList.get(i).start();
+		}
+		this.isActive = true;
 	}
 
 	/**
@@ -84,16 +81,13 @@ public class ThreadPool {
 	 * @throws IllegalStateException if threads has not been started.
 	 */
 	public void stop() {
-		synchronized(this) {
-			if(!this.isActive) {
-				throw new IllegalStateException("threads has not been started.");
-			}
-
-			for(int i = 0; i < this.numberOfThreads; i ++) {
-				this.threadList.get(i).stopThread();
-			}
-			this.isActive = false;
+		if(!this.isActive) {
+			throw new IllegalStateException("threads has not been started.");
 		}
+		for(int i = 0; i < this.numberOfThreads; i ++) {
+			this.threadList.get(i).stopThread();
+		}
+		this.isActive = false;
 	}
 
 	/**
@@ -107,50 +101,73 @@ public class ThreadPool {
 	 * @throws IllegalStateException if this pool has not been started yet.
 	 */
 
-	/* dispathメソッドの引数で渡されたRunnableオブジェクトをqueueの中に詰めていく。
+	/* dispatchメソッドの引数で渡されたRunnableオブジェクトをqueueの中に詰めていく。
 	 * queueに詰めるときにロックを取る必要がある？
 	 *
 	 * */
 	public synchronized void dispatch(Runnable runnable) {
 		if(runnable == null) {
-			throw new AssertionError("Not Implemented Yet");
+			throw new NullPointerException("runnable is null");
 		}
 		if(!this.isActive) {
 			throw new IllegalStateException("ThreadPool has not been started");
 		}
 
 		// queueの中身が最大値以上の場合は無限ループを行って処理されるまで待つ
-		while(this.queue.size() >= this.queueSize) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+				while(this.queue.size() >= this.queueSize) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 		// queueの中身が最大値未満の場合に以下の処理を行う
 		// queueにRunnableオブジェクトを追加する。この時にロックを取得する。
-		synchronized(this.queue) {
-			this.queue.add(runnable);
-		}
+				synchronized(this.queue) {
+					this.queue.add(runnable);
+				}
 	}
 
 	private static class DispatchThread extends Thread {
 		private List<Runnable> queue;
+		private Runnable runnable;
 
 		public DispatchThread(List<Runnable> queue) {
 			this.queue = queue;
 		}
 
 		public void run() {
-
+			while(true) {
+				synchronized (queue) {
+					// queueの先頭のタスクを処理する
+					// 処理したらqueueから削除する
+					if(this.queue.size() > 0) {
+						synchronized(this.queue) {
+							this.runnable = this.queue.remove(0);
+						}
+					}
+					else {// queueの中身が空の場合
+						try {
+							this.queue.wait(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				if(this.runnable != null) {
+					this.runnable.run();					
+				}
+				// busyloopを避けるためにsleepを入れる
+				try {
+					sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		public void stopThread() {
-			try {
-				this.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			// threadをストップさせる処理を書く
 		}
 	}
 }
