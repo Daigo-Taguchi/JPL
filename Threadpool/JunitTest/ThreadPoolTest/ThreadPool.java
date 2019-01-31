@@ -6,7 +6,6 @@ package ThreadPoolTest;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Simple Thread Pool class.
  *
@@ -23,13 +22,11 @@ import java.util.List;
  */
 public class ThreadPool {
 	private List<Runnable> queue = new ArrayList<Runnable>();
-
 	/**
 	 * すべてのスレッドが実行中：true
 	 * ひとつでも空きがある状態:false
 	 */
 	private boolean isActive = false;
-
 	private List<DispatchThread> threadList = new ArrayList<DispatchThread>();
 	private int queueSize;
 	private int numberOfThreads;
@@ -57,10 +54,12 @@ public class ThreadPool {
 	 * @throws IllegalStateException if threads has been already started.
 	 */
 	public void start() {
-		if(this.isActive) {
-			throw new IllegalStateException("threads has been already started");
+		synchronized (this) {
+			if(this.isActive) {
+				throw new IllegalStateException("threads has been already started");
+			}
+			this.isActive = true;
 		}
-
 		// threadの最大数までthreadを作成
 		for(int i = 0; i < this.numberOfThreads; i ++) {
 			synchronized(this.threadList) {
@@ -72,7 +71,6 @@ public class ThreadPool {
 		for(int i = 0; i < this.numberOfThreads; i ++) {
 			this.threadList.get(i).start();
 		}
-		this.isActive = true;
 	}
 
 	/**
@@ -81,13 +79,29 @@ public class ThreadPool {
 	 * @throws IllegalStateException if threads has not been started.
 	 */
 	public void stop() {
-		if(!this.isActive) {
-			throw new IllegalStateException("threads has not been started.");
+		synchronized (this) {
+			if(!this.isActive) {
+				throw new IllegalStateException("threads has not been started.");
+			}
+			this.isActive = false;
 		}
 		for(int i = 0; i < this.numberOfThreads; i ++) {
 			this.threadList.get(i).stopThread();
 		}
-		this.isActive = false;
+		synchronized(this.queue) {
+			// notifyAllとwaitはロックをとった状態じゃないと呼べない関数
+			// だから、ロックとnotifyAllがかみ合わないと,IllegalMonitorStateExceptionが呼ばれる
+			this.queue.notifyAll();
+		}
+		for(int i = 0; i < this.numberOfThreads; i ++) {
+			try {
+				// スレッドの処理が終わるのを待つ
+				this.threadList.get(i).join();
+			} catch (InterruptedException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -114,42 +128,44 @@ public class ThreadPool {
 		}
 
 		// queueの中身が最大値以上の場合は無限ループを行って処理されるまで待つ
-				while(this.queue.size() >= this.queueSize) {
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
+		while(this.queue.size() >= this.queueSize) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		// queueの中身が最大値未満の場合に以下の処理を行う
 		// queueにRunnableオブジェクトを追加する。この時にロックを取得する。
-				synchronized(this.queue) {
-					this.queue.add(runnable);
-				}
+		synchronized(this.queue) {
+			this.queue.add(runnable);
+			this.queue.notifyAll();
+		}
 	}
 
 	private static class DispatchThread extends Thread {
 		private List<Runnable> queue;
 		private Runnable runnable;
-		private boolean stop = false;
+		private boolean isStopped = false;
 
 		public DispatchThread(List<Runnable> queue) {
 			this.queue = queue;
 		}
 
 		public void run() {
-			while(this.stop == false) {
+			while(true) {
 				synchronized (this.queue) {
 					// queueの先頭のタスクを処理する
 					// 処理したらqueueから削除する
 					if(this.queue.size() > 0) {
-						synchronized(this.queue) {
-							this.runnable = this.queue.remove(0);
-						}
+						this.runnable = this.queue.remove(0);
+					}
+					else if(this.isStopped) {
+						break;
 					}
 					else {// queueの中身が空の場合
 						try {
-							this.queue.wait(100);
+							this.queue.wait();// ここのwaitは上でqueueに対してロックをとってるから可能
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -158,18 +174,11 @@ public class ThreadPool {
 				if(this.runnable != null) {
 					this.runnable.run();					
 				}
-				// busyloopを避けるためにsleepを入れる
-				try {
-					sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 
 		public void stopThread() {
-			// threadをストップさせる処理を書く(分からない)
-			this.stop = true;
+			this.isStopped = true;
 		}
 	}
 }
