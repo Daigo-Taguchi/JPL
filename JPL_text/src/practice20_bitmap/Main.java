@@ -9,6 +9,7 @@ import java.io.IOException;
 public class Main {
 	public static void main(String[] args) {
 		Image image = new Image("img/yon.bmp");
+		image.outputImage("img/yon2.bmp");
 	}
 //		FileInputStream fi;
 //		FileOutputStream fo;
