@@ -1,15 +1,10 @@
 package practice20_bitmap;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 public class Main {
 	public static void main(String[] args) {
-		Image image = new Image("img/yon.bmp");
-		image.outputImage("img/yon2.bmp");
+		Image image = new Image("img/lena.bmp");
+		image.reversePixel();
+		image.outputImage("img/lena2.bmp");
 	}
 //		FileInputStream fi;
 //		FileOutputStream fo;
