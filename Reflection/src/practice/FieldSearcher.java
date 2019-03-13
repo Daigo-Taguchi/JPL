@@ -1,8 +1,6 @@
 package practice;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FieldSearcher {
 	
@@ -21,11 +19,6 @@ public class FieldSearcher {
 				field[i] = type.getFields()[i];
 				results[i] = field[i].toString();
 			}
-//			for (Field fi : field) {
-//				int count = 0;
-//				results[count] = fi.toString();
-//				count ++;
-//			}
 			return results;
 		} catch (ClassNotFoundException e) {
 			results[0] = "入力されたクラス名が不正です";
