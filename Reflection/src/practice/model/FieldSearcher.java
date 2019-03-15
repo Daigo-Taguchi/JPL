@@ -1,12 +1,12 @@
-package practice;
+package practice.model;
 
 import java.lang.reflect.Field;
 
 public class FieldSearcher {
-	
-	FieldSearcher(){
+
+	public FieldSearcher(){
 	}
-	
+
 	public String[] searchClassFiled(String serchClassName) {
 		Class<?> type = null;
 		Field[] field = new Field[100];

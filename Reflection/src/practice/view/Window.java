@@ -1,4 +1,4 @@
-package practice;
+package practice.view;
 
 import java.awt.Container;
 import javax.swing.JFrame;
