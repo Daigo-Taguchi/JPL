@@ -51,7 +51,7 @@ public class Panel extends JPanel{
 		add(this.list);
 	}
 
-	class TextFieldController implements ActionListener{
+	private class TextFieldController implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == textField) {
