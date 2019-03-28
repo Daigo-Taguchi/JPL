@@ -19,7 +19,7 @@ public class Converter {
 		Constructor<?>[] constructors= fi.searchConstructors(searchClassName);
 		String[] results = new String[100];
 		for(int i = 0; i < constructors.length; i++) {
-			results[i] = constructors[i].toGenericString();
+			results[i] = "#" + i + " : " + constructors[i].toGenericString();
 		}
 		return results;
 	}

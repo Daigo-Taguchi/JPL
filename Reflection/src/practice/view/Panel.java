@@ -2,6 +2,7 @@ package practice.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,9 +17,11 @@ import practice.model.FieldSearcher;
 public class Panel extends JPanel{
 	private JLabel label;
 	private JLabel label2;
+	private JLabel label3;
 	private JTextField textField;
+	private JTextField textField2;
 	private JList<String> list;
-	private String[] fieldList;
+	private String[] constructorList;
 	private Converter converter;
 
 	Panel() {
@@ -30,7 +33,7 @@ public class Panel extends JPanel{
 
 		this.label = new JLabel();
 		this.label.setForeground(Color.WHITE);
-		this.label.setText("Fieldを検索したいObjectを入力してください");
+		this.label.setText("検索したいObjectのクラス名を入力してください");
 		this.label.setBounds(0, 0, 600, 30);
 		add(this.label);
 
@@ -42,25 +45,36 @@ public class Panel extends JPanel{
 
 		this.label2 = new JLabel();
 		this.label2.setForeground(Color.WHITE);
-		this.label2.setText("## Field検索結果 ##");
+		this.label2.setText("## Constructor検索結果 ##");
 		this.label2.setBounds(0, 70, 600, 30);
 		add(this.label2);
 
-//		this.fieldList = fs.searchClassFiled(this.textField.getText());
 		this.list = new JList<String>();
 		this.list.setBounds(0, 100, 600, 300);
 		add(this.list);
+		
+		this.label3 = new JLabel();
+		this.label3.setForeground(Color.WHITE);
+		this.label3.setText("引数入力画面");
+		this.label3.setBounds(0, 410, 600, 30);
+		add(this.label3);
+		
+		this.textField2 = new JTextField(1);
+		this.textField2.setBounds(0, 440, 600, 30);
+		this.textField.addActionListener(new TextFieldController());
+		add(this.textField2);
 	}
 
 	private class TextFieldController implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == textField) {
-				//fieldList = fs.searchClassFiled(textField.getText());
-				System.out.println("##Check1");
-				//fieldList = fs.searchClassFiled(textField.getText());
-				fieldList = converter.getConstructors(textField.getText());
-				list.setListData(fieldList);
+				constructorList = converter.getConstructors(textField.getText());
+				list.setListData(constructorList);
+			}
+			
+			if(e.getSource() == textField2) {
+				// TextFiled2から受けとった内容について書く
 			}
 		}
 	}
