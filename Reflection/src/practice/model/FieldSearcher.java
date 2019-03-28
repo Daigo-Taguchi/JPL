@@ -1,28 +1,39 @@
 package practice.model;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Constructor;
 
 public class FieldSearcher {
 
 	public FieldSearcher(){
 	}
+	
 
-	public String[] searchClassFiled(String serchClassName) {
+	/***
+	 * 引数で指定したクラスのコンストラクターの一覧を取得する
+	 * 返り値はConstructor[]型配列で返す
+	 * @param serchClassName
+	 * @return
+	 */
+	public Constructor<?>[] searchConstructors(String searchClassName) {
 		Class<?> type = null;
-		Field[] field = new Field[100];
-		String[] results = new String[100];
+		Constructor<?>[] constructors = new Constructor[100];
 		try {
 			// クラスObjectの取得
-			type = Class.forName(serchClassName);
-			// 取得したクラスオブジェクトからFieldを取得し、Stringのリストに格納
-			for (int i = 0; i < type.getFields().length; i ++) {
-				field[i] = type.getFields()[i];
-				results[i] = field[i].toString();
-			}
-			return results;
-		} catch (ClassNotFoundException e) {
-			results[0] = "入力されたクラス名が不正です";
-			return results;
+			type = Class.forName(searchClassName);
+			constructors = type.getConstructors();
+			
+//			// コンストラクター配列の中身確認用
+//			for(Constructor<?> constructor : constructors) {
+//				System.out.printf("Consructor: %s%n," , constructor.toGenericString());
+//			}
+			
+			return constructors;
+		} catch (Exception e) {
+			return constructors;
 		}
+	}
+	
+	public void toInstance() {
+		
 	}
 }
