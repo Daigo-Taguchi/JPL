@@ -31,6 +31,8 @@ public class FieldSearcher {
 //			for(Constructor<?> constructor : constructors) {
 //				System.out.printf("Consructor: %s%n," , constructor.toGenericString());
 //			}
+			
+			return constructors;
 
 			// return constructors;
 		} catch (Exception e) {
@@ -39,17 +41,22 @@ public class FieldSearcher {
 	}
 
 	/***
-	 * コンストラクタに利用する引数の型の配列と、引数の値の配列を受け取り、
+	 * コンストラクタに利用する引数の型の配列と、引数の値を受け取り、
 	 * 引数の個数に応じたコンストラクタを利用してインスタンス化を行う
 	 */
-	public void toInstance(int index, Object[] parameter) {
+	public boolean toInstance(int index, Object... parameter) {
 		// どうやってコンストラクタの引数を指定してインスタンス化させるのか
 			try {
+				for (Object ps : parameter) {
+					System.out.println(ps);
+				}
 				this.constructors[index].newInstance(parameter);
+				return true;
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
+				return false;
 			}
 	}
 

@@ -5,35 +5,36 @@ import java.awt.Dimension;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import practice.controller.Converter;
 import practice.model.FieldSearcher;
 
 public class Panel extends JPanel{
 	private JLabel label;
 	private JLabel label2;
 	private JLabel label3;
+	private JLabel label4;
 	private JTextField textField;
 	private JTextField textField2;
 	private JList<String> list;
 	private String[] constructorList;
-	private Converter converter;
+	private FieldSearcher fi = new FieldSearcher();
 
 	Panel() {
 		setLayout(null);
 		setBackground(Color.DARK_GRAY);
 		setPreferredSize(new Dimension(600, 600)); // JPanelのサイズ指定
-		
-		this.converter = new Converter();
 
 		this.label = new JLabel();
 		this.label.setForeground(Color.WHITE);
-		this.label.setText("検索したいObjectのクラス名を入力してください");
+		this.label.setText("コンストラクタを検索したいObject名を入力してください");
 		this.label.setBounds(0, 0, 600, 30);
 		add(this.label);
 
@@ -61,22 +62,67 @@ public class Panel extends JPanel{
 		
 		this.textField2 = new JTextField(1);
 		this.textField2.setBounds(0, 440, 600, 30);
-		this.textField.addActionListener(new TextFieldController());
+		this.textField2.addActionListener(new TextFieldController());
 		add(this.textField2);
+		
+		this.label4 = new JLabel();
+		this.label4.setForeground(Color.RED);
+		this.label4.setBounds(0, 480, 600, 30);
+		add(this.label4);
 	}
 
 	private class TextFieldController implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == textField) {
-				constructorList = converter.getConstructors(textField.getText());
+				constructorList = getConstructors(textField.getText());
 				list.setListData(constructorList);
 			}
 			
 			if(e.getSource() == textField2) {
-				// TextFiled2から受けとった内容について書く
+				boolean result;
+				String parameter = textField2.getText();
+				String[] parameters = parameter.split("," , 0);
+//				for (int i =0; i < parameters.length; i ++) {
+//					System.out.println(parameters[i]);
+//				}
+				List<Object> resultParameters = new ArrayList<Object>();
+				// パラメータとして入力された値に""が含まれているかを判別して、含まれていれば文字列、そうでなければintとする
+				// ListじゃなくてOnject型の配列で持つ必要がある？
+				// 配列で持つと、宣言時に確保した長さに入れないとnullが入っちゃう
+				for(int i = 0; i < parameters.length; i ++) {
+					 if( parameters[i].indexOf("\"") == 0) {
+						 System.out.println("aaaaaaaaaaaaaaaaaaaaa");
+						 resultParameters.add(parameters[i]);
+					 } else {
+						 System.out.println("bbbbbbbbbbbbbbbbbbbbb");
+						 resultParameters.add(Integer.parseInt(parameters[i]));
+					 }
+				}
+				
+				result =  fi.toInstance(list.getSelectedIndex(), resultParameters);
+				if (result) {
+					label4.setText("インスタンス生成成功");
+				} else {
+					label4.setText("パラメータが不正です");
+				}
 			}
 		}
+	}
+	
+	/***
+	 * 指定したクラス名のコンストラクタ一覧のString配列を取得する
+	 * @param searchClassName
+	 * @return results
+	 */
+	private String[] getConstructors(String searchClassName) {
+		this.fi = new FieldSearcher();
+		Constructor<?>[] constructors= fi.searchConstructors(searchClassName);
+		String[] results = new String[100];
+		for(int i = 0; i < constructors.length; i++) {
+			results[i] = "#" + i + " : " + constructors[i].toGenericString();
+		}
+		return results;
 	}
 
 //	public void paintComponent(Graphics g) {
