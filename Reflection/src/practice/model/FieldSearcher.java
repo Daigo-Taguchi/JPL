@@ -57,9 +57,6 @@ public class FieldSearcher {
 //					System.out.println(ps);
 //				}
 				instanceList.add( this.constructors[index].newInstance(parameter));
-				for(Object o: instanceList) {
-					System.out.println(o.getClass().getSimpleName());
-				}
 				return true;
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
@@ -67,6 +64,14 @@ public class FieldSearcher {
 				e.printStackTrace();
 				return false;
 			}
+	}
+	
+	public void toInstanceWithArray(int index) {
+		Class<?>[] o =  this.constructors[index].getParameterTypes();
+		// System.out.println(o[0]);
+		
+		// どうやって配列を生成するのか？？？
+	
 	}
 	
 	/**
