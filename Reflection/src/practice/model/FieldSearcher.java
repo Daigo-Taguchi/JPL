@@ -2,10 +2,14 @@ package practice.model;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FieldSearcher {
 	private Class<?> clazz;
+	private List<Class<?>> classList  = new ArrayList<Class<?>>();
 	private Constructor<?>[] constructors;
+	private List<Object> instanceList = new ArrayList<Object>();
 
 	public FieldSearcher(){
 		this.constructors = new Constructor<?>[100];
@@ -25,6 +29,7 @@ public class FieldSearcher {
 		try {
 			// クラスObjectの取得
 			this.clazz = Class.forName(searchClassName);
+			this.classList.add(Class.forName(searchClassName));
 			constructors = clazz.getConstructors();
 
 //			// コンストラクター配列の中身確認用
@@ -47,10 +52,14 @@ public class FieldSearcher {
 	public boolean toInstance(int index, Object... parameter) {
 		// どうやってコンストラクタの引数を指定してインスタンス化させるのか
 			try {
-				for (Object ps : parameter) {
-					System.out.println(ps);
+//				// 引数確認用
+//				for (Object ps : parameter) {
+//					System.out.println(ps);
+//				}
+				instanceList.add( this.constructors[index].newInstance(parameter));
+				for(Object o: instanceList) {
+					System.out.println(o.getClass().getSimpleName());
 				}
-				this.constructors[index].newInstance(parameter);
 				return true;
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
@@ -58,6 +67,14 @@ public class FieldSearcher {
 				e.printStackTrace();
 				return false;
 			}
+	}
+	
+	/**
+	 * 保持しているインスタンスのListを取得する
+	 * @return instanceList
+	 */
+	public List<Object> getInstanceList() {
+		return this.instanceList;
 	}
 
 	/**

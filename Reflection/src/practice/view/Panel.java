@@ -1,5 +1,6 @@
 package practice.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -9,9 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import practice.model.FieldSearcher;
@@ -21,13 +24,21 @@ public class Panel extends JPanel{
 	private JLabel label2;
 	private JLabel label3;
 	private JLabel label4;
+	private JLabel label5;
 	private JTextField textField;
 	private JTextField textField2;
 	private JList<String> list;
+	private JList<String> list2;
 	private String[] constructorList;
+	private String[] instanceList;
 	private FieldSearcher fi = new FieldSearcher();
+	
+	// private JFrame frame;
 
 	Panel() {
+		this.fi = new FieldSearcher();
+		// this.frame = new JFrame();
+		
 		setLayout(null);
 		setBackground(Color.DARK_GRAY);
 		setPreferredSize(new Dimension(600, 600)); // JPanelのサイズ指定
@@ -69,9 +80,25 @@ public class Panel extends JPanel{
 		this.label4.setForeground(Color.RED);
 		this.label4.setBounds(0, 480, 600, 30);
 		add(this.label4);
+		
+		this.label5 = new JLabel();
+		this.label5.setForeground(Color.WHITE);
+		this.label5.setText("インスタンス");
+		this.label5.setBounds(610, 0, 600, 30);
+		add(this.label5);
+		
+		
+		this.list2 = new JList<String>();
+		this.list2.setBounds(610, 30, 250, 90);
+//		JScrollPane scrollPane  = new JScrollPane(list2);
+//		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//		this.frame.getContentPane().add(scrollPane);
+		add(this.list2);
 	}
 
 	private class TextFieldController implements ActionListener{
+		List<Object> resultParameters = new ArrayList<Object>();
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == textField) {
@@ -83,14 +110,8 @@ public class Panel extends JPanel{
 				boolean result;
 				String parameter = textField2.getText();
 				String[] parameters = parameter.split("," , 0);
-//				for (int i =0; i < parameters.length; i ++) {
-//					System.out.println(parameters[i]);
-//				}
-				List<Object> resultParameters = new ArrayList<Object>();
+				
 				// パラメータとして入力された値に""が含まれているかを判別して、含まれていれば文字列、そうでなければintとする
-				// ListじゃなくてOnject型の配列で持つ必要がある？
-				// 配列で持つと、宣言時に確保した長さに入れないとnullが入っちゃう
-
 				for(String s: parameters) {
 					s = s.trim();// 先頭と末尾の空白を削除する
 					if (s.startsWith("\"") && s.endsWith("\"")) {
@@ -99,13 +120,20 @@ public class Panel extends JPanel{
 						resultParameters.add(Integer.parseInt(s));
 					}
 				}
+				
 
 				result =  fi.toInstance(list.getSelectedIndex(), resultParameters.toArray());
 				if (result) {
 					label4.setText("インスタンス生成成功");
+					resultParameters.clear(); // 1つのインスタンス化が終わると、入力された引数の初期化をする
 				} else {
 					label4.setText("パラメータが不正です");
+					resultParameters.clear();
 				}
+				
+				// インスタンスのListをTextListに反映
+				instanceList = getInstances();
+				list2.setListData(instanceList);
 			}
 		}
 	}
@@ -116,11 +144,23 @@ public class Panel extends JPanel{
 	 * @return results
 	 */
 	private String[] getConstructors(String searchClassName) {
-		this.fi = new FieldSearcher();
 		Constructor<?>[] constructors= fi.searchConstructors(searchClassName);
 		String[] results = new String[100];
 		for(int i = 0; i < constructors.length; i++) {
 			results[i] = "#" + i + " : " + constructors[i].toGenericString();
+		}
+		return results;
+	}
+	
+	/**
+	 * modelからインスタンス一覧を取得し、インスタンス名をString配列で取得する
+	 * @return results
+	 */
+	private String[] getInstances() {
+		String[] results = new String[100];
+		List<Object> instances =  this.fi.getInstanceList();
+		for(int i = 0 ; i < instances.size(); i ++) {
+			results[i] = "#" + i + " : " + instances.get(i).getClass().getSimpleName();
 		}
 		return results;
 	}
