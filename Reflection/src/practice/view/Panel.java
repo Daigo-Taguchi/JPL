@@ -2,12 +2,12 @@ package practice.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -53,18 +53,18 @@ public class Panel extends JPanel{
 		this.list = new JList<String>();
 		this.list.setBounds(0, 100, 600, 300);
 		add(this.list);
-		
+
 		this.label3 = new JLabel();
 		this.label3.setForeground(Color.WHITE);
 		this.label3.setText("引数入力画面");
 		this.label3.setBounds(0, 410, 600, 30);
 		add(this.label3);
-		
+
 		this.textField2 = new JTextField(1);
 		this.textField2.setBounds(0, 440, 600, 30);
 		this.textField2.addActionListener(new TextFieldController());
 		add(this.textField2);
-		
+
 		this.label4 = new JLabel();
 		this.label4.setForeground(Color.RED);
 		this.label4.setBounds(0, 480, 600, 30);
@@ -78,7 +78,7 @@ public class Panel extends JPanel{
 				constructorList = getConstructors(textField.getText());
 				list.setListData(constructorList);
 			}
-			
+
 			if(e.getSource() == textField2) {
 				boolean result;
 				String parameter = textField2.getText();
@@ -90,17 +90,17 @@ public class Panel extends JPanel{
 				// パラメータとして入力された値に""が含まれているかを判別して、含まれていれば文字列、そうでなければintとする
 				// ListじゃなくてOnject型の配列で持つ必要がある？
 				// 配列で持つと、宣言時に確保した長さに入れないとnullが入っちゃう
-				for(int i = 0; i < parameters.length; i ++) {
-					 if( parameters[i].indexOf("\"") == 0) {
-						 System.out.println("aaaaaaaaaaaaaaaaaaaaa");
-						 resultParameters.add(parameters[i]);
-					 } else {
-						 System.out.println("bbbbbbbbbbbbbbbbbbbbb");
-						 resultParameters.add(Integer.parseInt(parameters[i]));
-					 }
+
+				for(String s: parameters) {
+					s = s.trim();// 先頭と末尾の空白を削除する
+					if (s.startsWith("\"") && s.endsWith("\"")) {
+						resultParameters.add(s.substring(1,s.length() -1));
+					} else if(Pattern.matches("[-\\+]?[0-9]+",s)) {
+						resultParameters.add(Integer.parseInt(s));
+					}
 				}
-				
-				result =  fi.toInstance(list.getSelectedIndex(), resultParameters);
+
+				result =  fi.toInstance(list.getSelectedIndex(), resultParameters.toArray());
 				if (result) {
 					label4.setText("インスタンス生成成功");
 				} else {
@@ -109,7 +109,7 @@ public class Panel extends JPanel{
 			}
 		}
 	}
-	
+
 	/***
 	 * 指定したクラス名のコンストラクタ一覧のString配列を取得する
 	 * @param searchClassName
