@@ -11,14 +11,14 @@ public class Window {
 	
 	public Window(String title){
 		this.frame = new JFrame(title);
-		this.frame.setSize(1200, 600);
+		this.frame.setSize(1200, 800);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setLocationRelativeTo(null);// 画面中央にFrameを表示
 		this.frame.setLayout(null);
 		this.contentPane = this.frame.getContentPane();
 		
 		this.p1 = new Panel();
-		this.p1.setBounds(0 ,0, 1200, 600);
+		this.p1.setBounds(0 ,0, 1200, 800);
 		this.contentPane.add(this.p1);
 		
 		// 最後に書かないと未完成の状態で表示されちゃう

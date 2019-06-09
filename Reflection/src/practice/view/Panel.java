@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,11 @@ public class Panel extends JPanel{
 	private JLabel label;
 	private JLabel label2;
 	private JLabel label3;
-	private JLabel label4;
+	private JLabel resultMessage;
 	private JLabel label5;
 	private JLabel label6;
 	private JLabel label7;
+	private JLabel console;
 	private JTextField textField;
 	private JTextField textField2;
 	private JTextField textField3;
@@ -44,7 +46,7 @@ public class Panel extends JPanel{
 
 		setLayout(null);
 		setBackground(Color.DARK_GRAY);
-		setPreferredSize(new Dimension(600, 600)); // JPanelのサイズ指定
+		setPreferredSize(new Dimension(600, 800)); // JPanelのサイズ指定
 
 		this.label = new JLabel();
 		this.label.setForeground(Color.WHITE);
@@ -52,9 +54,8 @@ public class Panel extends JPanel{
 		this.label.setBounds(0, 0, 600, 30);
 		add(this.label);
 
-		this.textField = new JTextField(1);
+		this.textField = new JTextField("java.lang.String" , 1);
 		this.textField.setBounds(0, 30, 600, 30);
-
 		this.textField.addActionListener(new TextFieldController());
 		add(this.textField);
 
@@ -70,7 +71,7 @@ public class Panel extends JPanel{
 
 		this.label3 = new JLabel();
 		this.label3.setForeground(Color.WHITE);
-		this.label3.setText("引数入力画面");
+		this.label3.setText("コンストラクタ引数入力画面");
 		this.label3.setBounds(0, 410, 250, 30);
 		add(this.label3);
 
@@ -81,7 +82,7 @@ public class Panel extends JPanel{
 
 		this.label6 = new JLabel();
 		this.label6.setForeground(Color.WHITE);
-		this.label6.setText("引数入力画面(配列)");
+		this.label6.setText("空配列生成");
 		this.label6.setBounds(270, 410, 250, 30);
 		add(this.label6);
 
@@ -96,16 +97,21 @@ public class Panel extends JPanel{
 		this.textField3.addActionListener(new TextFieldController());
 		add(this.textField3);
 
-		this.label4 = new JLabel();
-		this.label4.setForeground(Color.RED);
-		this.label4.setBounds(0, 480, 600, 30);
-		add(this.label4);
+		this.resultMessage = new JLabel();
+		this.resultMessage.setForeground(Color.RED);
+		this.resultMessage.setBounds(0, 480, 600, 30);
+		add(this.resultMessage);
 
 		this.label5 = new JLabel();
 		this.label5.setForeground(Color.WHITE);
 		this.label5.setText("インスタンス");
 		this.label5.setBounds(610, 0, 600, 30);
 		add(this.label5);
+		
+		this.console = new JLabel("**実行結果**");
+		this.console.setForeground(Color.WHITE);
+		this.console.setBounds(0, 500, 600, 200);
+		add(this.console);
 
 
 		this.list2 = new JList<String>();
@@ -143,12 +149,11 @@ public class Panel extends JPanel{
 
 
 				result =  fi.toInstance(list.getSelectedIndex(), resultParameters.toArray());
-				fi.toInstanceWithArray(list.getSelectedIndex());
 				if (result) {
-					label4.setText("インスタンス生成成功");
+					resultMessage.setText("インスタンス生成成功");
 					resultParameters.clear(); // 1つのインスタンス化が終わると、入力された引数の初期化をする
 				} else {
-					label4.setText("パラメータが不正です");
+					resultMessage.setText("パラメータが不正です");
 					resultParameters.clear();
 				}
 
@@ -158,13 +163,18 @@ public class Panel extends JPanel{
 			}
 
 			if(e.getSource() == textField3) {
-				String parameter = textField2.getText();
+				String parameter = textField3.getText();
 
 				// 数字の入力以外は不正なパラメータとして処理
 				if(Pattern.matches("[0-9]+",parameter)) {
-					
+					fi.toInstanceWithArray(textField.getText(), Integer.parseInt(textField3.getText()));
+					// ここで、modelが保持しているインスタンスのリストが更新されたから、Observerが検知して、Instance表示画面を更新するべき
+					instanceList = getInstances();
+					list2.setListData(instanceList);
+					resultMessage.setText("インスタンス生成成功");
+					console.setText("長さ：" + textField3.getText() + "\\" + "aaaaaaaaaaaaaa");
 				} else {
-					label4.setText("パラメータが不正です");
+					resultMessage.setText("パラメータが不正です");
 				}
 			}
 		}
@@ -196,10 +206,4 @@ public class Panel extends JPanel{
 		}
 		return results;
 	}
-
-	//	public void paintComponent(Graphics g) {
-	//		super.paintComponent(g);
-	//		g.drawString("TEST", 100, 100);
-	//		System.out.println("Check");
-	//	}
 }

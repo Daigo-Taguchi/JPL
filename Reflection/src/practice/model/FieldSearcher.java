@@ -1,5 +1,6 @@
 package practice.model;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.List;
 
 public class FieldSearcher {
 	private Class<?> clazz;
-	private List<Class<?>> classList  = new ArrayList<Class<?>>();
+	// private List<Class<?>> classList  = new ArrayList<Class<?>>();
 	private Constructor<?>[] constructors;
 	private List<Object> instanceList = new ArrayList<Object>();
 
@@ -19,17 +20,17 @@ public class FieldSearcher {
 	/***
 	 * 引数で指定したクラスのコンストラクターの一覧を取得する
 	 * 返り値はConstructor[]型配列で返す
-	 * @param searchClassName
+	 * @param className
 	 * @return
 	 *
 	 * loadConstructorとかで、modelのListを保持→observerで通知
 	 * converterの処理はviewに任せておｋ
 	 */
-	public Constructor<?>[] searchConstructors(String searchClassName) {
+	public Constructor<?>[] searchConstructors(String className) {
 		try {
 			// クラスObjectの取得
-			this.clazz = Class.forName(searchClassName);
-			this.classList.add(Class.forName(searchClassName));
+			this.clazz = Class.forName(className);
+			// this.classList.add(Class.forName(className));
 			constructors = clazz.getConstructors();
 
 //			// コンストラクター配列の中身確認用
@@ -66,12 +67,15 @@ public class FieldSearcher {
 			}
 	}
 	
-	public void toInstanceWithArray(int index) {
-		Class<?>[] o =  this.constructors[index].getParameterTypes();
-		// System.out.println(o[0]);
-		
-		// どうやって配列を生成するのか？？？
-	
+	public void toInstanceWithArray(String className , int length) {
+		Class<?> clazz;
+		try {
+			clazz = Class.forName(className);
+			instanceList.add(Array.newInstance(clazz, length));
+		} catch (ClassNotFoundException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 	}
 	
 	/**
