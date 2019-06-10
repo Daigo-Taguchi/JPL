@@ -1,21 +1,19 @@
 package practice.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import practice.model.FieldSearcher;
@@ -24,7 +22,6 @@ public class Panel extends JPanel{
 	private JLabel label;
 	private JLabel label2;
 	private JLabel label3;
-	private JLabel resultMessage;
 	private JLabel label5;
 	private JLabel label6;
 	private JLabel label7;
@@ -32,17 +29,15 @@ public class Panel extends JPanel{
 	private JTextField textField;
 	private JTextField textField2;
 	private JTextField textField3;
-	private JList<String> list;
-	private JList<String> list2;
-	private String[] constructorList;
-	private String[] instanceList;
-	private FieldSearcher fi = new FieldSearcher();
-
-	// private JFrame frame;
+	private JList<String> constructorList;
+	private JList<String> instanceList;
+	private JTextArea consoleText;
+	private String[] constructorDataList;
+	private String[] instanceDataList;
+	private FieldSearcher fieldSeacher = new FieldSearcher();
 
 	Panel() {
-		this.fi = new FieldSearcher();
-		// this.frame = new JFrame();
+		this.fieldSeacher = new FieldSearcher();
 
 		setLayout(null);
 		setBackground(Color.DARK_GRAY);
@@ -65,9 +60,10 @@ public class Panel extends JPanel{
 		this.label2.setBounds(0, 70, 600, 30);
 		add(this.label2);
 
-		this.list = new JList<String>();
-		this.list.setBounds(0, 100, 600, 300);
-		add(this.list);
+		this.constructorList = new JList<String>();
+		JScrollPane scrollPane = new JScrollPane(constructorList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(0, 100, 600, 300);
+		this.add(scrollPane);
 
 		this.label3 = new JLabel();
 		this.label3.setForeground(Color.WHITE);
@@ -96,11 +92,16 @@ public class Panel extends JPanel{
 		this.textField3.setBounds(310, 440, 290, 30);
 		this.textField3.addActionListener(new TextFieldController());
 		add(this.textField3);
-
-		this.resultMessage = new JLabel();
-		this.resultMessage.setForeground(Color.RED);
-		this.resultMessage.setBounds(0, 480, 600, 30);
-		add(this.resultMessage);
+		
+		this.console = new JLabel("実行結果");
+		this.console.setForeground(Color.WHITE);
+		this.console.setBounds(0, 500, 600, 30);
+		add(this.console);
+		
+		this.consoleText  = new JTextArea(10, 50);
+		this.consoleText.setEditable(false);
+		consoleText.setBounds(0, 530, 600, 200);
+		this.add(this.consoleText);
 
 		this.label5 = new JLabel();
 		this.label5.setForeground(Color.WHITE);
@@ -108,18 +109,10 @@ public class Panel extends JPanel{
 		this.label5.setBounds(610, 0, 600, 30);
 		add(this.label5);
 		
-		this.console = new JLabel("**実行結果**");
-		this.console.setForeground(Color.WHITE);
-		this.console.setBounds(0, 500, 600, 200);
-		add(this.console);
-
-
-		this.list2 = new JList<String>();
-		this.list2.setBounds(610, 30, 250, 90);
-		//		JScrollPane scrollPane  = new JScrollPane(list2);
-		//		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		//		this.frame.getContentPane().add(scrollPane);
-		add(this.list2);
+		this.instanceList = new JList<String>();
+		JScrollPane instanceListScrollPane = new JScrollPane(instanceList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		instanceListScrollPane.setBounds(610, 30, 250, 90);
+		add(instanceListScrollPane);
 	}
 
 	private class TextFieldController implements ActionListener{
@@ -128,8 +121,8 @@ public class Panel extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == textField) {
-				constructorList = getConstructors(textField.getText());
-				list.setListData(constructorList);
+				constructorDataList = getConstructors(textField.getText());
+				constructorList.setListData(constructorDataList);
 			}
 
 			if(e.getSource() == textField2) {
@@ -148,18 +141,18 @@ public class Panel extends JPanel{
 				}
 
 
-				result =  fi.toInstance(list.getSelectedIndex(), resultParameters.toArray());
+				result =  fieldSeacher.toInstance(constructorList.getSelectedIndex(), resultParameters.toArray());
 				if (result) {
-					resultMessage.setText("インスタンス生成成功");
+					consoleText.setText("インスタンス生成成功\r\n\r\n");
 					resultParameters.clear(); // 1つのインスタンス化が終わると、入力された引数の初期化をする
 				} else {
-					resultMessage.setText("パラメータが不正です");
+					consoleText.setText("パラメータが不正です\r\n\r\n");
 					resultParameters.clear();
 				}
 
 				// インスタンスのListをTextListに反映
-				instanceList = getInstances();
-				list2.setListData(instanceList);
+				instanceDataList = getInstances();
+				instanceList.setListData(instanceDataList);
 			}
 
 			if(e.getSource() == textField3) {
@@ -167,14 +160,14 @@ public class Panel extends JPanel{
 
 				// 数字の入力以外は不正なパラメータとして処理
 				if(Pattern.matches("[0-9]+",parameter)) {
-					fi.toInstanceWithArray(textField.getText(), Integer.parseInt(textField3.getText()));
+					fieldSeacher.toInstanceWithArray(textField.getText(), Integer.parseInt(textField3.getText()));
 					// ここで、modelが保持しているインスタンスのリストが更新されたから、Observerが検知して、Instance表示画面を更新するべき
-					instanceList = getInstances();
-					list2.setListData(instanceList);
-					resultMessage.setText("インスタンス生成成功");
-					console.setText("長さ：" + textField3.getText() + "\\" + "aaaaaaaaaaaaaa");
+					instanceDataList = getInstances();
+					instanceList.setListData(instanceDataList);
+					consoleText.setText("インスタンス生成成功\r\n\r\n");
+					consoleText.append("長さ：" + textField3.getText() + "\r\n");
 				} else {
-					resultMessage.setText("パラメータが不正です");
+					consoleText.setText("パラメータが不正です\r\n\r\n");
 				}
 			}
 		}
@@ -186,7 +179,7 @@ public class Panel extends JPanel{
 	 * @return results
 	 */
 	private String[] getConstructors(String searchClassName) {
-		Constructor<?>[] constructors= fi.searchConstructors(searchClassName);
+		Constructor<?>[] constructors= fieldSeacher.searchConstructors(searchClassName);
 		String[] results = new String[100];
 		for(int i = 0; i < constructors.length; i++) {
 			results[i] = "#" + i + " : " + constructors[i].toGenericString();
@@ -200,7 +193,7 @@ public class Panel extends JPanel{
 	 */
 	private String[] getInstances() {
 		String[] results = new String[100];
-		List<Object> instances =  this.fi.getInstanceList();
+		List<Object> instances =  this.fieldSeacher.getInstanceList();
 		for(int i = 0 ; i < instances.size(); i ++) {
 			results[i] = "#" + i + " : " + instances.get(i).getClass().getSimpleName();
 		}
