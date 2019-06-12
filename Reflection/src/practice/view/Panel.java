@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -26,20 +27,24 @@ public class Panel extends JPanel{
 	private JLabel label5;
 	private JLabel label6;
 	private JLabel label7;
+	private JLabel element;
 	private JLabel console;
 	private JTextField textField;
 	private JTextField textField2;
 	private JTextField textField3;
 	private JList<String> constructorList;
 	private JList<String> instanceList;
+	private JList<String> elementList;
 	private JTextArea consoleText;
 	private String[] constructorDataList;
 	private String[] instanceDataList;
+	private List<String> elementDataList;
+	private JButton getElementButton;
 	private FieldSearcher fieldSeacher = new FieldSearcher();
 
 	Panel() {
 		this.fieldSeacher = new FieldSearcher();
-
+		this.elementDataList = new ArrayList<String>();
 		setLayout(null);
 		setBackground(Color.DARK_GRAY);
 		setPreferredSize(new Dimension(600, 800)); // JPanelのサイズ指定
@@ -107,13 +112,30 @@ public class Panel extends JPanel{
 		this.label5 = new JLabel();
 		this.label5.setForeground(Color.WHITE);
 		this.label5.setText("インスタンス");
-		this.label5.setBounds(610, 0, 600, 30);
+		this.label5.setBounds(610, 0, 250, 30);
 		add(this.label5);
 		
 		this.instanceList = new JList<String>();
 		JScrollPane instanceListScrollPane = new JScrollPane(instanceList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		instanceListScrollPane.setBounds(610, 30, 250, 90);
 		add(instanceListScrollPane);
+		
+		this.element = new JLabel();
+		this.element.setForeground(Color.WHITE);
+		this.element.setText("取得データ");
+		this.element.setBounds(880, 0, 250, 30);
+		add(this.element);
+		
+		this.elementList = new JList<String>();
+		JScrollPane elementListScrollPane = new JScrollPane(elementList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		elementListScrollPane.setBounds(880, 30, 250, 90);
+		this.add(elementListScrollPane);
+		
+		this.getElementButton = new JButton("データ取得");
+		this.getElementButton.setBounds(610, 130, 250, 30);
+		this.getElementButton.addActionListener(new ButtonController());
+		this.add(this.getElementButton);
+		
 	}
 
 	private class TextFieldController implements ActionListener{
@@ -140,7 +162,6 @@ public class Panel extends JPanel{
 						resultParameters.add(Integer.parseInt(s));
 					}
 				}
-
 
 				result =  fieldSeacher.toInstance(constructorList.getSelectedIndex(), resultParameters.toArray());
 				if (result) {
@@ -171,7 +192,7 @@ public class Panel extends JPanel{
 					for (int i = 0; i < Integer.parseInt(textField3.getText()); i ++ ) {
 						Object arrayElement = Array.get(arrayInstance, i);
 						if(arrayElement == null) {
-							consoleText.append("[" + i + "] = null" + "\r\n"); 							
+							consoleText.append("[" + i + "] = null" + "\r\n");
 						} else {
 							consoleText.append("[" + i + "] = " + arrayElement.toString());
 						}
@@ -179,6 +200,29 @@ public class Panel extends JPanel{
 				} else {
 					consoleText.setText("パラメータが不正です\r\n\r\n");
 				}
+			}
+		}
+	}
+	
+	private class ButtonController implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent ebutton) {
+			// TODO 自動生成されたメソッド・スタブ
+			if(ebutton.getSource() == getElementButton) {
+				Object selectedInstance = fieldSeacher.getInstanceList().get(instanceList.getSelectedIndex());
+				for (int i = 0; i < Array.getLength(selectedInstance); i ++) {
+					if (Array.get(selectedInstance, i) == null) {
+						elementDataList.add("#" + instanceList.getSelectedIndex() + "#" + i + "：null");
+					} else {
+						elementDataList.add("#" + instanceList.getSelectedIndex() + "#" + i + "：" + Array.get(selectedInstance, i).toString());						
+					}
+				}
+				String[] elements = elementDataList.toArray(new String[elementDataList.size()]);
+				for(String s: elements) {
+					System.out.println(s);
+				}
+				elementList.setListData(elements);
 			}
 		}
 	}
