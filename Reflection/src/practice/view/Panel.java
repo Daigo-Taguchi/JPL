@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -160,12 +161,21 @@ public class Panel extends JPanel{
 
 				// 数字の入力以外は不正なパラメータとして処理
 				if(Pattern.matches("[0-9]+",parameter)) {
-					fieldSeacher.toInstanceWithArray(textField.getText(), Integer.parseInt(textField3.getText()));
+					Object arrayInstance;
+					arrayInstance =  fieldSeacher.toInstanceWithArray(textField.getText(), Integer.parseInt(textField3.getText()));
 					// ここで、modelが保持しているインスタンスのリストが更新されたから、Observerが検知して、Instance表示画面を更新するべき
 					instanceDataList = getInstances();
 					instanceList.setListData(instanceDataList);
 					consoleText.setText("インスタンス生成成功\r\n\r\n");
 					consoleText.append("長さ：" + textField3.getText() + "\r\n");
+					for (int i = 0; i < Integer.parseInt(textField3.getText()); i ++ ) {
+						Object arrayElement = Array.get(arrayInstance, i);
+						if(arrayElement == null) {
+							consoleText.append("[" + i + "] = null" + "\r\n"); 							
+						} else {
+							consoleText.append("[" + i + "] = " + arrayElement.toString());
+						}
+					}
 				} else {
 					consoleText.setText("パラメータが不正です\r\n\r\n");
 				}

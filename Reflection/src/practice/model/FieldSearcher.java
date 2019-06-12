@@ -11,9 +11,10 @@ public class FieldSearcher {
 	// private List<Class<?>> classList  = new ArrayList<Class<?>>();
 	private Constructor<?>[] constructors;
 	private List<Object> instanceList = new ArrayList<Object>();
+	private final int CONSTRUCTOR_LIST_LENGTH = 100;
 
 	public FieldSearcher(){
-		this.constructors = new Constructor<?>[100];
+		this.constructors = new Constructor<?>[CONSTRUCTOR_LIST_LENGTH];
 		this.clazz = null;
 	}
 
@@ -67,14 +68,23 @@ public class FieldSearcher {
 			}
 	}
 	
-	public void toInstanceWithArray(String className , int length) {
+	/**
+	 * 引数に入力したクラス名の配列のインスタンスを生成する
+	 * @param className
+	 * @param length
+	 */
+	public Object toInstanceWithArray(String className , int length) {
 		Class<?> clazz;
+		Object object;
 		try {
 			clazz = Class.forName(className);
-			instanceList.add(Array.newInstance(clazz, length));
+			object = Array.newInstance(clazz, length);
+			instanceList.add(object);
+			return object;
 		} catch (ClassNotFoundException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+			return null;
 		}
 	}
 	
