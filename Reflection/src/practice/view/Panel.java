@@ -39,6 +39,7 @@ public class Panel extends JPanel{
 	private String[] constructorDataList;
 	private String[] instanceDataList;
 	private List<String> elementDataList;
+	private JButton getArrayElementButton;
 	private JButton getElementButton;
 	private FieldSearcher fieldSeacher = new FieldSearcher();
 
@@ -98,12 +99,12 @@ public class Panel extends JPanel{
 		this.textField3.setBounds(310, 440, 290, 30);
 		this.textField3.addActionListener(new TextFieldController());
 		add(this.textField3);
-		
+
 		this.console = new JLabel("実行結果");
 		this.console.setForeground(Color.WHITE);
 		this.console.setBounds(0, 500, 600, 30);
 		add(this.console);
-		
+
 		this.consoleText  = new JTextArea(10, 50);
 		this.consoleText.setEditable(false);
 		consoleText.setBounds(0, 530, 600, 200);
@@ -114,28 +115,33 @@ public class Panel extends JPanel{
 		this.label5.setText("インスタンス");
 		this.label5.setBounds(610, 0, 250, 30);
 		add(this.label5);
-		
+
 		this.instanceList = new JList<String>();
 		JScrollPane instanceListScrollPane = new JScrollPane(instanceList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		instanceListScrollPane.setBounds(610, 30, 250, 90);
 		add(instanceListScrollPane);
-		
+
 		this.element = new JLabel();
 		this.element.setForeground(Color.WHITE);
-		this.element.setText("取得データ");
+		this.element.setText("配列データ");
 		this.element.setBounds(880, 0, 250, 30);
 		add(this.element);
-		
+
 		this.elementList = new JList<String>();
 		JScrollPane elementListScrollPane = new JScrollPane(elementList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		elementListScrollPane.setBounds(880, 30, 250, 90);
 		this.add(elementListScrollPane);
-		
-		this.getElementButton = new JButton("データ取得");
+
+		this.getElementButton = new JButton("インスタンスデータ取得");
 		this.getElementButton.setBounds(610, 130, 250, 30);
 		this.getElementButton.addActionListener(new ButtonController());
 		this.add(this.getElementButton);
-		
+
+		this.getArrayElementButton = new JButton("配列データ取得");
+		this.getArrayElementButton.setBounds(880, 130, 250, 30);
+		this.getArrayElementButton.addActionListener(new ButtonController());
+		this.add(this.getArrayElementButton);
+
 	}
 
 	private class TextFieldController implements ActionListener{
@@ -183,7 +189,7 @@ public class Panel extends JPanel{
 				// 数字の入力以外は不正なパラメータとして処理
 				if(Pattern.matches("[0-9]+",parameter)) {
 					Object arrayInstance;
-					arrayInstance =  fieldSeacher.toInstanceWithArray(textField.getText(), Integer.parseInt(textField3.getText()));
+					arrayInstance =  fieldSeacher.toArrayInstance(textField.getText(), Integer.parseInt(textField3.getText()));
 					// ここで、modelが保持しているインスタンスのリストが更新されたから、Observerが検知して、Instance表示画面を更新するべき
 					instanceDataList = getInstances();
 					instanceList.setListData(instanceDataList);
@@ -203,13 +209,18 @@ public class Panel extends JPanel{
 			}
 		}
 	}
-	
+
 	private class ButtonController implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent ebutton) {
 			// TODO 自動生成されたメソッド・スタブ
-			if(ebutton.getSource() == getElementButton) {
+			if(ebutton.getSource() == getArrayElementButton) {
+				/* Constructor.getInstanceでとれる型が何かわからないので、Object型にしてる。
+				 * でも、Objectだと、isArrayとかのメソッドが使えないので、選択されてるインスタンスがArrayかどうかの判定ができない。
+				 * 加えて、選択されてるインスタンスがどのクラスのインスタンスかさかのぼって調べる手段がないと、getFiledとかでフィールド情報の取得ができない
+				 * そのあたりどうしたらいいのかわからない。教えてもらう*/
+				
 				Object selectedInstance = fieldSeacher.getInstanceList().get(instanceList.getSelectedIndex());
 				for (int i = 0; i < Array.getLength(selectedInstance); i ++) {
 					if (Array.get(selectedInstance, i) == null) {
@@ -224,11 +235,15 @@ public class Panel extends JPanel{
 				}
 				elementList.setListData(elements);
 			}
+
+			if(ebutton.getSource() == getElementButton) {
+				
+			}
 		}
 	}
 
 	/***
-	 * 指定したクラス名のコンストラクタ一覧のString配列を取得する
+	 * 指定したクラス名のコンストラクタ一覧をのString配列として取得する
 	 * @param searchClassName
 	 * @return results
 	 */
@@ -242,7 +257,7 @@ public class Panel extends JPanel{
 	}
 
 	/**
-	 * modelからインスタンス一覧を取得し、インスタンス名をString配列で取得する
+	 * modelが保持しているインスタンス一覧を取得し、インスタンス名をString配列で取得する
 	 * @return results
 	 */
 	private String[] getInstances() {
