@@ -18,9 +18,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import practice.model.ConstructorModel;
 import practice.model.FieldSearcher;
+import practice.model.InstanceListModel;
 
 public class Panel extends JPanel{
+	/*頭にDataと命名されているものは、表示用のデータリスト
+	 * 頭に何も記載されてない●●Listは、JListの名前*/
 	private JLabel label;
 	private JLabel label2;
 	private JLabel label3;
@@ -29,8 +33,8 @@ public class Panel extends JPanel{
 	private JLabel label7;
 	private JLabel element;
 	private JLabel console;
-	private JTextField textField;
-	private JTextField textField2;
+	private JTextField constructorInputTextField;
+	private JTextField constructorParamInputTextField;
 	private JTextField textField3;
 	private JList<String> constructorList;
 	private JList<String> instanceList;
@@ -42,6 +46,9 @@ public class Panel extends JPanel{
 	private JButton getArrayElementButton;
 	private JButton getElementButton;
 	private FieldSearcher fieldSeacher = new FieldSearcher();
+	
+	private InstanceListModel instanceListModel = new InstanceListModel();
+	private ConstructorModel constructorModel = new ConstructorModel(instanceListModel);
 
 	Panel() {
 		this.fieldSeacher = new FieldSearcher();
@@ -56,10 +63,10 @@ public class Panel extends JPanel{
 		this.label.setBounds(0, 0, 600, 30);
 		add(this.label);
 
-		this.textField = new JTextField("java.lang.String" , 1);
-		this.textField.setBounds(0, 30, 600, 30);
-		this.textField.addActionListener(new TextFieldController());
-		add(this.textField);
+		this.constructorInputTextField = new JTextField("java.lang.String" , 1);
+		this.constructorInputTextField.setBounds(0, 30, 600, 30);
+		this.constructorInputTextField.addActionListener(new TextFieldController());
+		add(this.constructorInputTextField);
 
 		this.label2 = new JLabel();
 		this.label2.setForeground(Color.WHITE);
@@ -78,10 +85,10 @@ public class Panel extends JPanel{
 		this.label3.setBounds(0, 410, 250, 30);
 		add(this.label3);
 
-		this.textField2 = new JTextField(1);
-		this.textField2.setBounds(0, 440, 250, 30);
-		this.textField2.addActionListener(new TextFieldController());
-		add(this.textField2);
+		this.constructorParamInputTextField = new JTextField(1);
+		this.constructorParamInputTextField.setBounds(0, 440, 250, 30);
+		this.constructorParamInputTextField.addActionListener(new TextFieldController());
+		add(this.constructorParamInputTextField);
 
 		this.label6 = new JLabel();
 		this.label6.setForeground(Color.WHITE);
@@ -149,16 +156,17 @@ public class Panel extends JPanel{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == textField) {
-				constructorDataList = getConstructors(textField.getText());
+			if (e.getSource() == constructorInputTextField) {
+				constructorDataList = getConstructors(constructorInputTextField.getText());
 				constructorList.setListData(constructorDataList);
 			}
 
-			if(e.getSource() == textField2) {
+			if(e.getSource() == constructorParamInputTextField) {
 				boolean result;
-				String parameter = textField2.getText();
+				String parameter = constructorParamInputTextField.getText();
 				String[] parameters = parameter.split("," , 0);
 
+				// TODO:ここは別クラスのパーサーとして切り分けたい
 				// パラメータとして入力された値に""が含まれているかを判別して、含まれていれば文字列、そうでなければintとする
 				for(String s: parameters) {
 					s = s.trim();// 先頭と末尾の空白を削除する
@@ -169,7 +177,8 @@ public class Panel extends JPanel{
 					}
 				}
 
-				result =  fieldSeacher.toInstance(constructorList.getSelectedIndex(), resultParameters.toArray());
+				// result =  fieldSeacher.toInstance(constructorList.getSelectedIndex(), resultParameters.toArray());
+				result = constructorModel.createObject(constructorList.getSelectedIndex(), resultParameters.toArray());
 				if (result) {
 					consoleText.setText("インスタンス生成成功\r\n\r\n");
 					resultParameters.clear(); // 1つのインスタンス化が終わると、入力された引数の初期化をする
@@ -189,7 +198,7 @@ public class Panel extends JPanel{
 				// 数字の入力以外は不正なパラメータとして処理
 				if(Pattern.matches("[0-9]+",parameter)) {
 					Object arrayInstance;
-					arrayInstance =  fieldSeacher.toArrayInstance(textField.getText(), Integer.parseInt(textField3.getText()));
+					arrayInstance =  fieldSeacher.toArrayInstance(constructorInputTextField.getText(), Integer.parseInt(textField3.getText()));
 					// ここで、modelが保持しているインスタンスのリストが更新されたから、Observerが検知して、Instance表示画面を更新するべき
 					instanceDataList = getInstances();
 					instanceList.setListData(instanceDataList);
@@ -247,13 +256,31 @@ public class Panel extends JPanel{
 	 * @param searchClassName
 	 * @return results
 	 */
+//	private String[] getConstructors(String searchClassName) {
+//		Constructor<?>[] constructors= fieldSeacher.searchConstructors(searchClassName);
+//		String[] results = new String[100];
+//		for(int i = 0; i < constructors.length; i++) {
+//			results[i] = "#" + i + " : " + constructors[i].toGenericString();
+//		}
+//		return results;
+//	}
+	
 	private String[] getConstructors(String searchClassName) {
-		Constructor<?>[] constructors= fieldSeacher.searchConstructors(searchClassName);
-		String[] results = new String[100];
-		for(int i = 0; i < constructors.length; i++) {
-			results[i] = "#" + i + " : " + constructors[i].toGenericString();
+		Class<?> clazz;
+		try {
+			clazz = Class.forName(searchClassName);
+			constructorModel.loadConstructor(clazz);
+			Constructor<?>[] constructors = constructorModel.getList();
+			String[] results = new String[100];
+			for(int i = 0; i < constructors.length; i++) {
+				results[i] = "#" + i + " : " + constructors[i].toGenericString();
+			}
+			return results;
+		} catch (ClassNotFoundException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			return null;
 		}
-		return results;
 	}
 
 	/**

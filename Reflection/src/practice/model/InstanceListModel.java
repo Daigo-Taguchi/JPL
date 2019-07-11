@@ -33,7 +33,7 @@ public class InstanceListModel {
 	/**
 	 * 引数で指定したクラスと長さで配列を生成する
 	 * 生成する配列の中身はnull
-	 * 配列生成に成功：:true
+	 * 配列生成に成功：true
 	 * 配列生成に失敗：false
 	 * @param clazz
 	 * @param length

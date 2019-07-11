@@ -44,7 +44,7 @@ public class ConstructorModel {
 	 * @param index
 	 * @return
 	 */
-	public void createObject(int index, Object...parameters ) {
-		this.instanceListModel.createObject(this.constructors[index], parameters);
+	public Boolean createObject(int index, Object...parameters ) {
+		return this.instanceListModel.createObject(this.constructors[index], parameters);
 	}
 }
