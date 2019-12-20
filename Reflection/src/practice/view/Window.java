@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 public class Window {
 	private JFrame frame;
 	private Container contentPane;
-	private Panel p1;
+	private ConstructorPanel p1;
 	
 	public Window(String title){
 		this.frame = new JFrame(title);
@@ -17,11 +17,13 @@ public class Window {
 		this.frame.setLayout(null);
 		this.contentPane = this.frame.getContentPane();
 		
-		this.p1 = new Panel();
-		this.p1.setBounds(0 ,0, 1200, 800);
-		this.contentPane.add(this.p1);
+		// this.p1 = new Panel();
+		this.p1 = new ConstructorPanel();
+		// this.p1.setBounds(0 ,0, 1200, 800);
+		// this.contentPane.add(this.p1);
+		this.frame.add(this.p1);
 		
 		// 最後に書かないと未完成の状態で表示されちゃう
-		frame.setVisible(true);
+		this.frame.setVisible(true);
 	}
 }

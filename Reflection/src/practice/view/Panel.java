@@ -53,20 +53,21 @@ public class Panel extends JPanel{
 	Panel() {
 		this.fieldSeacher = new FieldSearcher();
 		this.elementDataList = new ArrayList<String>();
-		setLayout(null);
+		setLayout(null);//レイアウトマネージャを無効にする
 		setBackground(Color.DARK_GRAY);
 		setPreferredSize(new Dimension(600, 800)); // JPanelのサイズ指定
 
 		this.label = new JLabel();
 		this.label.setForeground(Color.WHITE);
-		this.label.setText("コンストラクタを検索したいObject名を入力してください");
+		this.label.setText("コンストラクタを検索したいオブジェクト名を入力してください");
 		this.label.setBounds(0, 0, 600, 30);
 		add(this.label);
 
+		// コンストラクター入力エリア
 		this.constructorInputTextField = new JTextField("java.lang.String" , 1);
 		this.constructorInputTextField.setBounds(0, 30, 600, 30);
 		this.constructorInputTextField.addActionListener(new TextFieldController());
-		add(this.constructorInputTextField);
+		add(this.constructorInputTextField);// JPanel上に表示
 
 		this.label2 = new JLabel();
 		this.label2.setForeground(Color.WHITE);

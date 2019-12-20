@@ -61,7 +61,7 @@ public class FieldSearcher {
 //				for (Object ps : parameter) {
 //					System.out.println(ps);
 //				}
-				instanceList.add( this.constructors[index].newInstance(parameter));
+				instanceList.add(this.constructors[index].newInstance(parameter));
 				return true;
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
