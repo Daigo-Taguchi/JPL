@@ -179,7 +179,7 @@ public class Panel extends JPanel{
 				}
 
 				// result =  fieldSeacher.toInstance(constructorList.getSelectedIndex(), resultParameters.toArray());
-				result = constructorModel.createObject(constructorList.getSelectedIndex(), resultParameters.toArray());
+				result = constructorModel.createInstance(constructorList.getSelectedIndex(), resultParameters.toArray());
 				if (result) {
 					consoleText.setText("インスタンス生成成功\r\n\r\n");
 					resultParameters.clear(); // 1つのインスタンス化が終わると、入力された引数の初期化をする

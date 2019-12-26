@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import practice.model.ConstructorModel;
+// import practice.model.InstanceListModel;
 import practice.model.Obserbable;
 import practice.model.Observer;
 
@@ -15,6 +16,7 @@ public class InstancePanel extends JPanel implements Observer{
 	
 	private JPanelOperator operator;
 	private ConstructorModel constructorModel;
+	// private InstanceListModel instancelistModel;
 	private Obserbable obserbable;
 	
 	private JList<String> instanceList = new JList<String>();
@@ -26,6 +28,7 @@ public class InstancePanel extends JPanel implements Observer{
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		
 		this.constructorModel = constructorModel;
+		// this.instancelistModel = instanceListModel;
 		this.obserbable = generator;
 		this.obserbable.addObserver(this);
 		

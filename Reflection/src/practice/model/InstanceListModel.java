@@ -3,11 +3,9 @@ package practice.model;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class InstanceListModel extends Obserbable{
-	// private List<Object> instanceList = new ArrayList<Object>();
+public class InstanceListModel {
 	
 	/**
 	 * 引数で指定したコンストラクタを利用して、コンストラクタ予備でインスタンス化を行う。
@@ -39,21 +37,13 @@ public class InstanceListModel extends Obserbable{
 	 * @param length
 	 * @return
 	 */
-//	public boolean createArrayObject(Class<?> clazz, int length) {
-//		try {
-//			this.instanceList.add(Array.newInstance(clazz, length));
-//			return true;			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
-//	}
-	
-	/**
-	 * このクラスが管理するインスタンス一覧のリストを返す
-	 * @return
-	 */
-//	public List<Object> getList() {
-//		return this.instanceList;
-//	}
+	public boolean createArrayObject(Class<?> clazz, int length, List<Object> instanceList) {
+		try {
+			instanceList.add(Array.newInstance(clazz, length));
+			return true;			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }
