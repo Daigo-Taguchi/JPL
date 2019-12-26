@@ -43,6 +43,13 @@ public class JPanelOperator {
 		return textField;
 	}
 	
+	public JTextField createTextField(int x, int y, int width, int height) {
+		JTextField textField = new JTextField();
+		textField.setBounds(x, y, width, height);
+		this.panel.add(textField);
+		return textField;
+	}
+	
 	public JScrollPane createScrollPane(JList<String> list, int x, int y, int width, int height) {
 		JScrollPane scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(x, y, width, height);

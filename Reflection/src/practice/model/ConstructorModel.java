@@ -1,9 +1,13 @@
 package practice.model;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ConstructorModel {
+// 生成したコンストラクタ一覧のデータを保持する
+public class ConstructorModel extends Obserbable{
 	private Constructor<?>[] constructors;
+	private List<Object> instanceList = new ArrayList<Object>();
 	private InstanceListModel instanceListModel;
 	
 	public ConstructorModel(InstanceListModel instanceListModel) {
@@ -21,9 +25,11 @@ public class ConstructorModel {
 	 */
 	public Boolean loadConstructor(Class<?> clazz) {
 		try {
-			this.constructors = clazz.getConstructors();			
+			this.constructors = clazz.getConstructors();
+			notifyConstructorObservers();
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -37,6 +43,10 @@ public class ConstructorModel {
 		return this.constructors;
 	}
 	
+	public List<Object> getInstanceList() {
+		return this.instanceList;
+	}
+	
 	/**
 	 * 指定したコンストラクタ一覧のからコンストラクタを指定して
 	 * コンストラクタ呼びでインスタンス化を行う
@@ -45,6 +55,8 @@ public class ConstructorModel {
 	 * @return
 	 */
 	public Boolean createObject(int index, Object...parameters ) {
-		return this.instanceListModel.createObject(this.constructors[index], parameters);
+		boolean result = this.instanceListModel.createObject(this.instanceList ,this.constructors[index], parameters);
+		notifyIntanceObservers();
+		return result;
 	}
 }

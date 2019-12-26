@@ -14,12 +14,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import practice.model.Obserbable;
 import practice.model.ConstructorModel;
-import practice.model.FieldSearcher;
-import practice.model.InstanceListModel;
+import practice.model.Observer;
 
 @SuppressWarnings("serial")
-public class ConstructorPanel extends JPanel {
+public class ConstructorPanel extends JPanel implements Observer{
 	private final int PANEL_WIDTH = 600;
 	private final int PANEL_HEIGHT = 510;
 	
@@ -32,20 +32,24 @@ public class ConstructorPanel extends JPanel {
 	
 	private String[] constructorDataList;
 	
-	private InstanceListModel instanceListModel = new InstanceListModel();
-	private ConstructorModel constructorModel = new ConstructorModel(instanceListModel);
+	private ConstructorModel constructorModel;
 	private JPanelOperator operator = new JPanelOperator(this);
+	private Obserbable obserbable;
 	
-	public ConstructorPanel() {
+	public ConstructorPanel(ConstructorModel constructorModel, Obserbable generator) {
 		setLayout(null);
 		setBackground(Color.DARK_GRAY);
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
+		
+		this.constructorModel = constructorModel;
+		this.obserbable = generator;
+		this.obserbable.addObserver(this);
 		
 		String searchMessageText = "コンストラクタを検索したいオブジェクト名を入力して、Enterキーを押してください";
 		this.operator.createLabel(searchMessageText, 0, 0, 600, 30);
 		
 		this.textField = this.operator.createTextField("java.lang.String", 1, 0, 30, 600, 30, new TextFieldContoroller());
-		this.searchConstructorErrorMessage = this.operator.createLabel("エラー表示", 0, 60, 600, 30);
+		this.searchConstructorErrorMessage = this.operator.createLabel("", 0, 60, 600, 30);
 		
 		String searchResultMessageText = "## Constructor検索結果 ##";
 		operator.createLabel(searchResultMessageText, 0, 90, 600, 30);
@@ -55,7 +59,8 @@ public class ConstructorPanel extends JPanel {
 		this.operator.createLabel(parameterMessage, 0, 420, 250, 30);
 		this.parameterTextField =  this.operator.createTextField(0, 450, 200, 30, new TextFieldContoroller());
 		this.generateButton = this.operator.createButton("インスタンス生成", 210, 450, 150, 30, new ButtonController());
-		this.parameterErrorMessage =  this.operator.createLabel("エラー表示", 0, 480, 600, 30);
+		this.parameterErrorMessage =  this.operator.createLabel("", 0, 480, 600, 30);
+		
 	}
 	
 	private String[] getConstructors(String searchClassName) {
@@ -82,9 +87,7 @@ public class ConstructorPanel extends JPanel {
 			if (e.getSource() == textField) {
 				searchConstructorErrorMessage.setText("");
 				constructorDataList = getConstructors(textField.getText());
-				if (constructorDataList != null) {
-					constructorList.setListData(constructorDataList);					
-				} else {
+				if (constructorDataList == null) {
 					searchConstructorErrorMessage.setForeground(Color.RED);
 					searchConstructorErrorMessage.setText("Object名が不正です");
 				}
@@ -119,5 +122,23 @@ public class ConstructorPanel extends JPanel {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void updateConstructor() {
+		Constructor<?>[] constructors = constructorModel.getList();
+		String[] results = new String[100];
+		
+		for(int i = 0; i < constructors.length; i++) {
+			results[i] = "#" + i + " : " + constructors[i].toGenericString();
+		}
+		constructorList.setListData(results);					
+	}
+
+	@Override
+	public void updateInstance() {
+		// TODO 自動生成されたメソッド・スタブ
+		
+		
 	}
 }
