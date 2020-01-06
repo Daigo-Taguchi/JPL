@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class JPanelOperator {
@@ -63,5 +64,14 @@ public class JPanelOperator {
 		button.addActionListener(al);
 		this.panel.add(button);
 		return button;
+	}
+	
+	public JTextArea createTextArea(int x, int y,  int width, int height, int rows, int columns, Color color) {
+		JTextArea textArea = new JTextArea(rows, columns);
+		textArea.setEditable(false);
+		textArea.setBounds(x, y, width, height);
+		textArea.setBackground(color);
+		this.panel.add(textArea);
+		return textArea;
 	}
 }

@@ -53,7 +53,7 @@ public class ConstructorPanel extends JPanel implements Observer{
 		this.textField = this.operator.createTextField("java.lang.String", 1, 5, 30, 550, 30, new TextFieldContoroller());
 		this.searchConstructorErrorMessage = this.operator.createLabel("", 5, 60, 550, 30);
 
-		String searchResultMessageText = "## Constructor検索結果 ##";
+		String searchResultMessageText = "Constructor検索結果";
 		operator.createLabel(searchResultMessageText, 5, 90, 550, 30);
 		this.operator.createScrollPane(this.constructorList, 5, 120, 550, 300);
 
@@ -66,7 +66,7 @@ public class ConstructorPanel extends JPanel implements Observer{
 		String arrayLengthMessage = "配列の長さ";
 		this.operator.createLabel(arrayLengthMessage, 330, 420, 250, 30);
 		this.arrayLengthTextField = this.operator.createTextField(330, 450, 50, 30);
-		this.generateArrayInstanceButton = this.operator.createButton("配列インスタンス生成", 385, 450, 170, 30, new ButtonController());
+		this.generateArrayInstanceButton = this.operator.createButton("空配列生成", 385, 450, 170, 30, new ButtonController());
 
 	}
 
@@ -76,7 +76,7 @@ public class ConstructorPanel extends JPanel implements Observer{
 		String[] results = new String[100];
 
 		for(int i = 0; i < constructors.length; i++) {
-			results[i] = "#" + i + " : " + constructors[i].toGenericString();
+			results[i] = constructors[i].toGenericString();
 		}
 		constructorList.setListData(results);					
 	}

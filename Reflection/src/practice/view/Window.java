@@ -24,6 +24,7 @@ public class Window {
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setLocationRelativeTo(null);// 画面中央にFrameを表示
 		this.frame.setLayout(null);
+		this.frame.setResizable(false);
 		
 		this.p1 = new ConstructorPanel(this.constructorModel, this.generator);
 		this.p1.setBounds(0 ,0, 600, 510);
