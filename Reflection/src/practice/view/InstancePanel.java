@@ -49,7 +49,7 @@ public class InstancePanel extends JPanel implements Observer{
 		
 		this.operator.createLabel("配列要素一覧", 215, 0, 340, 30);
 		this.operator.createLabel("対象：", 215, 30, 40, 30);
-		this.selectedInstance =  this.operator.createTextArea(255, 30, 200, 30, 1, 10, new Color(230, 230, 230));
+		this.selectedInstance =  this.operator.createTextArea(255, 30, 200, 30, 1, 10, new Color(173, 216, 230));
 		this.pickupButton =  this.operator.createButton("取得", 460, 30, 95, 30, new ButtonController());
 		this.operator.createScrollPane(arrayList, 255, 70, 300, 120);
 		this.operator.createLabel("値：", 225, 200, 30, 30);

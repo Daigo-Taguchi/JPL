@@ -26,7 +26,7 @@ public class InstanceInfoPanel extends JPanel{
 		
 		this.operator.createLabel("インスタンス情報", 0, 0, 600, 30);
 		this.operator.createLabel("対象インスタンス：", 0, 30, 120, 30);
-		this.operator.createTextArea(125, 30, 200, 30, 1, 30, new Color(230, 230, 230));
+		this.operator.createTextArea(125, 30, 200, 30, 1, 30, new Color(173, 216, 230));
 		this.operator.createButton("取得", 330, 30, 100, 30, new ButtonController());
 	}
 	
