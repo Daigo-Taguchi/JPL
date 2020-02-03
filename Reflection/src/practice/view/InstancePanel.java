@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import practice.model.ConstructorModel;
 // import practice.model.InstanceListModel;
@@ -25,27 +27,28 @@ public class InstancePanel extends JPanel implements Observer{
 	private JPanelOperator operator;
 	private ConstructorModel constructorModel;
 	private Obserbable obserbable;
+	private InstanceInfoPanel instanceInfoPanel;
 	
 	private JList<String> instanceList = new JList<String>();
 	private JList<String> arrayList = new JList<String>();
 	private JButton pickupButton;
 	private JTextArea selectedInstance;
 
-	public InstancePanel(ConstructorModel constructorModel, Obserbable generator) {
+	public InstancePanel(ConstructorModel constructorModel, Obserbable generator, InstanceInfoPanel instanceInfoPanel) {
 		super();
 		setLayout(null);
 		setBackground(Color.DARK_GRAY);
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		
 		this.constructorModel = constructorModel;
-		// this.instancelistModel = instanceListModel;
+		this.instanceInfoPanel = instanceInfoPanel;
 		this.obserbable = generator;
 		this.obserbable.addObserver(this);
 		
 		this.operator = new JPanelOperator(this);
 		
 		this.operator.createLabel("インスタンス一覧", 5, 0, 200, 30);
-		this.operator.createScrollPane(this.instanceList, 5, 30, 200, 200);
+		this.operator.createScrollPane(this.instanceList, 5, 30, 200, 200, new ListController());
 		
 		this.operator.createLabel("配列要素一覧", 215, 0, 340, 30);
 		this.operator.createLabel("対象：", 215, 30, 40, 30);
@@ -84,8 +87,6 @@ public class InstancePanel extends JPanel implements Observer{
 				
 				// モデルが保持するインスタンスのリストで、選択されているインスタンスが配列かどうかを判定する
 				if (searchObject.getClass().isArray()) {
-					selectedInstance.setForeground(Color.black);
-					selectedInstance.setText(instanceList.getSelectedValue());
 					for (int i = 0; i < Array.getLength(searchObject); i ++) {
 						if (Array.get(searchObject, i) == null) {
 							elementDataList.add("#" + instanceList.getSelectedIndex() + "#" + i + "：null");
@@ -96,17 +97,35 @@ public class InstancePanel extends JPanel implements Observer{
 					}
 					String[] elements = elementDataList.toArray(new String[elementDataList.size()]);
 					arrayList.setListData(elements);
-				} else {
-					// エラー表示をする
-					selectedInstance.setForeground(Color.RED);
-					selectedInstance.setText("不正なインスタンスです");
 				}
 			}
 		}
 	}
 	
+	private class ListController implements ListSelectionListener {
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			// TODO 自動生成されたメソッド・スタブ
+			if (e.getValueIsAdjusting()) {
+				Object searchObject = constructorModel.getInstanceList().get(instanceList.getSelectedIndex());
+				
+				if (searchObject.getClass().isArray()) {
+					pickupButton.setEnabled(true);
+					selectedInstance.setText(instanceList.getSelectedValue());
+				}else {
+					pickupButton.setEnabled(false);
+					selectedInstance.setText(null);
+				}
+				
+				String selectedInstanceName = searchObject.getClass().getSimpleName();
+				// ここからinstanceInfoPanelのインスタンスを生成して、インスタンス情報のテキストボックス内に取得したインスタンス名を渡す
+				instanceInfoPanel.setInstanceInfo(instanceList.getSelectedValue());
+			}
+		}
+		
+	}
+	
 	private class TextFieldContoroller implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		}

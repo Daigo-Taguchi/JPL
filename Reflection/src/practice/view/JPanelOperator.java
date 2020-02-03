@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionListener;
 
 public class JPanelOperator {
 	
@@ -53,6 +54,14 @@ public class JPanelOperator {
 	
 	public JScrollPane createScrollPane(JList<String> list, int x, int y, int width, int height) {
 		JScrollPane scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(x, y, width, height);
+		this.panel.add(scrollPane);
+		return scrollPane;
+	}
+	
+	public JScrollPane createScrollPane(JList<String> list, int x, int y, int width, int height, ListSelectionListener listener) {
+		JScrollPane scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		list.addListSelectionListener(listener);
 		scrollPane.setBounds(x, y, width, height);
 		this.panel.add(scrollPane);
 		return scrollPane;

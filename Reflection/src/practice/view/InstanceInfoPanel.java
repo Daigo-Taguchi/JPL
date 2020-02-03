@@ -5,8 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import practice.model.ConstructorModel;
+import practice.model.Obserbable;
 
 public class InstanceInfoPanel extends JPanel{
 	private final int PANEL_WIDTH = 600;
@@ -14,6 +17,8 @@ public class InstanceInfoPanel extends JPanel{
 	
 	private ConstructorModel constructorModel;
 	private JPanelOperator operator;
+	
+	private JTextArea selectedInstance;
 	
 	public InstanceInfoPanel(ConstructorModel constructorModel) {
 		super();
@@ -26,8 +31,16 @@ public class InstanceInfoPanel extends JPanel{
 		
 		this.operator.createLabel("インスタンス情報", 0, 0, 600, 30);
 		this.operator.createLabel("対象インスタンス：", 0, 30, 120, 30);
-		this.operator.createTextArea(125, 30, 200, 30, 1, 30, new Color(173, 216, 230));
+		this.selectedInstance = this.operator.createTextArea(125, 30, 200, 30, 1, 30, new Color(173, 216, 230));
 		this.operator.createButton("取得", 330, 30, 100, 30, new ButtonController());
+	}
+	
+	/**
+	 * インスタンス情報に選択済みのインスタンス情報をsetする
+	 * @param selectedInstanceName
+	 */
+	public void setInstanceInfo (String selectedInstanceName) {
+		this.selectedInstance.setText(selectedInstanceName);
 	}
 	
 	private class ButtonController implements ActionListener {
