@@ -116,8 +116,6 @@ public class InstancePanel extends JPanel implements Observer{
 					pickupButton.setEnabled(false);
 					selectedInstance.setText(null);
 				}
-				
-				String selectedInstanceName = searchObject.getClass().getSimpleName();
 				// ここからinstanceInfoPanelのインスタンスを生成して、インスタンス情報のテキストボックス内に取得したインスタンス名を渡す
 				instanceInfoPanel.setInstanceInfo(instanceList.getSelectedValue());
 			}
