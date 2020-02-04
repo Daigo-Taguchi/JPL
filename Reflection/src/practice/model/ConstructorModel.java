@@ -59,13 +59,17 @@ public class ConstructorModel extends Obserbable{
 	 */
 	public boolean createInstance(int index, Object...parameters ) {
 		boolean result =  this.instanceListModel.createObject(this.instanceList ,this.constructors[index], parameters);
-		notifyIntanceObservers();
+		notifyInstanceObservers();
 		return result;
 	}
 
 	public boolean createArrayInstance(int length) {
 		boolean result = this.instanceListModel.createArrayObject(this.clazz, length, this.instanceList);
-		notifyIntanceObservers();
+		notifyInstanceObservers();
 		return result;
+	}
+	
+	public void getFields(Object instance) throws IllegalAccessException {
+		this.instanceListModel.getFields(instance);
 	}
 }

@@ -2,6 +2,7 @@ package practice.model;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -44,6 +45,13 @@ public class InstanceListModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public void getFields(Object instance) throws IllegalAccessException {
+		for (Field field : instance.getClass().getDeclaredFields()) {
+			field.setAccessible(true);
+			System.out.println(field.getName() + " = " + field.get(instance));
 		}
 	}
 }

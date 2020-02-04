@@ -20,7 +20,7 @@ public abstract class Obserbable {
 		}
 	}
 	
-	public void notifyIntanceObservers() {
+	public void notifyInstanceObservers() {
 		for (Observer observer: this.observers) {
 			observer.updateInstance();
 		}
