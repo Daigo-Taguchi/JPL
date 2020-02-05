@@ -69,7 +69,7 @@ public class ConstructorModel extends Obserbable{
 		return result;
 	}
 	
-	public void getFields(Object instance) throws IllegalAccessException {
-		this.instanceListModel.getFields(instance);
+	public String[] getFields(Object instance) throws IllegalAccessException {
+		return this.instanceListModel.getFields(instance);
 	}
 }
