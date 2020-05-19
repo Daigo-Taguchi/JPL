@@ -12,75 +12,69 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionListener;
 
-public class JPanelOperator {
-	
-	private JPanel panel;
-	
-	public JPanelOperator(JPanel panel) {
-		this.panel = panel;
-	}
+public class JPanelOperator extends JPanel{
 
-	public JLabel createLabel(String message, int x, int y, int width, int height) {
-		 JLabel label = new JLabel();
+	public JLabel createLabel(final String message, final int x, final int y, final int width, final int height) {
+		 final JLabel label = new JLabel();
 		label.setForeground(Color.WHITE);
 		label.setText(message);
 		label.setBounds(x, y, width, height);
-		this.panel.add(label);
+		this.add(label);
 		return label;
 	}
-	
-	public JTextField createTextField(String message, int lines, int x, int y, int width, int height, ActionListener al) {
-		JTextField textField = new JTextField(message, lines);
+
+	public JTextField createTextField(final String message, final int lines, final int x, final int y, final int width, final int height, final ActionListener al) {
+		final JTextField textField = new JTextField(message, lines);
 		textField.setBounds(x, y, width, height);
 		textField.addActionListener(al);
-		this.panel.add(textField);
+		this.add(textField);
 		return textField;
 	}
-	
-	public JTextField createTextField(int x, int y, int width, int height, ActionListener al) {
-		JTextField textField = new JTextField();
+
+	public JTextField createTextField(final int x, final int y, final int width, final int height, final ActionListener al) {
+		final JTextField textField = new JTextField();
 		textField.setBounds(x, y, width, height);
 		textField.addActionListener(al);
-		this.panel.add(textField);
+		this.add(textField);
 		return textField;
 	}
-	
-	public JTextField createTextField(int x, int y, int width, int height) {
-		JTextField textField = new JTextField();
+
+	public JTextField createTextField(final int x, final int y, final int width, final int height) {
+		final JTextField textField = new JTextField();
 		textField.setBounds(x, y, width, height);
-		this.panel.add(textField);
+		this.add(textField);
 		return textField;
 	}
-	
-	public JScrollPane createScrollPane(JList<String> list, int x, int y, int width, int height) {
-		JScrollPane scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+	public JScrollPane createScrollPane(final JList<String> list, final int x, final int y, final int width, final int height) {
+		final JScrollPane scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(x, y, width, height);
-		this.panel.add(scrollPane);
+		this.add(scrollPane);
 		return scrollPane;
 	}
-	
-	public JScrollPane createScrollPane(JList<String> list, int x, int y, int width, int height, ListSelectionListener listener) {
-		JScrollPane scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+	public JScrollPane createScrollPane(final JList<String> list, final int x, final int y, final int width, final int height, final ListSelectionListener listener) {
+		final JScrollPane scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		list.addListSelectionListener(listener);
 		scrollPane.setBounds(x, y, width, height);
-		this.panel.add(scrollPane);
+		this.add(scrollPane);
 		return scrollPane;
 	}
-	
-	public JButton createButton(String buttonLabel, int x, int y, int width, int height, ActionListener al) {
-		JButton button = new JButton(buttonLabel);
+
+	public JButton createButton(final String buttonLabel, final int x, final int y, final int width, final int height, final ActionListener al) {
+		final JButton button = new JButton(buttonLabel);
 		button.setBounds(x, y, width, height);
 		button.addActionListener(al);
-		this.panel.add(button);
+		this.add(button);
 		return button;
 	}
-	
-	public JTextArea createTextArea(int x, int y,  int width, int height, int rows, int columns, Color color) {
-		JTextArea textArea = new JTextArea(rows, columns);
+
+	public JTextArea createTextArea(final int x, final int y,  final int width, final int height, final int rows, final int columns, final Color color) {
+		final JTextArea textArea = new JTextArea(rows, columns);
 		textArea.setEditable(false);
 		textArea.setBounds(x, y, width, height);
 		textArea.setBackground(color);
-		this.panel.add(textArea);
+		this.add(textArea);
 		return textArea;
 	}
 }

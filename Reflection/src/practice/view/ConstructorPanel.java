@@ -11,34 +11,31 @@ import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import practice.model.Obserbable;
 import practice.model.ConstructorModel;
+import practice.model.Obserbable;
 import practice.model.Observer;
 
-@SuppressWarnings("serial")
-public class ConstructorPanel extends JPanel implements Observer{
+public class ConstructorPanel extends JPanelOperator implements Observer{
 	private final int PANEL_WIDTH = 600;
 	private final int PANEL_HEIGHT = 510;
 
-	private JTextField textField;
-	private JTextField parameterTextField;
-	private JTextField arrayLengthTextField;
-	private JList<String> constructorList = new JList<String>();
-	private JButton generateButton;
-	private JButton generateArrayInstanceButton;
-	private JLabel searchConstructorErrorMessage;
-	private JLabel parameterErrorMessage;
+	private final JTextField textField;
+	private final JTextField parameterTextField;
+	private final JTextField arrayLengthTextField;
+	private final JList<String> constructorList = new JList<String>();
+	private final JButton generateButton;
+	private final JButton generateArrayInstanceButton;
+	private final JLabel searchConstructorErrorMessage;
+	private final JLabel parameterErrorMessage;
 
 	private String[] constructorDataList;
 
-	private ConstructorModel constructorModel;
-	private JPanelOperator operator = new JPanelOperator(this);
-	private Obserbable obserbable;
+	private final ConstructorModel constructorModel;
+	private final Obserbable obserbable;
 
-	public ConstructorPanel(ConstructorModel constructorModel, Obserbable generator) {
+	public ConstructorPanel(final ConstructorModel constructorModel, final Obserbable generator) {
 		setLayout(null);
 		setBackground(Color.DARK_GRAY);
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
@@ -47,38 +44,38 @@ public class ConstructorPanel extends JPanel implements Observer{
 		this.obserbable = generator;
 		this.obserbable.addObserver(this);
 
-		String searchMessageText = "コンストラクタを検索したいオブジェクト名を入力して、Enterキーを押してください";
-		this.operator.createLabel(searchMessageText, 5, 0, 550, 30);
+		final String searchMessageText = "コンストラクタを検索したいオブジェクト名を入力して、Enterキーを押してください";
+		createLabel(searchMessageText, 5, 0, 550, 30);
 
-		this.textField = this.operator.createTextField("java.lang.String", 1, 5, 30, 550, 30, new TextFieldContoroller());
-		this.searchConstructorErrorMessage = this.operator.createLabel("", 5, 60, 550, 30);
+		this.textField = createTextField("java.lang.String", 1, 5, 30, 550, 30, new TextFieldContoroller());
+		this.searchConstructorErrorMessage = createLabel("", 5, 60, 550, 30);
 
-		String searchResultMessageText = "Constructor検索結果";
-		operator.createLabel(searchResultMessageText, 5, 90, 550, 30);
-		this.operator.createScrollPane(this.constructorList, 5, 120, 550, 300);
+		final String searchResultMessageText = "Constructor検索結果";
+		createLabel(searchResultMessageText, 5, 90, 550, 30);
+		createScrollPane(this.constructorList, 5, 120, 550, 300);
 
-		String parameterMessage = "引数";
-		this.operator.createLabel(parameterMessage, 5, 420, 250, 30);
-		this.parameterTextField =  this.operator.createTextField(5, 450, 150, 30, new TextFieldContoroller());
-		this.generateButton = this.operator.createButton("インスタンス生成", 160, 450, 140, 30, new ButtonController());
-		this.parameterErrorMessage =  this.operator.createLabel("", 5, 480, 600, 30);
+		final String parameterMessage = "引数";
+		createLabel(parameterMessage, 5, 420, 250, 30);
+		this.parameterTextField =  createTextField(5, 450, 150, 30, new TextFieldContoroller());
+		this.generateButton = createButton("インスタンス生成", 160, 450, 140, 30, new ButtonController());
+		this.parameterErrorMessage = createLabel("", 5, 480, 600, 30);
 
-		String arrayLengthMessage = "配列の長さ";
-		this.operator.createLabel(arrayLengthMessage, 330, 420, 250, 30);
-		this.arrayLengthTextField = this.operator.createTextField(330, 450, 50, 30);
-		this.generateArrayInstanceButton = this.operator.createButton("空配列生成", 385, 450, 170, 30, new ButtonController());
+		final String arrayLengthMessage = "配列の長さ";
+		createLabel(arrayLengthMessage, 330, 420, 250, 30);
+		this.arrayLengthTextField = createTextField(330, 450, 50, 30);
+		this.generateArrayInstanceButton = createButton("空配列生成", 385, 450, 170, 30, new ButtonController());
 
 	}
 
 	@Override
 	public void updateConstructor() {
-		Constructor<?>[] constructors = constructorModel.getList();
-		String[] results = new String[100];
+		final Constructor<?>[] constructors = constructorModel.getList();
+		final String[] results = new String[100];
 
 		for(int i = 0; i < constructors.length; i++) {
 			results[i] = constructors[i].toGenericString();
 		}
-		constructorList.setListData(results);					
+		constructorList.setListData(results);
 	}
 
 	@Override
@@ -88,7 +85,7 @@ public class ConstructorPanel extends JPanel implements Observer{
 
 	private class TextFieldContoroller implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			if (e.getSource() == textField) {
 				searchConstructorErrorMessage.setText("");
 				constructorDataList = getConstructors(textField.getText());
@@ -103,11 +100,11 @@ public class ConstructorPanel extends JPanel implements Observer{
 	private class ButtonController implements ActionListener {
 		List<Object> resultParameters = new ArrayList<Object>();
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			if (e.getSource() == generateButton) {
 				parameterErrorMessage.setText("");
-				String parameter = parameterTextField.getText();
-				String[] parameters = parameter.split(",", 0);
+				final String parameter = parameterTextField.getText();
+				final String[] parameters = parameter.split(",", 0);
 
 				for (String s: parameters) {
 					s = s.trim(); //先頭と末尾の空白を削除する
@@ -117,7 +114,7 @@ public class ConstructorPanel extends JPanel implements Observer{
 						resultParameters.add(Integer.parseInt(s));
 					}
 				}
-				boolean result = constructorModel.createInstance(constructorList.getSelectedIndex(), resultParameters.toArray());
+				final boolean result = constructorModel.createInstance(constructorList.getSelectedIndex(), resultParameters.toArray());
 				if (result) {
 					resultParameters.clear();
 				} else {
@@ -128,10 +125,10 @@ public class ConstructorPanel extends JPanel implements Observer{
 			}
 			if (e.getSource() == generateArrayInstanceButton) {
 				parameterErrorMessage.setText("");
-				String length = arrayLengthTextField.getText();
+				final String length = arrayLengthTextField.getText();
 
 				if (Pattern.matches("[0-9]+", length)) {
-					boolean result = constructorModel.createArrayInstance(Integer.parseInt(length));
+					final boolean result = constructorModel.createArrayInstance(Integer.parseInt(length));
 					if (!result) {
 						parameterErrorMessage.setText("パラメータが不正です");
 					}
@@ -140,15 +137,15 @@ public class ConstructorPanel extends JPanel implements Observer{
 		}
 	}
 
-	private String[] getConstructors(String searchClassName) {
-		boolean result =  constructorModel.loadConstructor(searchClassName);
+	private String[] getConstructors(final String searchClassName) {
+		final boolean result =  constructorModel.loadConstructor(searchClassName);
 		if (result) {
-			Constructor<?>[] constructors = constructorModel.getList();
-			String[] results = new String[100];
+			final Constructor<?>[] constructors = constructorModel.getList();
+			final String[] results = new String[100];
 			for(int i = 0; i < constructors.length; i++) {
 				results[i] = "#" + i + " : " + constructors[i].toGenericString();
 			}
-			return results;			
+			return results;
 		} else {
 			return null;
 		}
